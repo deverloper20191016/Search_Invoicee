@@ -1,0 +1,63 @@
+﻿@*<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse slimscrollsidebar">
+        <ul class="nav" id="side-menu">
+            <li class="sidebar-search hidden-sm hidden-md hidden-lg">
+                <!-- input-group -->
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"> <i class="fa fa-search"></i> </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </li>             
+            <li>
+                <a href="forms.html" class="waves-effect">
+                    <i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i>
+                    <span class="hide-menu">M-Invoice<span class="fa arrow"></span></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/quan-ly" target="_blank">Home</a></li>
+                    <li><a href="https://minvoice.vn/" target="_blank">Phần mềm hóa đơn điện tử</a></li>
+                    <li><a href="https://minvoice.vn/" target="_blank">Giải pháp điện tử</a></li>
+                    <li><a href="https://minvoice.vn/" target="_blank">Hỗ trợ</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="forms.html" class="waves-effect">
+                    <i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i>
+                    <span class="hide-menu">Tra cứu hóa đơn<span class="fa arrow"></span></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="http://tracuuhoadon.minvoice.vn/" target="_blank">Tra cứu bằng mã số thuế</a></li>
+                    <li><a href="/TraCuu/Upload" target="_blank">Tra cứu bằng File tải lên</a></li>
+                    <li><a href="/Tracuu/UploadAPI">Tra cứu File Zip</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="forms.html" class="waves-effect">
+                    <i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i>
+                    <span class="hide-menu">Khách hàng<span class="fa arrow"></span></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/tim-kiem-invoice">Tìm kiếm hóa đơn</a></li>
+                </ul>
+            </li>
+            @if (User.Identity.Name.ToUpper() == "ADMINISTRATOR" || User.Identity.Name == "admin" || User.Identity.Name == "truyennv")
+            {
+            <li>
+                <a href="forms.html" class="waves-effect">
+                    <i data-icon="&#xe00b;" class="linea-icon linea-basic fa-fw"></i>
+                    <span class="hide-menu">ADMIN<span class="fa arrow"></span></span>
+                </a>
+                <ul class="nav nav-second-level">
+                    <li><a href="/quan-ly-database">Khách hàng</a></li>
+                    <li><a href="/tim-kiem-khachhang">Tìm kiếm khách hàng</a></li>
+                </ul>
+            </li>
+            }
+
+        </ul>
+    </div>
+</div>*@
+<!-- Left navbar-header end -->

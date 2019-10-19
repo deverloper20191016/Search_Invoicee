@@ -1,0 +1,92 @@
+﻿@model Search_Invoice.Data.Domain.inv_admin
+@{
+    //ViewBag.Title = "Update";
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="blue bigger">Sửa thông tin server</h4>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            @using (Html.BeginForm("Update", "Admin", FormMethod.Post, new { @class = "form-horizontal", id = "frmUpdateinv_admin" }))
+            {
+                @Html.HiddenFor(model => model.inv_admin_id)
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Mã số thuế</label>
+                    <div class="col-9">
+                        @Html.TextBoxFor(model => model.MST, new { @class = "form-control", id = "txtMST" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Alias</label>
+                    <div class="col-9">
+                        @Html.TextBoxFor(model => model.alias, new { @class = "form-control", id = "txtalias" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Chuỗi kết nối</label>
+                    <div class="col-9">
+                        @Html.TextAreaFor(model => model.ConnectString, 10, 40, new { @class = "form-control", id = "txtConnectString" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-3 col-form-label">Đường dẫn</label>
+                    <div class="col-9">
+                        @Html.TextBoxFor(model => model.Path, new { @class = "form-control", id = "txtPath" })
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-sm btn-danger" data-dismiss="modal">
+        <i class="ace-icon fa fa-times"></i>
+        Hủy bỏ
+    </button>
+
+    <button class="btn btn-sm btn-info" onclick="submit();">
+        <i class="ace-icon fa fa-check"></i>
+        Ghi
+    </button>
+</div>
+
+<script type="text/javascript">
+    function submit() {
+
+        var form = $('#frmUpdateinv_admin');
+
+        $.ajax({
+            url: "/Admin/JsonUpdate",
+            type: "POST",
+            data: form.serialize() ,
+            success: function (result) {
+                if (result.msg === 'success') {
+                    var grid = $("#grid").data('kendoGrid');
+                    var item = grid.dataSource.get(result.item.inv_admin_id);
+
+                    item.set('MST', result.item.MST);
+                    item.set('alias', result.item.alias);
+                    item.set('ConnectString', result.item.ConnectString);
+                    item.set('Path', result.item.Path);
+
+
+                    $('#myModal').modal("hide");
+                    $('#myModal').removeData('bs.modal');
+
+                }
+                else {
+                    bootbox.alert(result.description);
+                }
+            }
+        });
+    }
+
+</script>

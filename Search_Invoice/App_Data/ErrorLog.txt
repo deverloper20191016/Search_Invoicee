@@ -1,0 +1,408 @@
+********** 25/08/2018 11:20:25 AM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Inner Exception: An exception was thrown while invoking the constructor 'Void .ctor(Search_Invoice.Services.IWebHelper)' on type 'NopDbContext'. ---> Không tồn tại mã số thuế 01060264945_DEMO trên hệ thống của M-Invoice (See inner exception for details.)
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'SearchInvoiceController'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu/M-Invoice?mst=01060264945_DEMO&id=0D05DC701F648132B
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 25/08/2018 11:24:26 AM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Lỗi: Không tồn tại mã số thuế 01060264945_DEMO trên hệ thống của M-Invoice
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'SearchInvoiceController'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu/M-Invoice?mst=01060264945_DEMO&id=0D05DC701F648132B
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 17/09/2018 13:48:28 PM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Inner Exception: An exception was thrown while invoking the constructor 'Void .ctor(Search_Invoice.Services.IWebHelper)' on type 'NopDbContext'. ---> Index was outside the bounds of the array. (See inner exception for details.)
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'SearchInvoiceController'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu/UploadInv
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 17/09/2018 13:48:43 PM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Inner Exception: An exception was thrown while invoking the constructor 'Void .ctor(Search_Invoice.Services.IWebHelper)' on type 'NopDbContext'. ---> Index was outside the bounds of the array. (See inner exception for details.)
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'SearchInvoiceController'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu/UploadInv
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 10/10/2018 14:54:37 PM **********
+Exception Type: System.FormatException
+Exception: The format of value 'text' is invalid.
+Source: /Tracuu/M-Invoice?mst=0106026495_DEMO&id=0D05DC701F68132B
+Stack Trace: 
+   at System.Net.Http.Headers.MediaTypeHeaderValue.CheckMediaTypeFormat(String mediaType, String parameterName)
+   at System.Net.Http.Headers.MediaTypeHeaderValue..ctor(String mediaType)
+   at Search_Invoice.Controllers.SearchInvoiceController.PrintInvoice(String mst, String id) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\SearchInvoiceController.cs:line 103
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 10/10/2018 14:54:57 PM **********
+Exception Type: System.FormatException
+Exception: The format of value 'text' is invalid.
+Source: /Tracuu/M-Invoice?mst=0106026495_DEMO&id=0D05DC701F68132Bf
+Stack Trace: 
+   at System.Net.Http.Headers.MediaTypeHeaderValue.CheckMediaTypeFormat(String mediaType, String parameterName)
+   at System.Net.Http.Headers.MediaTypeHeaderValue..ctor(String mediaType)
+   at Search_Invoice.Controllers.SearchInvoiceController.PrintInvoice(String mst, String id) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\SearchInvoiceController.cs:line 103
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:21:21 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:24:40 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:25:52 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:27:52 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:29:03 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/10/2018 4:33:21 PM **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /TracuuFile/GetInfoInvoice
+Stack Trace: 
+   at Search_Invoice.Controllers.TraCuuFileController.GetInfoInvoice(JObject model) in D:\Project M-Invoice\Search_Invoice_API\Search_Invoice\Search_Invoice\Controllers\TraCuuFileController.cs:line 189
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass10.<GetExecutor>b__9(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.Execute(Object instance, Object[] arguments)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__0.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__2.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+
+********** 11/12/2018 8:39:37 AM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Inner Exception: An exception was thrown while invoking the constructor 'Void .ctor(Search_Invoice.Services.IWebHelper)' on type 'NopDbContext'. ---> Index was outside the bounds of the array. (See inner exception for details.)
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'SearchInvoiceController'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu/GetInfoInvoice
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+

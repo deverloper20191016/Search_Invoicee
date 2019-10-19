@@ -1,0 +1,215 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/plugins/images/fa-icon.png">
+    <title>Hóa đơn điện tử M-Invoice</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/plugins/bower_components/dropify/dist/css/dropify.min.css">
+    <!-- animation CSS -->
+    <link href="~/Content/css/animate.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="~/Content/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="~/Content/css/colors/blue.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="http://www.w3schools.com/lib/w3data.js"></script>
+</head>
+
+<body>
+
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    @using (Html.BeginForm("UploadView", "TraCuu", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <section id="wrapper" class="login-register">
+            <div class="login-box">
+                <div class="white-box">
+                    <form class="form-horizontal form-material" id="loginform" action="index.html">
+                        @* <h3 class="box-title m-b-20">Buyer Signature</h3>*@
+                         <a href="http://minvoice.vn/" target="_blank" class="text-center db">
+                            <!--<img src="/Content/plugins/images/eliteadmin-logo-dark.png" alt="Home" />-->
+                            <br /><img src="~/Content/minvoice.png" alt="Home" />
+                        </a>
+                        <br />
+                        <div class="form-group ">
+                            <div class="col-xs-12">
+                                <label for="file">File hóa đơn (*.zip)</label>
+                                @*files*@
+                                <input type="file" name="file" id="input-file-now" class="dropify" />
+                                @*<input id="file" name="file" type="file">*@
+                            </div>
+                        </div>
+                        <div class="form-group text-center m-t-20">
+                            <div class="col-xs-12">
+                                @* <button type="submit" class="btn btn-danger btn-block btn-flat"> Xem hóa đơn</button>*@
+                                <button type="submit" class="btn btn-danger btn-block btn-flat" disabled="disabled" id="btnSub"> Xem hóa đơn</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </section>
+    }
+    <!-- jQuery -->
+    <script src="~/Content/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/bootstrap/dist/js/tether.min.js"></script>
+    <script src="~/Content/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="~/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="~/Content/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="~/Content/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Content/js/custom.min.js"></script>
+    <!--Style Switcher -->
+    <script src="~/Content/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+    <script src="~/Content/plugins/bower_components/dropify/dist/js/dropify.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // Loop through the FileList and render image files as thumbnails.
+           // for (var i = 0, f; f = files[i]; i++) {
+                //console.log(files[0]);
+               // bootbox.alert();
+                // Only process image files.
+                if (files[0].type != "application/zip") {
+                bootbox.alert("Định dạng File không đúng (*.zip) !");
+                return;
+            }
+            else {
+                if (files[0].size <= 0) {
+                    bootbox.alert("Bạn chưa chọn File !");
+                    return;
+                }
+                else {
+                    $(':button[type="submit"]').prop('disabled', false);
+                    //$('btnSub').prop('disabled', false);
+                }
+            }
+            //    var reader = new FileReader();
+
+            //    // Closure to capture the file information.
+            //    reader.onload = (function (theFile) {
+            //        return function (e) {
+            //            // Render thumbnail.
+            //            var span = document.createElement('span');
+            //            span.innerHTML = ['<img class="thumb" src="', e.target.result,
+            //                              '" title="', escape(theFile.name), '"/>'].join('');
+            //            document.getElementById('list').insertBefore(span, null);
+            //        };
+            //    })(f);
+
+            //    // Read in the image file as a data URL.
+            //    reader.readAsDataURL(f);
+            //}
+        }
+
+        document.getElementById('input-file-now').addEventListener('change', handleFileSelect, false);
+    </script>
+    @*<script>
+            var fileTypes = ['jpg', 'jpeg', 'png', 'what', 'ever', 'you', 'want'];  //acceptable file types
+
+            function readURL(input) {
+                //var files = input[0].target;
+                //console.log(input);
+                //console.log(files);
+                //if (!input.length) {
+                //    bootbox.alert('Please select a file!');
+                //    return;
+                //}
+                //if (!input.type('image.*')) {
+                //    bootbox.alert('Please select a file!');
+                //    return;
+                //}
+                console.log(input.files);
+                console.log(input.files[0]);
+                if (input.files && input.files[0]) {
+                    var extension = input.files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                        isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+                    if (isSuccess) { //yes
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            alert('image has read completely!');
+                        }
+
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    else { //no
+                        //warning
+                    }
+                }
+            }
+        </script>*@
+    <script>
+    $(document).ready(function() {
+        // Basic
+        $('.dropify').dropify();
+
+        // Translated
+        $('.dropify-fr').dropify({
+    messages: {
+            default: 'Glissez-déposez un fichier ici ou cliquez',
+                replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+                remove: 'Supprimer',
+                error: 'Désolé, le fichier trop volumineux'
+            }
+    });
+
+    // Used events
+    var drEvent = $('#input-file-events').dropify();
+
+    drEvent.on('dropify.beforeClear', function(event, element) {
+    return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+    });
+
+    drEvent.on('dropify.afterClear', function(event, element) {
+        alert('File deleted');
+    });
+
+    drEvent.on('dropify.errors', function(event, element) {
+        console.log('Has Errors');
+    });
+
+    var drDestroy = $('#input-file-to-destroy').dropify();
+    drDestroy = drDestroy.data('dropify')
+            $('#toggleDropify').on('click', function(e) {
+        e.preventDefault();
+        if (drDestroy.isDropified()) {
+            drDestroy.destroy();
+        } else {
+            drDestroy.init();
+        }
+    })
+        });
+    </script>
+
+</body>
+
+</html>

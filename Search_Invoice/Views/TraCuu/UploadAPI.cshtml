@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "UploadAPI";
+    Layout = "~/Views/Shared/_Danhmuc.cshtml";
+
+}
+@section ContentHeader {
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Upload File Zip</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <a href="/Home/Index" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Home</a>
+        <ol class="breadcrumb">
+            <li><a href="UploadAPI">UploadAPI</a></li>
+            <li class="active">File Zip Invoice</li>
+        </ol>
+    </div>
+}
+@section BoxBody {
+    @using (Html.BeginForm())
+    {
+        <input type="file" value="Choose a file" />
+        <br />
+        <input type="button" value="Upload" id="upload" />
+    }
+}
+@section scripts
+{
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#upload').click(function () {
+            var data = new FormData();
+            var file = $('form input[type=file]')[0].files[0];
+            data.append('file', file);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/TracuuFile/UploadInv', true);
+            xhr.responseType = 'arraybuffer';
+            xhr.send(data);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    var filename = "";
+                    var disposition = xhr.getResponseHeader('Content-Disposition');
+                    if (disposition && disposition.indexOf('attachment') !== -1) {
+                        var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                        var matches = filenameRegex.exec(disposition);
+                        if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                    }
+                    var type = xhr.getResponseHeader('Content-Type');
+
+                    var blob = typeof File === 'function'
+                        ? new File([this.response], filename, { type: type })
+                        : new Blob([this.response], { type: type });
+                    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                        // IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                        window.navigator.msSaveBlob(blob, filename);
+                    } else {
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.open(downloadUrl, '_blank');
+                                //window.location = downloadUrl;
+                            } else {
+                                window.open(downloadUrl, '_blank');
+                                //a.href = downloadUrl;
+                                //a.download = filename;
+                                //document.body.appendChild(a);
+                                //a.click();
+                            }
+                        } else {
+                            window.open(downloadUrl, '_blank');
+                            //window.location = downloadUrl;
+                        }
+
+                        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                    }
+                }
+                else
+                {
+                    bootbox.alert("Có lỗi xảy ra !");
+                }
+            };
+
+        });
+    });
+    </script>
+}

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="vi-VN">
+
+<!-- Mirrored from business.viettel.vn/blog/2018/09/18/phieu-danh-gia-chat-luong-phan-mem-vtracking/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 06 Nov 2018 09:30:52 GMT -->
+<!-- Added by HTTrack -->
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<!-- /Added by HTTrack -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="http://gmpg.org/xfn/11">
+    <!--<link rel="pingback" href="https://business.viettel.vn/xmlrpc.php">-->
+
+    <title>Hóa đơn điện tử M-Invoice</title>
+    <link rel='dns-prefetch' href='http://cdnjs.cloudflare.com/' />
+    <link rel='dns-prefetch' href='http://maxcdn.bootstrapcdn.com/' />
+    <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
+    <link rel='dns-prefetch' href='http://s.w.org/' />
+
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+    </style>
+    <link rel='stylesheet' id='dashicons-css' href='../wp-includes/css/dashicons.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='post-views-counter-frontend-css' href='../wp-content/plugins/post-views-counter/css/frontend6577.css?ver=1.2.14' type='text/css' media='all' />
+    <link rel='stylesheet' id='bootstrap_css-css' href='../../maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='jquery-bxslider-css' href='../wp-content/themes/minvoice/css/jquery.bxslider8aee.css?ver=4.1.2' type='text/css' media='all' />
+    <link rel='stylesheet' id='animate-css' href='../wp-content/themes/minvoice/css/animate5152.css?ver=1.0' type='text/css' media='all' />
+    <link rel='stylesheet' id='font-awesome-css' href='../wp-content/themes/minvoice/css/fontawesome/css/all0e7d.css?ver=5.1.0' type='text/css' media='all' />
+    <link rel='stylesheet' id='owl-carousel-css' href='../wp-content/themes/minvoice/css/owl.carouselc412.css?ver=1.3.4' type='text/css' media='all' />
+    <link rel='stylesheet' id='owl-theme-css' href='../wp-content/themes/minvoice/css/owl.themee34c.css?ver=1.3.5' type='text/css' media='all' />
+    <link rel='stylesheet' id='nivo-lightbox-css' href='../wp-content/themes/minvoice/css/nivo-lightbox6a9f.css?ver=1.3.6' type='text/css' media='all' />
+    <link rel='stylesheet' id='hashone-style-css' href='../wp-content/themes/minvoice/style5152.css?ver=1.0' type='text/css' media='all' />
+    <link rel='stylesheet' id='hashone-style-css' href='../wp-content/themes/minvoice/theme.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='hashone-style-css' href='../wp-content/themes/minvoice/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='hashone-style-css' href='../wp-content/themes/minvoice/dropify.min.css' type='text/css' media='all' />
+
+    <link rel='stylesheet' id='hashone-fonts-css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=latin,latin-ext' type='text/css' media='all' />
+    <link rel='stylesheet' id='banner-style-css' href='../wp-content/themes/minvoice/bannerstyle6a9f.css?ver=1.3.6' type='text/css' media='all' />
+    <!-- Font awesome css -->
+    <link rel='stylesheet' id='um_fonticons_ii-css' href='../wp-content/plugins/ultimate-member/assets/css/um-fonticons-ii37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_fonticons_fa-css' href='../wp-content/plugins/ultimate-member/assets/css/um-fonticons-fa37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='select2-css' href='../wp-content/plugins/ultimate-member/assets/css/select2/select2.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_modal-css' href='../wp-content/plugins/ultimate-member/assets/css/um-modal37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_styles-css' href='../wp-content/plugins/ultimate-member/assets/css/um-styles37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_members-css' href='../wp-content/plugins/ultimate-member/assets/css/um-members37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_profile-css' href='../wp-content/plugins/ultimate-member/assets/css/um-profile37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_account-css' href='../wp-content/plugins/ultimate-member/assets/css/um-account37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_misc-css' href='../wp-content/plugins/ultimate-member/assets/css/um-misc37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_fileupload-css' href='../wp-content/plugins/ultimate-member/assets/css/um-fileupload37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_datetime-css' href='../wp-content/plugins/ultimate-member/assets/css/pickadate/default37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_datetime_date-css' href='../wp-content/plugins/ultimate-member/assets/css/pickadate/default.date37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_datetime_time-css' href='../wp-content/plugins/ultimate-member/assets/css/pickadate/default.time37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_raty-css' href='../wp-content/plugins/ultimate-member/assets/css/um-raty37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_scrollbar-css' href='../wp-content/plugins/ultimate-member/assets/css/um-scrollbar37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_crop-css' href='../wp-content/plugins/ultimate-member/assets/css/um-crop37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_tipsy-css' href='../wp-content/plugins/ultimate-member/assets/css/um-tipsy37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_responsive-css' href='../wp-content/plugins/ultimate-member/assets/css/um-responsive37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='um_default_css-css' href='../wp-content/plugins/ultimate-member/assets/css/um-old-default01f0.css?ver=2.0.17' type='text/css' media='all' />
+    <script type='text/javascript' src='../wp-includes/js/jquery/jqueryb8ff.js?ver=1.12.4'></script>
+    <script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min330a.js?ver=1.4.1'></script>
+    <script type='text/javascript' src='../../cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../../maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-includes/js/imagesloaded.min55a0.js?ver=3.2.0'></script>
+    <script type='text/javascript' src='../wp-includes/js/masonry.mind617.js?ver=3.3.2'></script>
+    <script type='text/javascript' src='../wp-includes/js/jquery/jquery.masonry.minef70.js?ver=3.1.2b'></script>
+	<script type='text/javascript' src='../wp-includes/js/bootbox.min.js'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/select2/select2.full.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-modal.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-jquery-form.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-fileupload.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/pickadate/picker37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/pickadate/picker.date37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/pickadate/picker.time37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/pickadate/legacy37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-raty.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-scrollto.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-scrollbar.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-crop.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-tipsy.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-functions.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-gdpr.min01f0.js?ver=2.0.17'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-responsive.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-conditional.min37cb.js?ver=4.9.7'></script>
+
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-scripts.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-members.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-profile.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='../wp-content/plugins/ultimate-member/assets/js/um-account.min37cb.js?ver=4.9.7'></script>
+
+    <meta name="generator" content="WordPress 4.9.7" />
+    <link rel='shortlink' href='#' />
+    <!-- Custom Logo: hide header text -->
+    <style id="custom-logo-css" type="text/css">
+        .hs-site-title,
+        .hs-site-description {
+            position: absolute;
+            clip: rect(1px, 1px, 1px, 1px);
+        }
+    </style>
+
+    <style type="text/css">
+        .request_name {
+            display: none !important;
+        }
+    </style>
+    <link rel="icon" href="../wp-content/uploads/2018/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="../wp-content/uploads/2018/favicon.ico" sizes="192x192" />
+    <link rel="apple-touch-icon-precomposed" href="../wp-content/uploads/2018/favicon.ico" />
+
+    <style type="text/css" id="wp-custom-css">
+        .about-page.about-leader small,
+        .about-page.about-leader-2 small {
+            display: block;
+        }
+        
+        .sub_cat_icon_business503,
+        .sub_cat_icon_business504,
+        .sub_cat_icon_business505,
+        .sub_cat_icon_business506 {
+            display: none;
+        }
+        
+        .sub_cat_icon_business507,
+        .sub_cat_icon_business508,
+        .sub_cat_icon_business509,
+        .sub_cat_icon_business510 {
+            display: none;
+        }
+        
+        .field-wrap>div input[type="text"],
+        .field-wrap select,
+        .field-wrap textarea {
+            background: #fff;
+        }
+        
+        .hs-slide-cap-title,
+        .hs-section-title,
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .documents-list-area-sidebar .list-group-item {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        ul.c6 {
+            list-style-position: inside;
+            list-style-type: square;
+        }
+        
+        .user-dropdown-menu,
+        .language_switch {
+            display: none;
+        }
+        
+        .search_header {
+            float: right;
+            margin: 0;
+        }
+        
+        .middle_table_td td {
+            vertical-align: middle;
+        }
+        
+        #hs-back-top {
+            bottom: 80px;
+        }
+    </style>
+
+</head>
+
+<body class="post-template-default single single-post postid-2076 single-format-standard wp-custom-logo group-blog hs_right_sidebar">
+    <div id="hs-page">
+        <header id="hs-masthead" class="hs-site-header hs-clearfix hs-black">
+            <div class="hs-container">
+                <div class="header-more-info">
+                    <a target="_black" href="https://minvoice.vn/" class="back_link_button"><i class="fas fa-envelope"></i><span>info@minvoice.vn</span></a>
+                    <a href="tel:0901 801 618" class="mobile_button_phone">0901 801 618</a>
+                    <div class="language_switch">
+
+                        <a href="https://minvoice.vn/" title="Vietnamese" class="active">
+                            <img src="../images/vn.png" title="Vietnamese" />
+                        </a>
+                        <a href="https://minvoice.vn/en" title="English" class="">
+                            <img src="../images/gb.png" title="English" />
+                        </a>
+                    </div>
+                </div>
+                <div id="hs-site-branding">
+                    <a href="https://minvoice.vn/" target="blank" class="custom-logo-link" rel="home" itemprop="url"><img width="212" height="48" src="../wp-content/uploads/2018/logo.png" class="custom-logo" alt="Công ty TNHH Hóa đơn điện tử M-Invoice" itemprop="logo" /></a>
+                </div>
+                <!-- .site-branding -->
+
+                <nav id="hs-site-navigation" class="hs-main-navigation">
+
+                    <div class="hs-toggle-menu"><span></span></div>
+                    <div class="hs-menu">
+                        <ul id="menu-main-menu" class="hs-clearfix">
+                            <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-36"><a href="https://minvoice.vn/">Home</a></li>
+                            <li id="menu-item-129" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-2070 current-menu-item"><a href="#">GIỚI THIỆU</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-136" class="white-content menu-item menu-item-type-post_type menu-item-object-page menu-item-136"><a href="#">Về chúng tôi</a></li>
+                                    <li id="menu-item-789" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-789"><a href="#">Ban lãnh đạo</a></li>
+                                    <li id="menu-item-790" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-790"><a href="#">Sự kiện nổi bật</a></li>
+                                    <li id="menu-item-791" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-791"><a href="#">Thông tin về Viettel</a></li>
+                                    <li id="menu-item-792" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-792"><a href="#">Giải thưởng</a></li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-1253" class="fullcol menu-item menu-item-type-taxonomy menu-item-object-vtproducts_group menu-item-has-children menu-item-1253"><a href="#">GIẢI PHÁP</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-2097" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2097"><a href="#">Giải pháp theo dịch vụ</a>
+                                        <ul class="sub-menu">
+                                            <li id="menu-item-142" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_group menu-item-142"><a href="#">Công Nghệ Thông Tin</a></li>
+                                            <li id="menu-item-143" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_group menu-item-143"><a href="#">Viễn Thông</a></li>
+                                            <li id="menu-item-1421" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_group menu-item-1421"><a href="#">Trung Tâm Dữ Liệu &#038; Cloud</a></li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-144" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-144"><a href="#">Giải pháp theo quy mô</a>
+                                        <ul class="sub-menu">
+                                            <li id="menu-item-146" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_scale menu-item-146"><a href="#">Doanh nghiệp lớn (> 300 nhân sự)</a></li>
+                                            <li id="menu-item-147" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_scale menu-item-147"><a href="#">Doanh nghiệp vừa và nhỏ (&lt;= 300 nhân sự)</a></li>
+                                        </ul>
+                                    </li>
+                                    <li id="menu-item-148" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-148"><a href="#">Giải pháp chuyên ngành</a>
+                                        <ul class="sub-menu">
+                                            <li id="menu-item-1417" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-1417"><a href="#">Chính phủ điện tử</a></li>
+                                            <li id="menu-item-975" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-975"><a href="#">Y tế thông minh</a></li>
+                                            <li id="menu-item-970" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-970"><a href="#">Giáo dục thông minh</a></li>
+                                            <li id="menu-item-971" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-971"><a href="#">Giao thông thông minh</a></li>
+                                            <li id="menu-item-973" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-973"><a href="#">Năng lượng thông minh</a></li>
+                                            <li id="menu-item-2048" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2048"><a href="#">Thành phố thông minh</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-2070" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-448"><a href="#">TIN TỨC</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-348" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-348"><a href="#">Tin tức</a></li>
+                                    <li id="menu-item-1552" class="menu-item menu-item-type-taxonomy menu-item-object-vtevents_group menu-item-1552"><a href="#">Sự kiện</a></li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-448" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-448"><a href="#">KHÁCH HÀNG</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-449" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-449"><a href="#">Câu hỏi thường gặp</a></li>
+                                    <li id="menu-item-801" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-801"><a href="#">Hướng dẫn sử dụng</a></li>
+                                    <li id="menu-item-463" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-463"><a href="#">Khảo sát ý kiến</a></li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-383" class="menu-item menu-item-type-taxonomy menu-item-object-vtdocuments_group menu-item-383"><a href="#">ĐĂNG KÝ SỬ DỤNG</a></li>
+                        </ul>
+                    </div>
+
+                </nav>
+                <!-- #hs-site-navigation -->
+
+                <div id="user-language-div">
+
+                    <div class="btn-group user-dropdown-menu">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Đăng nhập</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Đăng ký</a>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="#" class="search_header" id="SearchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                        <div class="dropdown-menu search-dropdow" aria-labelledby="SearchDropdown">
+                            <form role="search" method="get" class="search-form" action="https://minvoice.vn/">
+                                <label>
+                                    <span class="screen-reader-text">Tìm kiếm:</span>
+                                    <input type="search" class="search-field" placeholder="Tìm kiếm" value="" name="s" title="Tìm kiếm" />
+                                </label>
+                                <input type="hidden" name="lang" value="vi">
+                                <input type="submit" class="search-submit" value="Tìm kiếm" />
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </header>
+        <!-- #hs-masthead -->
+
+        <div id="hs-content" class="hs-site-content hs-clearfix">
+            <header class="hs-main-header">
+                <div class="hs-container">
+
+                </div>
+            </header>
+            <!-- .entry-header -->
+
+            <div class="hs-container">
+                <div id="single_primary" class="content-area">
+                    <main id="main" class="site-main" role="main">
+
+                        <article id="post-2076" class="post-detail post-2076 post type-post status-publish format-standard has-post-thumbnail hentry category-khao-sat-y-kien">
+                            <h1 class="hs-post-detail-title">TRA CỨU HÓA ĐƠN ĐIỆN TỬ M-INVOICE</h1>
+                            <div class="entry-content">
+                                <p><em>Kính chào anh/ chị!</em>
+                                    <br />
+                                    <em>Nhằm nâng cao chất lượng dịch vụ cung cấp, M-INVOICE xin gửi tới anh/</em>
+                                    <br />
+                                    <em>chị trang web tra cứu hóa đơn điện tử liên quan đến sản phẩm hóa đơn điện tử của M-Invoice. Anh/ chị vui lòng</em>
+                                    <br />
+                                    <em>nhập đầy đủ thông tin liên quan dưới đây.</em>
+                                    <br />
+                                    <em>M-INVOICE rất cảm ơn sự cộng tác của anh/ chị. Dữ liệu của anh/ chị sẽ được đảm bảo giữ bí mật</em>
+                                    <br />
+                                    <em>tuyệt đối.</em></p>
+                                <p>
+                                    <em>
+								<div class="module">
+
+									<div class="module">
+										<div class="module-head">
+											<h3><b>Thông tin tra cứu</b></h3>
+										</div>
+									</div>
+									<div class="module-body" align="left">
+										<div class="form-horizontal row-fluid">
+
+											<form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
+
+												<div class="control-group">
+													<label class="control-label" for="basicinput"><b>Mã số thuế đơn vị bán</b><b style="color: red"> (*)</b></label>
+													<div class="controls">
+													<input id="txtMST" type="text" class="form-control input-lg" placeholder="Nhập mã số thuế ...">
+														<!--<input class="span8" data-val="true" data-val-required="MST không được trống" id="txtMST" name="mst" placeholder="Nhập mã số thuế ..." type="text" value="">-->
+
+														<!--<span class="help-inline">Tối đa 13 ký tự</span>-->
+													</div>
+												</div>
+												<div class="control-group">
+													<label class="control-label" for="basicinput"><b>Số bảo mật</b><b style="color: red"> (*)</b></label>
+													<div class="controls">
+													<input id="txtSobaomat" name="sobaomat" type="text" class="form-control input-lg" placeholder="Nhập số bảo mật ...">
+														<!--<input id="txtSobaomat" name="sobaomat" placeholder="Nhập số bảo mật ..." type="text" value="" >-->
+
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+
+									<div class="module-body" align="center">
+										<div class="form-horizontal row-fluid">
+											<div class="control-group">
+												<div class="controls">
+												<div class="col-xs-12">
+												<button class="btn btn-danger btn-sm btn-block text-uppercase waves-effect waves-light" onclick="submit();"><i class="fas fa-search"></i> Xem hóa đơn</button>
+												<!--<button onclick="submit();" class="btn btn-danger btn-block btn-flat" id="btnSub"> Xem hóa đơn</button>-->
+											</div>
+													<!--<button onclick="submit();" class="btn btn-sm btn-success"><i class="icon-ok"></i>Tra cứu</button>-->
+													<!--<a href="#" onclick="submit();" class="btn btn-sm btn-success" style="color:white"> Tra cứu</a>-->
+													<!--<a href="http://laphoadon.vacom.vn/TracuuHoaDon/Upload" class="btn btn-sm btn-danger" style="background-color:#e60000;color:white"><i class="fa fa-upload"></i> Tải file</a>-->
+												</div>
+											</div>
+										</div>
+									</div>
+									<hr  width="70%" align="center" /> 
+									<div class="white-box">
+
+										<div class="form-group ">
+											<div class="col-xs-12">
+												<label for="file">File hóa đơn (*.zip)</label>
+
+												<div class="dropify-wrapper">
+													<div class="dropify-message"><span class="file-icon"></span>
+														<p>Drag and drop a file here or click</p>
+														<p class="dropify-error">Ooops, something wrong appended.</p>
+													</div>
+													<div class="dropify-loader"></div>
+													<div class="dropify-errors-container">
+														<ul></ul>
+													</div>
+													<input type="file" name="file" id="input-file-now" class="dropify">
+													<button type="button" class="dropify-clear">Remove</button>
+													<div class="dropify-preview"><span class="dropify-render"></span>
+														<div class="dropify-infos">
+															<div class="dropify-infos-inner">
+																<p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p>
+																<p class="dropify-infos-message">Drag and drop or click to replace</p>
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<div class="form-group text-center m-t-20">
+											<div class="col-xs-12">
+											<button class="btn btn-danger btn-sm btn-block text-uppercase waves-effect waves-light" disabled="disabled" type="submit" > Xem hóa đơn</button>
+												<!--<button type="submit" class="btn btn-danger btn-block btn-flat" disabled="disabled" id="btnSub"> Xem hóa đơn</button>-->
+											</div>
+										</div>
+
+									</div>
+
+									<script async="" src="https://embed.tawk.to/562efc76443b264065496828/default" charset="UTF-8" crossorigin="*"></script>
+									 <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+
+            // Loop through the FileList and render image files as thumbnails.
+           // for (var i = 0, f; f = files[i]; i++) {
+                //console.log(files[0]);
+               // bootbox.alert();
+                // Only process image files.
+                if (files[0].type != "application/zip") {
+                bootbox.alert("Định dạng File không đúng (*.zip) !");
+                return;
+            }
+            else {
+                if (files[0].size <= 0) {
+                    bootbox.alert("Bạn chưa chọn File !");
+                    return;
+                }
+                else {
+                    $(':button[type="submit"]').prop('disabled', false);
+                    //$('btnSub').prop('disabled', false);
+                }
+            }
+            //    var reader = new FileReader();
+
+            //    // Closure to capture the file information.
+            //    reader.onload = (function (theFile) {
+            //        return function (e) {
+            //            // Render thumbnail.
+            //            var span = document.createElement('span');
+            //            span.innerHTML = ['<img class="thumb" src="', e.target.result,
+            //                              '" title="', escape(theFile.name), '"/>'].join('');
+            //            document.getElementById('list').insertBefore(span, null);
+            //        };
+            //    })(f);
+
+            //    // Read in the image file as a data URL.
+            //    reader.readAsDataURL(f);
+            //}
+        }
+
+        document.getElementById('input-file-now').addEventListener('change', handleFileSelect, false);
+    </script>
+									<script type="text/javascript">
+										function submit() {
+
+											var form = $('#frmIndex');
+											form.submit();
+											//$.ajax({
+											//    url: "Home/TaxPath",
+											//    type: "POST",
+											//    data: "taxcode=0102236276"
+											//});
+
+										}
+									</script>
+
+</div>
+
+								<!--Mã số thuế :<input id="searchGuide" type="text" class="form-control input-lg" placeholder="Tìm kiếm">-->
+								<!--
+								<noscript class="ninja-forms-noscript-message">Lưu ý: Cần phải có JavaScript với nội dung này.</noscript>
+								<div id="nf-form-23-cont" class="nf-form-cont" aria-live="polite" aria-labelledby="nf-form-title-23" aria-describedby="nf-form-errors-23" role="form">
+
+								<div class="nf-loading-spinner"></div>
+								<input type="text"/>
+								</div>
+									-->
+
+								</em>
+                                </p>
+                                <p style="text-align: center;"><em><strong>Xin chân thành cảm ơn Anh/ Chị đã sử dụng sản phẩm của M-Invoice!</strong></em></p>
+
+                                <script type="text/javascript" src="../../d389zggrogs7qo.cloudfront.net/js/button.js"></script>
+
+                        </article>
+                        <!-- #post-## -->
+
+                    </main>
+                    <!-- #main -->
+                    </div>
+                    <!-- #primary -->
+
+                    <div id="secondary" class="widget-area">
+                        <aside id="media_image-6" class="widget widget_media_image">
+                            <a href="#">
+                                <h5 class="widget-title">HƯỚNG DẪN TRA CỨU HÓA ĐƠN ĐIỆN TỬ M-INVOICE</h5>
+                                <ul>
+                                    <li><a href="#" title="Phiếu đánh giá chất lượng phần mềm vtracking"><b>Bước 1:</b> Truy cập vào website tra cứu hóa đơn.</a></li>
+                                    <li><a href="#" title="Khảo sát 3G"><b>Bước 2:</b> Nhập thông tin của hóa đơn cần tra cứu vào các ô tương ứng như: Mã số thuế đơn vị bán, số bảo mật.</a></li>
+                                    <li><a href="#" title="Khảo sát 3G"><b>Bước 3:</b> Nhấn vào nút Tra cứu để tra cứu hóa đơn với thông tin đã nhập.</a></li>
+                                </ul>
+
+                                <img width="300" height="180" src="../wp-content/uploads/2018/giaiphap.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                        </aside>
+                        <aside id="recent-posts-2" class="widget widget_recent_entries">
+
+                        </aside>
+                        <aside id="media_image-5" class="widget widget_media_image">
+                            <a href="#"><img width="300" height="180" src="../wp-content/uploads/2018/vuot_troi.jpg" class="image wp-image-1403  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                        </aside>
+                    </div>
+                    <!-- #secondary -->
+
+                </div>
+
+            </div>
+            <!-- #content -->
+
+            <footer id="hs-colophon" class="hs-site-footer">
+                <div id="hs-top-footer">
+                    <div class="hs-container">
+                        <div class="hs-top-footer hs-clearfix row">
+                            <div class="hs-footer hs-footer1 col-md-auto">
+                                <aside id="media_image-4" class="widget widget_media_image">
+                                    <a href="https://minvoice.vn/" target="blank"><img width="212" height="48" src="../wp-content/uploads/2018/logo.png" class="image wp-image-431  attachment-full size-full" alt="Công ty TNHH Hóa đơn điện tử M-Invoice" style="max-width: 100%; height: auto;" /></a>
+                                </aside>
+                                <aside id="nav_menu-3" class="widget widget_nav_menu">
+                                    <div class="menu-lien-he-container">
+                                        <ul id="menu-lien-he" class="menu">
+                                            <li id="menu-item-158" class="mail-f menu-item menu-item-type-custom menu-item-object-custom menu-item-158"><a href="mailto:info@minvoice.vn">info@minvoice.vn</a></li>
+                                            <li id="menu-item-160" class="phone-f menu-item menu-item-type-custom menu-item-object-custom menu-item-160"><a href="tel:0901 801 618">0901 801 618</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+
+                            <div class="hs-footer hs-footer2 col-sm">
+                                <aside id="nav_menu-2" class="widget widget_nav_menu">
+                                    <h5 class="widget-title">Giới thiệu</h5>
+                                    <div class="menu-gioi-thieu-footer-container">
+                                        <ul id="menu-gioi-thieu-footer" class="menu">
+                                            <li id="menu-item-1424" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1424"><a href="#">Về chúng tôi</a></li>
+                                            <li id="menu-item-1425" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1425"><a href="#">Ban lãnh đạo</a></li>
+                                            <li id="menu-item-1426" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1426"><a href="#">Sự kiện nổi bật</a></li>
+                                            <li id="menu-item-1427" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1427"><a href="#">Thông tin về Viettel</a></li>
+                                            <li id="menu-item-1428" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1428"><a href="#">Giải thưởng</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+
+                            <div class="hs-footer hs-footer3 col-sm">
+                                <aside id="nav_menu-4" class="widget widget_nav_menu">
+                                    <h5 class="widget-title">Giải pháp</h5>
+                                    <div class="menu-giai-phap-footer-container">
+                                        <ul id="menu-giai-phap-footer" class="menu">
+                                            <li id="menu-item-1429" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_group menu-item-1429"><a href="#">Giải pháp theo dịch vụ</a></li>
+                                            <li id="menu-item-1430" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_scale menu-item-1430"><a href="#">Giải pháp theo quy mô</a></li>
+                                            <li id="menu-item-1431" class="menu-item menu-item-type-taxonomy menu-item-object-vtproducts_business menu-item-1431"><a href="#">Giải pháp chuyên ngành</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+
+                            <div class="hs-footer hs-footer4 col-sm">
+                                <aside id="nav_menu-6" class="widget widget_nav_menu">
+                                    <h5 class="widget-title">Hỗ trợ CSKH</h5>
+                                    <div class="menu-ho-tro-cskh-container">
+                                        <ul id="menu-ho-tro-cskh" class="menu">
+                                            <li id="menu-item-1435" class="menu-item menu-item-type-taxonomy menu-item-object-vtqa_group menu-item-1435"><a href="#">Câu hỏi thường gặp</a></li>
+                                            <li id="menu-item-1436" class="menu-item menu-item-type-taxonomy menu-item-object-vtguide_group menu-item-1436"><a href="#">Hướng dẫn sử dụng</a></li>
+                                            <li id="menu-item-1437" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1437 current-menu-item"><a href="#">Khảo sát ý kiến</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="hs-footer hs-footer5 col-sm">
+                                <aside id="nav_menu-5" class="widget widget_nav_menu">
+                                    <h5 class="widget-title">Truyền thông</h5>
+                                    <div class="menu-truyen-thong-tai-nguyen-container">
+                                        <ul id="menu-truyen-thong-tai-nguyen" class="menu">
+                                            <li id="menu-item-1856" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1856 current-menu-item"><a href="#">Tin tức</a></li>
+                                            <li id="menu-item-1855" class="menu-item menu-item-type-taxonomy menu-item-object-vtevents_group menu-item-1855"><a href="#">Sự kiện</a></li>
+                                            <li id="menu-item-1440" class="menu-item menu-item-type-taxonomy menu-item-object-vtdocuments_group menu-item-1440"><a href="#">Tài nguyên</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                            <div class="hs-footer hs-footer6 col-sm">
+                                <aside id="nav_menu-12" class="widget widget_nav_menu">
+                                    <h5 class="widget-title">Kết nối</h5>
+                                    <div class="menu-ket-noi-container">
+                                        <ul id="menu-ket-noi" class="menu">
+                                            <li id="menu-item-178" class="facebook-f menu-item menu-item-type-custom menu-item-object-custom menu-item-178"><a href="https://www.facebook.com/hoadondientu.m.invoice/" target="blank">Facebook</a></li>
+                                            <li id="menu-item-179" class="twitter-f menu-item menu-item-type-custom menu-item-object-custom menu-item-179"><a href="#">Twitter</a></li>
+                                            <li id="menu-item-180" class="youtube-f menu-item menu-item-type-custom menu-item-object-custom menu-item-180"><a href="https://www.youtube.com/channel/UCQ-2lUz8TAvGj6sW6XY_RGg" target="blank">Youtube</a></li>
+                                            <li id="menu-item-181" class="google-f menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a href="#">Google</a></li>
+                                            <li id="menu-item-173" class="hotline-f menu-item menu-item-type-custom menu-item-object-custom menu-item-173"><a href="tel:0901 801 618">0901 801 618</a></li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                                <aside id="custom_html-5" class="widget_text widget widget_custom_html">
+                                    <div class="textwidget custom-html-widget">
+
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="hs-bottom-footer">
+                    <div class="hs-container">
+                        <div class="hs-copy-right">
+                            Copyrights © 2018 Phần mềm Hóa đơn điện tử M-Invoice. All Rights Reserved. </div>
+
+                        <div class="hs-site-info">
+
+                        </div>
+                        <!-- #site-info -->
+                    </div>
+                </div>
+            </footer>
+            <!-- #colophon -->
+        </div>
+        <!-- #page -->
+
+        <div id="hs-back-top" class="animated hs-hide"><i class="fa fa-angle-up"></i></div>
+        <div id="um_upload_single" style="display:none">
+
+        </div>
+        <div id="um_view_photo" style="display:none">
+
+            <a href="#" data-action="um_remove_modal" class="um-modal-close"><i class="um-faicon-times"></i></a>
+
+            <div class="um-modal-body photo">
+
+                <div class="um-modal-photo">
+
+                </div>
+
+            </div>
+
+        </div>
+        <link rel='stylesheet' id='nf-display-css' href='../wp-content/plugins/ninja-forms/assets/css/display-structure37cb.css?ver=4.9.7' type='text/css' media='all' />
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/jquery.bxslider8aee.js?ver=4.1.2'></script>
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/owl.carousel3ba1.js?ver=1.3.3'></script>
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/jquery.navbb62.js?ver=20161003'></script>
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/SmoothScrollc7bc.js?ver=20150903'></script>
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/hashone-customc7bc.js?ver=20150903'></script>
+        <script type='text/javascript' src='../wp-content/themes/minvoice/js/mainsa346.js?ver=2018'></script>
+        <script type='text/javascript' src='../wp-includes/js/comment-reply.min37cb.js?ver=4.9.7'></script>
+        <script type='text/javascript' src='../wp-includes/js/wp-embed.min37cb.js?ver=4.9.7'></script>
+        <script type='text/javascript' src='../wp-includes/js/underscore.min4511.js?ver=1.8.3'></script>
+        <script type='text/javascript' src='../wp-includes/js/backbone.min9632.js?ver=1.2.3'></script>
+        <script type='text/javascript' src='../wp-content/plugins/ninja-forms/assets/js/min/front-end-deps7433.js?ver=3.3.7'></script>
+
+</body>
+
+</html>

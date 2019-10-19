@@ -1,0 +1,154 @@
+﻿@{
+    Layout = "~/Views/Shared/_Danhmuc.cshtml";
+}
+
+@section ContentHeader {
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Danh sách database</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <a href="/quan-ly" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Home</a>
+        <ol class="breadcrumb">
+            <li><a href="inv_admin">Admin</a></li>
+            <li class="active">Danh sách database</li>
+        </ol>
+    </div>
+}
+
+@section BoxTitle {
+    <button class="btn btn-info" onclick="addNew();"><i class="fa fa-plus"></i> Thêm mới</button>
+}
+@section BoxBody {
+
+        <div id="grid"></div>
+        <div class="modal fade" data-backdrop="static" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content" />
+            </div>
+        </div>
+
+    }
+@section Scripts {
+    <script type="text/javascript">
+
+        function addNew() {
+            $('#myModal').modal('show').find('.modal-content').load('/Admin/Create');
+        }
+
+        function update(inv_Info_id) {
+           
+            $('#myModal').modal('show').find('.modal-content').load('/Admin/Update/' + inv_Info_id);
+           
+            }
+
+        function deleteRow(inv_admin_id) {
+            var grid = $('#grid').data('kendoGrid');
+
+            var row = grid.dataSource.get(inv_admin_id);
+
+            bootbox.dialog({
+                message: "Bạn có muốn xóa " + row.get('MST') + " ?",
+                title: "Xác nhận",
+                buttons: {
+                    danger: {
+                        label: "Hủy bỏ",
+                        className: "btn-danger"
+                    },
+                    main: {
+                        label: "Thực hiện",
+                        className: "btn-primary",
+                        callback: function () {
+
+                            var param = "inv_admin_id=" + inv_admin_id;
+
+                            $.ajax({
+                                type: "POST",
+                                data: param,
+                                url: '/Admin/Delete',
+                                success: function (data) {
+
+                                    if (typeof (data.msg) === 'undefined') {
+                                        bootbox.alert(data);
+                                        return;
+                                    }
+
+                                    if (data.msg === 'success') {
+                                        grid.dataSource.remove(row);
+
+                                    }
+                                    else {
+                                        alert(data.result);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+
+            $("#grid").kendoGrid({
+                //toolbar: [{
+                //    template: '<a class="k-button k-button-icontext k-grid-add" style="background-color:" href="\\#" onclick="addNew();"><span class="k-icon k-add"></span>Thêm mới</a>'
+                //}],
+                dataSource: {
+                    type: "json",
+                    transport: {
+                        read: {
+                            type: "post",
+                            dataType: "json",
+                            contentType: "application/json",
+                            url: "/Admin/DSinv_admin"
+                        },
+                        parameterMap: function (data, type) {
+                            return kendo.stringify(data);
+                        }
+                    },
+                    schema: {
+                        data: "data",
+                        model: {
+                            id: "inv_admin_id",
+                            fields: {
+                                inv_admin_id: { type: "Guid" },
+                                MST: { type: "string" },
+                                alias: { type: "string" },
+                                ConnectString: { type: "string" },
+                                Path: { type: "string" }
+                            }
+                        },
+                        total: function (response) {
+                            return $(response.data).length;
+                        }
+                    },
+                    pageSize: 10
+                    //serverPaging: true,
+                },
+
+                filterable: true,
+                pageable: {
+                    refresh: true
+                },
+                columns: [
+                    {
+                        title: "",
+                        width: 50,
+                        template: '<div class="btn-group"><button class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Sửa" onclick="update(\'#:inv_admin_id#\');"><i class="fa fa-pencil"></i></button><button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa" onclick="deleteRow(\'#:inv_admin_id#\');"><i class="ace-icon fa fa-trash-o "></i></button></div>'
+                    },
+                    { field: "MST", title: "Mã số thuế", width: 140 },
+                    { field: "alias", title: "Alias", width: 140 },
+                    { field: "ConnectString", title: "Chuỗi kết nối", width: 140 },
+                    { field: "Path", title: "Đường dẫn", width: 200
+                }]
+
+            });
+
+            $("#dialog").kendoWindow({
+                modal: true,
+                visible: false
+            });
+        });
+    </script>
+}

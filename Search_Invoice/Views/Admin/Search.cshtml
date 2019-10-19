@@ -1,0 +1,155 @@
+﻿@{
+    Layout = "~/Views/Shared/_Danhmuc.cshtml";
+}
+
+@section ContentHeader {
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+        <h4 class="page-title">Tìm kiếm khách hàng</h4>
+    </div>
+    <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
+        <a href="/quan-ly" class="btn btn-danger pull-right m-l-20 btn-rounded btn-outline hidden-xs hidden-sm waves-effect waves-light">Home</a>
+        <ol class="breadcrumb">
+            <li><a href="/tim-kiem-khachhang">Khách hàng</a></li>
+            <li class="active">Tìm kiếm khách hàng</li>
+        </ol>
+    </div>
+}
+<style>
+    .k-grid-content > table > tbody > tr {
+        background: White;
+    }
+
+    .modal-dialog {
+        /*height: 80% !important;*/
+        padding-top: 10%;
+    }
+
+    .modal-content {
+        /*height: 100% !important;*/
+        overflow: visible;
+    }
+
+    .modal-body {
+        /*height: 70%;*/
+        overflow: auto;
+    }
+</style>
+@section BoxBody {
+
+<div class="col-sm-12 col-xs-12">
+    <form>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <input required="required" id="txtSearch" type="text" class="form-control" placeholder="Nhập mã số thuế ...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" id="btnInvoice" type="button">Tìm kiếm !</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row" hidden="hidden" id="divInvoice">
+            <div class="col-sm-12">
+                <div class="white-box">
+                    <h4 class="box-title m-b-0">Kết quả tra cứu</h4>
+                    <p class="text-muted m-b-20">Thông tin<code>mã số thuế </code>mà Bạn đã tra cứu !</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" hidden="hidden" id="tableInvoice">
+                            <thead>
+                                <tr>
+                                    <th>Mã số thuế</th>
+                                    <th>Chuỗi connect</th>
+                                    <th>Path</th>
+                                    <th>Alias</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!--Thêm boby của bảng vào đây-->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+    }
+@section Scripts {
+<script>
+
+    $(document).ready(function () {
+
+
+        $("#btnInvoice").click(function () {
+            bootbox.dialog({
+                title: "Đang tìm kiếm mã số thuế",
+                message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Hủy',
+                        className: 'btn-danger',
+                        callback: function () {
+                            clearTimeout(interVal);
+                            bootbox.hideAll();
+                        }
+                    }
+                }
+            });
+            var interVal = setTimeout(function () {
+                var dataObject = document.getElementById("txtSearch").value;
+                //var dataObject = $('txtSearch').val();
+                if (dataObject == 'undefined' || dataObject == '' || dataObject == null)
+                {
+                    bootbox.hideAll();
+                    clearTimeout(interVal);
+                }
+                else
+                {
+                    $.ajax({
+                        url: "/Admin/Search_Tax",
+                        type: "GET",
+                        contentType: "application/json; charset=utf-8",
+                        dateType: "application/json; charset=utf-8",
+                        data: { 
+                            mst: dataObject
+                        },
+                        success: function (result_text) {
+                            var result = JSON.parse(result_text);
+                            if (!result.hasOwnProperty("error")) {
+
+                                $('#divInvoice').prop('hidden', false);
+                                $('#tableInvoice').prop('hidden', false);
+                                $("#tableInvoice tbody>tr").remove();
+
+                                //for (var i = 0 ; i < result.length ; i++)
+                                //{
+                                //var tien = result.data[i].inv_TotalAmount == null ? '' : result.data[i].inv_TotalAmount.toLocaleString();
+                                $("#tableInvoice").find('tbody')
+                                             .append('<tr><td>' + result.MST + '</td><td>' + result.ConnectString + '</td>' +
+                                             //'<td><a href="#" onClick = "PrintInvoicePDF(\'' + result.MST + '\',\'' + result.MST + '\',\'PDF\');" data-toggle="tooltip" data-placement="top" title="In hóa đơn" >' + result.MST + '</a></td>' +
+                                             //'<td>' + moment(result.data[i].inv_invoiceIssuedDate).format("MM/DD/YYYY") + '</td>' +
+                                             '<td>' + result.Path + '</td>' +
+                                             '<td>' + result.alias + '</td>' +
+                                             '<td><a href="#" onClick = "PrintInvoicePDF(\'' + result.MST + '\',\'' + result.MST + '\',\'PDF\');" data-toggle="tooltip" data-placement="top" title="Dowload File PDF"><i class="fas fa-file-pdf text-info m-r-10"></i></button>' +
+                                             '<a href="#" onClick = "ExportZipXML(\'' + result.MST + '\',\'' + result.MST + '\');" data-toggle="tooltip" data-placement="top" title="Dowload File .Zip XML"><i class="fas fa-file-archive text-danger m-r-10"></i></a>' +
+                                             '<a href="#" onClick = "PrintInvoicePDF(\'' + result.MST + '\',\'' + result.MST + '\',\'Html\');" data-toggle="tooltip" data-placement="top" title="Dowload HTML"><i class="fab fa-html5 text-success"></i></a></td></tr>');
+                                //}
+                                bootbox.hideAll();
+                                clearTimeout(interVal);
+                            }
+                            else {
+                                $("#tableInvoice tbody>tr").remove();
+                                bootbox.hideAll();
+                                clearTimeout(interVal);
+                                bootbox.alert(result.error);
+                            }
+                        }
+                    });
+               }
+            }, 1000);
+        });
+    });
+</script>
+
+    }

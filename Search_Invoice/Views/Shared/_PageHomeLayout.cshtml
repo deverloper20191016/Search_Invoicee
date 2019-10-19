@@ -1,0 +1,375 @@
+﻿<!DOCTYPE html>
+<html lang="vi-VN">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="profile" href="http://gmpg.org/xfn/11">
+
+  <title>Hóa đơn điện tử M-Invoice</title>
+  <link rel='dns-prefetch' href='http://cdnjs.cloudflare.com/' />
+  <link rel='dns-prefetch' href='http://maxcdn.bootstrapcdn.com/' />
+  <link rel='dns-prefetch' href='http://fonts.googleapis.com/' />
+  <link rel='dns-prefetch' href='http://s.w.org/' />
+  <style type="text/css">
+    img.wp-smiley,
+    img.emoji {
+      display: inline !important;
+      border: none !important;
+      box-shadow: none !important;
+      height: 1em !important;
+      width: 1em !important;
+      margin: 0 .07em !important;
+      vertical-align: -0.1em !important;
+      background: none !important;
+      padding: 0 !important;
+    }
+  </style>
+  <link rel='stylesheet' id='dashicons-css' href='~/UI/tracuu.minvoice.vn/wp-includes/css/dashicons.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='post-views-counter-frontend-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/post-views-counter/css/frontend6577.css?ver=1.2.14' type='text/css' media='all' />
+  <link rel='stylesheet' id='bootstrap_css-css' href='~/UI/maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='jquery-bxslider-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/jquery.bxslider8aee.css?ver=4.1.2' type='text/css' media='all' />
+  <link rel='stylesheet' id='animate-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/animate5152.css?ver=1.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='font-awesome-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/fontawesome/css/all0e7d.css?ver=5.1.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='owl-carousel-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/owl.carouselc412.css?ver=1.3.4' type='text/css' media='all' />
+  <link rel='stylesheet' id='owl-theme-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/owl.themee34c.css?ver=1.3.5' type='text/css' media='all' />
+  <link rel='stylesheet' id='nivo-lightbox-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/nivo-lightbox6a9f.css?ver=1.3.6' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/style5152.css?ver=1.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/theme.css' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/style.css' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/dropify.min.css' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-fonts-css' href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700|Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=latin,latin-ext' type='text/css' media='all' />
+  <link rel='stylesheet' id='banner-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/bannerstyle6a9f.css?ver=1.3.6' type='text/css' media='all' />
+  <!-- Font awesome css -->
+  <link rel='stylesheet' id='um_fonticons_ii-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-fonticons-ii37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_fonticons_fa-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-fonticons-fa37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='select2-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/select2/select2.min37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_modal-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-modal37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_styles-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-styles37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_members-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-members37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_profile-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-profile37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_account-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-account37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_misc-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-misc37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_fileupload-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-fileupload37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_datetime-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/pickadate/default37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_datetime_date-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/pickadate/default.date37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_datetime_time-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/pickadate/default.time37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_raty-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-raty37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_scrollbar-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-scrollbar37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_crop-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-crop37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_tipsy-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-tipsy37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_responsive-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-responsive37cb.css?ver=4.9.7' type='text/css' media='all' />
+  <link rel='stylesheet' id='um_default_css-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/css/um-old-default01f0.css?ver=2.0.17' type='text/css' media='all' />
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/jquery/jqueryb8ff.js?ver=1.12.4'></script>
+
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/jquery/jquery-migrate.min330a.js?ver=1.4.1'></script>
+  <script type='text/javascript' src='~/UI/cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/imagesloaded.min55a0.js?ver=3.2.0'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/masonry.mind617.js?ver=3.3.2'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/jquery/jquery.masonry.minef70.js?ver=3.1.2b'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/bootbox.min.js'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/select2/select2.full.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-modal.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-jquery-form.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-fileupload.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/pickadate/picker37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/pickadate/picker.date37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/pickadate/picker.time37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/pickadate/legacy37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-raty.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-scrollto.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-scrollbar.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-crop.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-tipsy.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-functions.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-gdpr.min01f0.js?ver=2.0.17'></script>
+  @*<script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-responsive.min37cb.js?ver=4.9.7'></script>*@
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-conditional.min37cb.js?ver=4.9.7'></script>
+  @*<script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-scripts.min37cb.js?ver=4.9.7'></script>*@
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-members.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-profile.min37cb.js?ver=4.9.7'></script>
+  <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ultimate-member/assets/js/um-account.min37cb.js?ver=4.9.7'></script>
+  <script src="/Content/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="~/Scripts/moment.min.js"></script>
+  @Scripts.Render("~/bundles/jqueryval")
+  <meta name="generator" content="WordPress 4.9.7" />
+  <link rel='shortlink' href='#' />
+  <!-- Custom Logo: hide header text -->
+  <style id="custom-logo-css" type="text/css">
+    .hs-site-title,
+    .hs-site-description {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+    }
+  </style>
+  <style type="text/css">
+    .request_name {
+      display: none !important;
+    }
+  </style>
+  <link rel="icon" href="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/favicon.ico" sizes="192x192" />
+  <link rel="apple-touch-icon-precomposed" href="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/favicon.ico" />
+  <style type="text/css" id="wp-custom-css">
+    .about-page.about-leader small,
+    .about-page.about-leader-2 small {
+      display: block;
+    }
+
+    .sub_cat_icon_business503,
+    .sub_cat_icon_business504,
+    .sub_cat_icon_business505,
+    .sub_cat_icon_business506 {
+      display: none;
+    }
+
+    .sub_cat_icon_business507,
+    .sub_cat_icon_business508,
+    .sub_cat_icon_business509,
+    .sub_cat_icon_business510 {
+      display: none;
+    }
+
+    .field-wrap > div input[type="text"],
+    .field-wrap select,
+    .field-wrap textarea {
+      background: #fff;
+    }
+
+    .hs-slide-cap-title,
+    .hs-section-title,
+    .h1,
+    .h2,
+    .h3,
+    .h4,
+    .h5,
+    .h6,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    .documents-list-area-sidebar .list-group-item {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    ul.c6 {
+      list-style-position: inside;
+      list-style-type: square;
+    }
+
+    .user-dropdown-menu,
+    .language_switch {
+      display: none;
+    }
+
+    .search_header {
+      float: right;
+      margin: 0;
+    }
+
+    .middle_table_td td {
+      vertical-align: middle;
+    }
+
+    #hs-back-top {
+      bottom: 80px;
+    }
+  </style>
+</head>
+
+<body class="post-template-default single single-post postid-2076 single-format-standard wp-custom-logo group-blog hs_right_sidebar">
+  <div id="hs-page">
+    @Html.Action("PageHomeHeader", "PageHome")
+    <!-- #hs-masthead -->
+    <div id="hs-content" class="hs-site-content hs-clearfix">
+      <header>
+        @*<div id="animation_container" style="background-color:#5197d2; width:1190px; height:60px; margin: 0 auto">
+              <div class="head_title" width="1050" height="60" style="position: absolute; display: block; background-color:#5197d2; text-align:center; left:0px;top:0px">
+                  <span style="text-align:center">TỪ NGÀY 01/11/2018 PHẢI SỬ DỤNG HÓA ĐƠN ĐIỆN TỬ THEO NGHỊ ĐỊNH 119/2018 / NĐ-CP </span>
+              </div>
+              <div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:1050px; height:60px; position: absolute; left: 0px; top: 0px; display: block;">
+
+              </div>
+          </div>*@
+        <div class="dealer-locator">
+          <div class="container" style="background:#5197d2">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-1 title">
+                <h4>TỪ NGÀY 01/11/2018 PHẢI SỬ DỤNG HÓA ĐƠN ĐIỆN TỬ THEO NGHỊ ĐỊNH 119/2018 / NĐ-CP</h4>
+
+              </div>
+              <div class="col-md-4">
+                <h3 style="color:#ffffff; font-weight:bold;font-size:16px"><i><a href="https://minvoice.vn/hoi-dap-tin-tuc-hoa-don-dien-tu/" target="_blank" style="color:#ffffff"> TÌM HIỂU THÊM </a></i> </h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </header>
+      <div class="hs-container">
+        <div id="single_primary" class="content-area">
+
+          @RenderBody()
+          <!-- #secondary -->
+        </div>
+
+      </div>
+      <!-- #content -->
+      <footer id="hs-colophon" class="hs-site-footer">
+        <div id="hs-top-footer">
+          <div class="hs-container">
+            <div class="hs-top-footer hs-clearfix row">
+
+              <div class="hs-footer hs-footer2 col-sm-8">
+                <div class="row lienhe">
+                  <div class="col-md-3 titlee"><h4 style="color:#ffffff; font-weight:800">LIÊN HỆ MUA HÀNG</h4></div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <a href="https://minvoice.vn/dang-ky-su-dung/" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/muangay.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                    </aside>
+                  </div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/hotline.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+                    </aside>
+                  </div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <a href="https://demo.minvoice.com.vn/#!/app/dashboard" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/demo1.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                    </aside>
+                  </div>
+                </div>'
+                  <div class="ft">
+                      <div class="widget-title"></div>
+                      <aside id="nav_menu-2" class="widget widget_nav_menu">
+                          <div class="menu-gioi-thieu-footer-container">
+                              
+                              <h5>VĂN PHÒNG CÔNG TY</h5>
+                              <p>Tel: 0901 80 6 18</p>
+                              <p>Email: info@minvoice.vn</p>
+                          </div>
+                          <br>
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN ĐÀ NẴNG</h5>
+                              <p>Tel: 0901 80 6 18</p>
+                              <p>Email: info@minvoice.vn</p>
+                          </div>
+
+                      </aside>
+                      <aside id="nav_menu-2" class="widget widget_nav_menu">
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN HÀ NỘI</h5>
+                              <p>Tel: 0899 90 16 18</p>
+                              <p>Email: infohn@minvoice.vn</p>
+                          </div>
+                          <br>
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN ĐỒNG NAI</h5>
+                              <p>Tel: 0899 90 16 18</p>
+                              <p>Email: infodn@minvoice.vn</p>
+                          </div>
+                      </aside>
+                      <aside id="nav_menu-2" class="widget widget_nav_menu">
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN HỒ CHÍ MINH</h5>
+                              <p>Tel: 0909 500 126</p>
+                              <p>Email: infohcm@minvoice.vn</p>
+                          </div>
+                          <br>
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN HẢI DƯƠNG</h5>
+                              <p>Tel: 02203 833 666</p>
+                              <p>Email: infohd@minvoice.vn</p>
+                          </div>
+                      </aside>
+                      <aside id="nav_menu-2" class="widget widget_nav_menu">
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN HẢI PHÒNG</h5>
+                              <p>Tel: 0909 500 126</p>
+                              <p>Email: infohcm@minvoice.vn</p>
+                          </div>
+                          <br>
+                          <div class="menu-gioi-thieu-footer-container">
+                              <div class=""></div>
+                              <h5>CN CAMPODIA</h5>
+                              <p>Tel: 0901 80 6 18</p>
+                              <p>Email: info@minvoice.vn</p>
+                          </div>
+                      </aside>
+                  </div>
+              </div>
+              <div class="hs-footer hs-footer6 col-sm-4">
+                <aside id="nav_menu-12" class="widget_nav_menu">
+                  <div class="row lienhe">
+                    <div class="col-md-12 titlee"><h4 style="color:#ffffff; font-weight:800">KẾT NỐI</h4></div>
+                  </div>'
+                    <div class="widget-title"></div>
+                  <div class="menu-ket-noi-container">
+                   
+                    <ul id="menu-ket-noi" class="menu">
+                      <li id="menu-item-178" class="facebook-f menu-item menu-item-type-custom menu-item-object-custom menu-item-178"><a href="https://www.facebook.com/hoadondientu.m.invoice/" target="blank">Facebook</a></li>
+                      <li id="menu-item-179" class="twitter-f menu-item menu-item-type-custom menu-item-object-custom menu-item-179"><a href="#">Twitter</a></li>
+                      <li id="menu-item-180" class="youtube-f menu-item menu-item-type-custom menu-item-object-custom menu-item-180"><a href="https://www.youtube.com/channel/UCQ-2lUz8TAvGj6sW6XY_RGg" target="blank">Youtube</a></li>
+                      <li id="menu-item-181" class="google-f menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a href="#">Google</a></li>
+                    </ul>
+                  </div>
+                </aside>
+                <aside id="custom_html-5" class="widget_text widget widget_custom_html">
+                  <div class="textwidget custom-html-widget">
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="hs-bottom-footer">
+          <div class="hs-container">
+            <div class="hs-copy-right">
+              Copyrights © 2018 Phần mềm Hóa đơn điện tử M-Invoice. All Rights Reserved.
+            </div>
+            <div class="hs-site-info">
+            </div>
+            <!-- #site-info -->
+          </div>
+        </div>
+      </footer>
+      <!-- #colophon -->
+    </div>
+    <!-- #page -->
+    <div id="hs-back-top" class="animated hs-hide"><i class="fa fa-angle-up"></i></div>
+    <div id="um_upload_single" style="display:none">
+    </div>
+    <div id="um_view_photo" style="display:none">
+      <a href="#" data-action="um_remove_modal" class="um-modal-close"><i class="um-faicon-times"></i></a>
+      <div class="um-modal-body photo">
+        <div class="um-modal-photo">
+        </div>
+      </div>
+    </div>
+    <link rel='stylesheet' id='nf-display-css' href='~/UI/tracuu.minvoice.vn/wp-content/plugins/ninja-forms/assets/css/display-structure37cb.css?ver=4.9.7' type='text/css' media='all' />
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/jquery.bxslider8aee.js?ver=4.1.2'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/owl.carousel3ba1.js?ver=1.3.3'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/jquery.navbb62.js?ver=20161003'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/SmoothScrollc7bc.js?ver=20150903'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/hashone-customc7bc.js?ver=20150903'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/js/mainsa346.js?ver=2018'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/comment-reply.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/wp-embed.min37cb.js?ver=4.9.7'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/underscore.min4511.js?ver=1.8.3'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-includes/js/backbone.min9632.js?ver=1.2.3'></script>
+    <script type='text/javascript' src='~/UI/tracuu.minvoice.vn/wp-content/plugins/ninja-forms/assets/js/min/front-end-deps7433.js?ver=3.3.7'></script>
+    <script type="text/javascript" src="~/UI/d389zggrogs7qo.cloudfront.net/js/button.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

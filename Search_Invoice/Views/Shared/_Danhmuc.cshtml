@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="row bg-title">
+        @RenderSection("ContentHeader", false)
+    </div>
+</section>
+
+<section class="content" style="padding-left:0px !important;padding-right:0px !important">
+    <div class="white-box1">
+        <div class="box-title">
+            @RenderSection("BoxTitle", false)
+        </div>
+        <style>
+            .k-grid-content > table > tbody > tr {
+                background: White;
+            }
+
+            .modal-dialog {
+                /*height: 80% !important;*/
+                padding-top: 10%;
+            }
+
+            .modal-content {
+                /*height: 100% !important;*/
+                overflow: visible;
+            }
+
+            .modal-body {
+                /*height: 70%;*/
+                overflow: auto;
+            }
+        </style>
+        @RenderSection("BoxBody", false)
+    </div>
+    @RenderSection("BoxFooter", false)
+</section>
+
+@RenderSection("Scripts", false)
+
+

@@ -1,0 +1,138 @@
+﻿@using Search_Invoice.Models;
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/plugins/images/fa-icon.png">
+    <title>Hóa đơn điện tử M-Invoice</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/plugins/bower_components/bootstrap-extension/css/bootstrap-extension.css" rel="stylesheet">
+    <!-- animation CSS -->
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <!-- color CSS gray/blue/purple/megna/default -->
+    <link href="/Content/css/style.css" rel="stylesheet">
+    <!-- color CSS -->
+    <link href="/Content/css/colors/megna.css" id="theme" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <section id="wrapper" class="login-register">
+            <div class="login-box">
+                <div class="white-box" style="border:1px solid #d1e0e0">
+                    <form class="form-horizontal form-material" id="loginform" action="index.html">
+                        <a href="javascript:void(0)" class="text-center db">
+                            <!--<img src="/Content/plugins/images/eliteadmin-logo-dark.png" alt="Home" />-->
+                            <br /><img src="/Content/plugins/images/eliteadmin-text-dark.png" alt="Home" />
+                        </a>
+                        <div class="form-group m-t-40">
+                            <div class="col-xs-12">
+                                <div class="form-label-group">
+                                    @Html.TextBoxFor(model => model.mst, new { id = "inputmstNB", @class = "form-control", placeholder = "Mã số thuế người bán" })
+                                    @Html.ValidationMessageFor(m => m.mst, "", new { @class = "text-danger" })
+                                    <label for="inputmstNB">Mã số thuế người bán</label>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-label-group">
+                                    @Html.TextBoxFor(model => model.username, new { @id = "inputuser",@class = "form-control", placeholder = "Tên truy cập", @style = "text-transform:uppercase" })
+                                    @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+                                    <label for="inputuser">Tên truy cập</label>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <div class="form-label-group">
+                                    @Html.PasswordFor(model => model.password, new { @id = "inputpass", @class = "form-control", placeholder = "Mật khẩu" })
+                                    @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                                    <label for="inputpass">Mật khẩu</label>
+                                </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="checkbox checkbox-success pull-left p-t-0">
+                                    <input id="checkbox-signup" type="checkbox" value="checker">
+                                    @*@Html.CheckBoxFor(m => m.RememberMe) Ghi nhớ*@
+                                    <label for="checkbox-signup"> Ghi nhớ </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center m-t-20">
+                            <div class="col-xs-12">
+                                <button class="btn btn-danger btn-sm btn-block text-uppercase waves-effect waves-light" type="submit">Đăng nhập</button>
+                            </div>
+                        </div>
+                        <div class="form-group m-t-20">
+                            <div class="col-xs-12">
+                                <a  style="color:#0295E3; font-weight: 200; font-family:Arial; font-size:13px;" href="https://minvoice.vn/" target="_blank"><i class="fa fa-hand-o-right" aria-hidden="true"></i> Đăng ký dùng thử !</a><br />
+                                <a  style="color:#0295E3; font-weight: 200; font-family:Arial; font-size:13px;" href="http://tracuuhoadon.minvoice.vn/" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> Tra cứu hóa đơn. </a>
+                            </div>
+                        </div>
+                        @*<div class="form-group text-center m-t-20">
+                            <div class="col-xs-12">
+                                <button class="btn btn-facebook waves-effect btn-circle waves-light" type="button"> <i class="fa fa-facebook"></i> </button>
+                                <button class="btn btn-googleplus waves-effect btn-circle waves-light" type="button"> <i class="fa fa-google-plus"></i> </button>
+                                <button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-youtube"></i> </button>
+                            </div>
+                        </div>*@
+
+                        <div class="form-group m-b-0">
+                            <div class="col-sm-12 text-center">
+                                @if (!ViewData.ModelState.IsValid && ViewData.ModelState["ErrorLogin"] != null)
+                                {
+                                    <div style="color:red">
+                                        @ViewData.ModelState["ErrorLogin"].Errors[0].ErrorMessage
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    }
+
+    <!-- jQuery -->
+    <script src="/Content/plugins/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/Content/bootstrap/dist/js/tether.min.js"></script>
+    <script src="/Content/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/Content/plugins/bower_components/bootstrap-extension/js/bootstrap-extension.min.js"></script>
+    <!-- Menu Plugin JavaScript -->
+    <script src="/Content/plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+    <!--slimscroll JavaScript -->
+    <script src="/Content/js/jquery.slimscroll.js"></script>
+    <!--Wave Effects -->
+    <script src="/Content/js/waves.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="/Content/js/custom.min.js"></script>
+    <!--Style Switcher -->
+    <script src="/Content/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+</body>
+
+</html>
