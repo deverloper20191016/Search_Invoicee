@@ -116,7 +116,7 @@ namespace Search_Invoice.Util
 
             if (invoice == null)
             {
-                throw new Exception("MST: " + mst + ". Không tồn tại HĐ");
+                throw new Exception("MST: " + mst + ". Không tồn tại hóa đơn");
             }
             Int32 trang_thai_hd = (Int32)invoice.Trang_thai_hd;
             string inv_originalId = invoice.Inv_originalId.ToString();
