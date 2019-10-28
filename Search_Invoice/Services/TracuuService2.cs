@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Collections.Generic;
+using Search_Invoice.Data;
 
 namespace Search_Invoice.Services
 {
@@ -26,6 +27,7 @@ namespace Search_Invoice.Services
         private INopDbContext2 _nopDbContext2;
         private ICacheManager _cacheManager;
         private IWebHelper _webHelper;
+        private TracuuHDDTContext _tracuuHDDTContext;
 
         public TracuuService2(
                               INopDbContext2 nopDbContext2,
@@ -36,6 +38,7 @@ namespace Search_Invoice.Services
             this._nopDbContext2 = nopDbContext2;
             this._cacheManager = cacheManager;
             this._webHelper = webHelper;
+            _tracuuHDDTContext = new TracuuHDDTContext();
         }
         public JObject GetInvoiceFromdateTodate(JObject model)
         {
@@ -1401,6 +1404,26 @@ namespace Search_Invoice.Services
             catch (Exception e)
             {
                 json.Add("error", e.Message);
+            }
+            return json;
+        }
+        public JObject Search_Tax(string mst)
+        {
+            JObject json = new JObject();
+            try
+            {
+                inv_admin admin = _tracuuHDDTContext.Inv_admin.Where(c => c.MST == mst).FirstOrDefault<inv_admin>();
+                if (admin == null)
+                {
+                    json.Add("error", "Không tồn tại MST : " + mst);
+                    return json;
+                }
+                var json1 = Newtonsoft.Json.JsonConvert.SerializeObject(admin);
+                json = JObject.Parse(json1);
+            }
+            catch (Exception ex)
+            {
+                json.Add("error", ex.Message);
             }
             return json;
         }

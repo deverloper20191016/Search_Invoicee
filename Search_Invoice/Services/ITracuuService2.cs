@@ -17,5 +17,7 @@ namespace Search_Invoice.Services
 
         JObject GetHtml(JObject model);
 
+
+        JObject Search_Tax(string mst);
     }
 }

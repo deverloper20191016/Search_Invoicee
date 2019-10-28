@@ -406,3 +406,38 @@ Stack Trace:
    at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
    at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
 
+********** 10/26/2019 9:59:46 AM **********
+Inner Exception Type: Autofac.Core.DependencyResolutionException
+Inner Exception: None of the constructors found with 'Autofac.Core.Activators.Reflection.DefaultConstructorFinder' on type 'Search_Invoice.Services.TracuuService2' can be invoked with the available services and parameters:
+Cannot resolve parameter 'Search_Invoice.Data.TracuuHDDTContext tracuuHDDTContext' of constructor 'Void .ctor(Search_Invoice.Services.INopDbContext2, Search_Invoice.Services.ICacheManager, Search_Invoice.Services.IWebHelper, Search_Invoice.Data.TracuuHDDTContext)'.
+Inner Source: Autofac
+Inner Stack Trace: 
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.<Execute>b__0()
+   at Autofac.Core.Lifetime.LifetimeScope.GetOrCreateAndShare(Guid id, Func`1 creator)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Activators.Reflection.AutowiringParameter.<>c__DisplayClass2.<CanSupplyValue>b__0()
+   at Autofac.Core.Activators.Reflection.ConstructorParameterBinding.Instantiate()
+   at Autofac.Core.Activators.Reflection.ReflectionActivator.ActivateInstance(IComponentContext context, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Activate(IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.InstanceLookup.Execute()
+   at Autofac.Core.Resolving.ResolveOperation.GetOrCreateInstance(ISharingLifetimeScope currentOperationScope, IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Resolving.ResolveOperation.Execute(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.Core.Lifetime.LifetimeScope.ResolveComponent(IComponentRegistration registration, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.TryResolveService(IComponentContext context, Service service, IEnumerable`1 parameters, Object& instance)
+   at Autofac.ResolutionExtensions.ResolveOptionalService(IComponentContext context, Service service, IEnumerable`1 parameters)
+   at Autofac.ResolutionExtensions.ResolveOptional(IComponentContext context, Type serviceType)
+   at Autofac.Integration.WebApi.AutofacWebApiDependencyScope.GetService(Type serviceType) in C:\projects\autofac-webapi\src\Autofac.Integration.WebApi\AutofacWebApiDependencyScope.cs:line 76
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /tracuu2/searchTax?model=0106026495
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
+

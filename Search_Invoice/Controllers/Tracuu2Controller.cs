@@ -150,6 +150,14 @@ namespace Search_Invoice.Controllers
             return _tracuuService2.GetHtml(model);
         }
 
+        [HttpGet]
+        [Route("tracuu2/searchTax")]
+        [AllowAnonymous]
+        public JObject searchTax(String model)
+        {
+            
+            return _tracuuService2.Search_Tax(model);
+        }
 
 
         [HttpPost]
