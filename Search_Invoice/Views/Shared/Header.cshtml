@@ -16,15 +16,9 @@
         </ul>*@
         <ul class="nav navbar-top-links navbar-right pull-right">
             <li class="dropdown">
-                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="https://minvoice.vn/" target="_blank">
                     <b class="hidden-xs" style="color:#ff3333">M-INVOICE</b>
                 </a>
-                <ul class="dropdown-menu dropdown-user animated flipInY">
-                    <li><a href="#">Phần mềm hóa đơn</a></li>
-                    <li><a href="#"> pháp điện tử</a></li>
-                    <li><a href="#"> Hỗ trợ</a></li>
-              
-                </ul>
             </li>
             <!-- /.dropdown -->
             <li class="dropdown">
@@ -63,13 +57,13 @@
                   
                     <b class="hidden-xs"><i class="ti-user"></i>@User.Identity.Name.ToUpper()</b>
                 </a>
-                <ul class="dropdown-menu dropdown-user animated flipInY">
+                @*<ul class="dropdown-menu dropdown-user animated flipInY">
                     <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a  onclick="abc();"><i class="ti-settings"></i> Đổi mật khẩu</a></li>
                     <li role="separator" class="divider"></li>
                     <li ><a href="/Account/LogOff"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
-                    @*<li>@Html.ActionLink("Đăng xuất","LogOff", "Account")</li>
+                    <li>@Html.ActionLink("Đăng xuất","LogOff", "Account")</li>
                     @if (Request.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
@@ -77,8 +71,8 @@
                             @Html.AntiForgeryToken()
                              <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
                         }
-                    }*@
-                </ul>
+                    }
+                </ul>*@
                 <!-- /.dropdown-user -->
             </li>
         
