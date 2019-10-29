@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
 
 namespace Search_Invoice
@@ -13,7 +14,7 @@ namespace Search_Invoice
         {
             config.Services.Replace(typeof(IExceptionLogger), new UnhandledExceptionLogger());
             // Web API configuration and services
-
+            config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
 

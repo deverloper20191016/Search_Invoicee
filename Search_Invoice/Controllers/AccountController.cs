@@ -181,7 +181,7 @@ namespace Search_Invoice.Controllers
             {
                 inv_user user = new inv_user() { mst = model.mst, username = model.username, password = model.password };
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
-                user = tracuu.inv_users.FirstOrDefault(x => x.mst.Replace("-", "").Equals(user.mst.Replace("-", "")));
+                user = tracuu.inv_users.FirstOrDefault(x => x.mst.Trim().Replace("-", "").Equals(user.mst.Trim().Replace("-", "")));
                 if (user == null)
                 {
                     ModelState.AddModelError("ErrorLogin", "Mã số thuế không tồn tại trong hệ thống ! ");
@@ -189,7 +189,7 @@ namespace Search_Invoice.Controllers
                 }
 
 
-                user = tracuu.inv_users.FirstOrDefault(c => c.mst.Replace("-","") == user.mst.Replace("-","") && c.username == user.username);
+                user = tracuu.inv_users.FirstOrDefault(c => c.mst.Trim().Replace("-", "") == user.mst.Trim().Replace("-", "") && c.username.Trim().Replace("-", "") == model.username.Trim().Replace("-", ""));
                 if (user == null)
                 {
                     ModelState.AddModelError("ErrorLogin", "Tài khoản không tồn tại trong hệ thống ! ");

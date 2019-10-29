@@ -197,5 +197,13 @@ namespace Search_Invoice.Controllers
 
             return result;
         }
+
+        [HttpPost]
+        [Route("tracuu2/searchinvoice")]
+        [Authorize]
+        public JObject SearchInvoice(JObject model)
+        {
+            return _tracuuService2.SearchInvoice(model);
+        }
     }
 }
