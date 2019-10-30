@@ -66,17 +66,17 @@ namespace Search_Invoice.Models
     //}
     public class LoginViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập mã số thuế")]
         [Display(Name = "mst")]
         // [EmailAddress]
         public string mst { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập tài khoản")]
         [Display(Name = "username")]
         // [EmailAddress]
         public string username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         [DataType(DataType.Password)]
         [Display(Name = "password")]
         public string password { get; set; }

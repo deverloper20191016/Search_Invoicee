@@ -19,5 +19,7 @@ namespace Search_Invoice.Services
 
 
         JObject Search_Tax(string mst);
+
+        JObject SearchInvoice(JObject data);
     }
 }

@@ -78,7 +78,7 @@ namespace Search_Invoice.Controllers
 
                 // byte[] buffer = null;
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
-                string folder = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+                string folder = originalString.StartsWith("/api") ? "/api/Content/report/" : "/Content/report/";
                 //string folder = base.Server.MapPath("~/Content/report/");
                 byte[] buffer = ReportUtil.InvoiceReport(xmlDecryp, repx, folder, "PDF");
 
@@ -153,7 +153,9 @@ namespace Search_Invoice.Controllers
 
 
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
-                string folder = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+
+                string folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
                 byte[] buffer = ReportUtil.InvoiceReport(xmlDecryp, repx, folder, "PDF");
 

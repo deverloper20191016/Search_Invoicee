@@ -27,7 +27,6 @@ namespace Search_Invoice.Services
         private INopDbContext2 _nopDbContext2;
         private ICacheManager _cacheManager;
         private IWebHelper _webHelper;
-        private TracuuHDDTContext _tracuuHDDTContext;
 
         public TracuuService2(
                               INopDbContext2 nopDbContext2,
@@ -38,7 +37,7 @@ namespace Search_Invoice.Services
             this._nopDbContext2 = nopDbContext2;
             this._cacheManager = cacheManager;
             this._webHelper = webHelper;
-            _tracuuHDDTContext = new TracuuHDDTContext();
+
         }
         public JObject GetInvoiceFromdateTodate(JObject model)
         {
@@ -84,14 +83,14 @@ namespace Search_Invoice.Services
             try
             {
                 string mst = model["masothue"].ToString().Replace("-", "");
-              
+
                 string sobaomat = model["sobaomat"].ToString();
                 _nopDbContext2.setConnect(mst);
                 DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
                 dt.Columns.Add("mst", typeof(string));
                 dt.Columns.Add("a", typeof(string));
 
-                var connectionString  = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
+                var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -117,13 +116,13 @@ namespace Search_Invoice.Services
             }
             return json;
         }
-        public byte[] PrintInvoiceFromSBM(string sobaomat,string masothue, string folder, string type)
+        public byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type)
         {
-            byte[] results = PrintInvoiceFromSBM(sobaomat,masothue, folder, type, false);
+            byte[] results = PrintInvoiceFromSBM(sobaomat, masothue, folder, type, false);
             return results;
         }
 
-        public byte[] PrintInvoiceFromSBM(string sobaomat,string masothue, string folder, string type, bool inchuyendoi)
+        public byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, bool inchuyendoi)
         {
             _nopDbContext2.setConnect(masothue);
             var db = this._nopDbContext2.GetInvoiceDb();
@@ -152,14 +151,14 @@ namespace Search_Invoice.Services
                 //}
                 //else
                 //{
-                    if (tblInvoiceXmlData.Rows.Count > 0)
-                    {
-                        xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
-                    }
-                    else
-                    {
-                        xml = db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice '" + inv_InvoiceAuth_id + "'").FirstOrDefault<string>();
-                    }
+                if (tblInvoiceXmlData.Rows.Count > 0)
+                {
+                    xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
+                }
+                else
+                {
+                    xml = db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice '" + inv_InvoiceAuth_id + "'").FirstOrDefault<string>();
+                }
                 //}
                 var invoiceDb = this._nopDbContext2.GetInvoiceDb();
                 string inv_InvoiceCode_id = tblInv_InvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
@@ -714,7 +713,7 @@ namespace Search_Invoice.Services
 
             byte[] bytes = null;
 
-             xml = "";
+            xml = "";
             string msg_tb = "";
 
             try
@@ -1299,7 +1298,7 @@ namespace Search_Invoice.Services
             //dmdvcs dvcs = invoiceDb.Dmdvcss.Where(c => c.ma_dvcs == "VP").FirstOrDefault<dmdvcs>();
 
             DataTable tblInv_InvoiceAuth = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE sobaomat='" + sobaomat + "'");
-            if(tblInv_InvoiceAuth.Rows.Count <=0)
+            if (tblInv_InvoiceAuth.Rows.Count <= 0)
             {
                 return null;
             }
@@ -1412,6 +1411,7 @@ namespace Search_Invoice.Services
             JObject json = new JObject();
             try
             {
+                var _tracuuHDDTContext = new TracuuHDDTContext();
                 inv_admin admin = _tracuuHDDTContext.Inv_admin.Where(c => c.MST == mst).FirstOrDefault<inv_admin>();
                 if (admin == null)
                 {
@@ -1426,6 +1426,120 @@ namespace Search_Invoice.Services
                 json.Add("error", ex.Message);
             }
             return json;
+        }
+
+        public JObject SearchInvoice(JObject data)
+        {
+            var result = new JObject();
+            try
+            {
+
+                var mst = data["mst"].ToString();
+                if (string.IsNullOrEmpty(mst))
+                {
+                    result.Add("error", "Vui lòng nhập mã số thuế");
+                    return result;
+
+                }
+
+                _nopDbContext2.setConnect(mst);
+                // type: all tất cả, date: Từ ngày - Đến ngày, number: Số hóa đơn, series: Mẫu số - Ký hiệu
+                var type = data["type"].ToString();
+                var tuNgay = "";
+                var denNgay = "";
+                var soHd = "";
+                var now = DateTime.Now;
+
+                var DaysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
+                var a = $"{now.Year}-{now.Month}-{DaysInMonth}";
+                tuNgay = data.ContainsKey("tu_ngay") ? data["tu_ngay"].ToString() : $"{now.Year}-{now.Month}-1";
+                denNgay = data.ContainsKey("den_ngay") ? data["den_ngay"].ToString() : a;
+
+                if(string.IsNullOrEmpty(tuNgay))
+                {
+                    tuNgay = $"{now.Year}-{now.Month}-1";
+                }
+
+                if (string.IsNullOrEmpty(denNgay))
+                {
+                    denNgay = a;
+                }
+
+                if (data.ContainsKey("so_hd"))
+                {
+                    soHd = data["so_hd"].ToString();
+                }
+
+                var sqlBuilder = "SELECT * FROM dbo.inv_InvoiceAuth WHERE trang_thai_hd != 13";
+                var sql = "";
+                switch (type)
+                {
+                    case "all":
+                        {
+                            sql = sqlBuilder;
+                            break;
+                        }
+                    case "date":
+                        {
+                            sql = $"{sqlBuilder} AND (inv_invoiceIssuedDate >= '{tuNgay}' AND inv_invoiceIssuedDate <= '{denNgay}')";
+                            break;
+                        }
+                    case "number":
+                        {
+                            if (string.IsNullOrEmpty(soHd))
+                            {
+                                result.Add("error", "Vui lòng nhập số hóa đơn");
+                                return result;
+                            }
+                            sql = $"{sqlBuilder} AND inv_invoiceNumber = '{soHd}'";
+                            break;
+                        }
+                    case "series":
+                        {
+                            var mauSo = data.ContainsKey("mau_so") ? data["mau_so"].ToString() : "";
+                            var kyHieu = data.ContainsKey("ky_hieu") ? data["ky_hieu"].ToString() : "";
+                            if (string.IsNullOrEmpty(mauSo) || string.IsNullOrEmpty(kyHieu))
+                            {
+                                result.Add("error", "Vui lòng nhập mẫu số, ký hiệu");
+                                return result;
+                            }
+                            sql = $"{sqlBuilder} AND mau_hd = '{mauSo.Trim()}' AND inv_invoiceSeries = '{kyHieu.Trim()}'";
+                            break;
+                        }
+                    case "id":
+                        {
+                            var id = data.ContainsKey("id") ? data["id"].ToString() : "";
+                            if (string.IsNullOrEmpty(id))
+                            {
+                                result.Add("error", "Vui lòng nhập id");
+                                return result;
+                            }
+                            sql = $"SELECT * FROM dbo.inv_InvoiceAuth WHERE inv_InvoiceAuth_id = '{id}'";
+                            break;
+                        }
+                    default:
+                        {
+                            sql = sqlBuilder;
+                            break;
+                        }
+
+                       
+                }
+                var table = _nopDbContext2.ExecuteCmd(sql);
+                if (table.Rows.Count > 0)
+                {
+                    var arr = JArray.FromObject(table);
+                    result.Add("ok", arr);
+                    return result;
+                }
+                result.Add("error", "Không tìm thấy hóa đơn");
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Add("error", ex.Message);
+                return result;
+            }
         }
     }
 }

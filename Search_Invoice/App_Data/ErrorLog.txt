@@ -441,3 +441,275 @@ Stack Trace:
    at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
    at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__1.MoveNext()
 
+********** 29/10/2019 1:36:31 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:37:00 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:37:45 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:38:19 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:39:01 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:39:09 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:39:59 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:41:20 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:41:35 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:41:39 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:42:07 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:42:16 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:44:33 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:45:54 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /tracuu2/searchTax?model=0106026495
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:47:17 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /Tracuu2/PrintInvoicePdf
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 29/10/2019 1:48:13 CH **********
+Inner Exception Type: System.ArgumentException
+Inner Exception: Type 'Search_Invoice.Controllers.Tracuu2Controller' does not have a default constructor
+Inner Source: System.Core
+Inner Stack Trace: 
+   at System.Linq.Expressions.Expression.New(Type type)
+   at System.Web.Http.Internal.TypeActivator.Create[TBase](Type instanceType)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.GetInstanceOrActivator(HttpRequestMessage request, Type controllerType, Func`1& activator)
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+Exception Type: System.InvalidOperationException
+Exception: An error occurred when trying to create a controller of type 'Tracuu2Controller'. Make sure that the controller has a parameterless public constructor.
+Source: /tracuu2/searchTax?model=0106026495
+Stack Trace: 
+   at System.Web.Http.Dispatcher.DefaultHttpControllerActivator.Create(HttpRequestMessage request, HttpControllerDescriptor controllerDescriptor, Type controllerType)
+   at System.Web.Http.Controllers.HttpControllerDescriptor.CreateController(HttpRequestMessage request)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
