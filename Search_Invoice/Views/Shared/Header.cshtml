@@ -15,21 +15,21 @@
             </li>
         </ul>*@
         <ul class="nav navbar-top-links navbar-right pull-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="https://minvoice.vn/" target="_blank">
+            <li >
+                <a class="profile-pic" href="https://minvoice.vn/" target="_blank">
                     <b class="hidden-xs" style="color:#ff3333">M-INVOICE</b>
                 </a>
             </li>
             <!-- /.dropdown -->
             <li class="dropdown">
-                <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+                <a class="profile-pic" href="/trang-chu">
                     <b class="hidden-xs">TRA CỨU HÓA ĐƠN</b>
                 </a>
-                <ul class="dropdown-menu dropdown-user animated flipInY">
+                @*<ul class="dropdown-menu dropdown-user animated flipInY">
                     <li><a href="http://tracuuhoadon.minvoice.vn/" target="_blank"><i ></i> Tra cứu bằng mã số thuế</a></li>
                     <li><a href="/TraCuu/Upload" target="_blank"><i ></i>Tra cứu bằng File tải lên</a></li>
                     <li><a href="/Tracuu/UploadAPI" target="_blank"><i ></i> Tra cứu File Zip</a></li>
-                </ul>
+                </ul>*@
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle profile-pic waves-effect" data-toggle="dropdown" href="forms.html">
@@ -57,22 +57,23 @@
                   
                     <b class="hidden-xs"><i class="ti-user"></i>@User.Identity.Name.ToUpper()</b>
                 </a>
-                @*<ul class="dropdown-menu dropdown-user animated flipInY">
-                    <li><a href="#"><i class="ti-user"></i> My Profile</a></li>
+                <ul class="dropdown-menu dropdown-user animated flipInY">
+                    @*<li><a href="#"><i class="ti-user"></i> My Profile</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a  onclick="abc();"><i class="ti-settings"></i> Đổi mật khẩu</a></li>
+                    <li><a  onclick="abc();"><i class="ti-settings"></i> Đổi mật khẩu</a></li>*@
                     <li role="separator" class="divider"></li>
+
                     <li ><a href="/Account/LogOff"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
-                    <li>@Html.ActionLink("Đăng xuất","LogOff", "Account")</li>
-                    @if (Request.IsAuthenticated)
+                    @*<li>@Html.ActionLink("Đăng xuất","LogOff", "Account")</li>*@
+                    @*@if (Request.IsAuthenticated)
                     {
                         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                         {
                             @Html.AntiForgeryToken()
                              <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
                         }
-                    }
-                </ul>*@
+                    }*@
+                </ul>
                 <!-- /.dropdown-user -->
             </li>
         
