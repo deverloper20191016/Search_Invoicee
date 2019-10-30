@@ -1455,6 +1455,16 @@ namespace Search_Invoice.Services
                 tuNgay = data.ContainsKey("tu_ngay") ? data["tu_ngay"].ToString() : $"{now.Year}-{now.Month}-1";
                 denNgay = data.ContainsKey("den_ngay") ? data["den_ngay"].ToString() : a;
 
+                if(string.IsNullOrEmpty(tuNgay))
+                {
+                    tuNgay = $"{now.Year}-{now.Month}-1";
+                }
+
+                if (string.IsNullOrEmpty(denNgay))
+                {
+                    denNgay = a;
+                }
+
                 if (data.ContainsKey("so_hd"))
                 {
                     soHd = data["so_hd"].ToString();
@@ -1494,6 +1504,17 @@ namespace Search_Invoice.Services
                                 return result;
                             }
                             sql = $"{sqlBuilder} AND mau_hd = '{mauSo.Trim()}' AND inv_invoiceSeries = '{kyHieu.Trim()}'";
+                            break;
+                        }
+                    case "id":
+                        {
+                            var id = data.ContainsKey("id") ? data["id"].ToString() : "";
+                            if (string.IsNullOrEmpty(id))
+                            {
+                                result.Add("error", "Vui lòng nhập id");
+                                return result;
+                            }
+                            sql = $"SELECT * FROM dbo.inv_InvoiceAuth WHERE inv_InvoiceAuth_id = '{id}'";
                             break;
                         }
                     default:
