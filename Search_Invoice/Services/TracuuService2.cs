@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Data;
 using System.Drawing;
 using Search_Invoice.Data.Domain;
@@ -17,7 +16,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Zip;
-using System.Collections.Generic;
 using Search_Invoice.Data;
 
 namespace Search_Invoice.Services
@@ -1455,7 +1453,7 @@ namespace Search_Invoice.Services
                 tuNgay = data.ContainsKey("tu_ngay") ? data["tu_ngay"].ToString() : $"{now.Year}-{now.Month}-1";
                 denNgay = data.ContainsKey("den_ngay") ? data["den_ngay"].ToString() : a;
 
-                if(string.IsNullOrEmpty(tuNgay))
+                if (string.IsNullOrEmpty(tuNgay))
                 {
                     tuNgay = $"{now.Year}-{now.Month}-1";
                 }
@@ -1523,7 +1521,7 @@ namespace Search_Invoice.Services
                             break;
                         }
 
-                       
+
                 }
                 var table = _nopDbContext2.ExecuteCmd(sql);
                 if (table.Rows.Count > 0)
@@ -1540,6 +1538,33 @@ namespace Search_Invoice.Services
                 result.Add("error", ex.Message);
                 return result;
             }
+        }
+
+        public JObject GetInfoLogin(string userName, string mst)
+        {
+            var traCuu = new TracuuHDDTContext();
+            var user = traCuu.inv_users.FirstOrDefault(x => x.username.Replace("-", "").Equals(userName.Replace("-", "")) && x.mst.Replace("-", "").Equals(mst.Replace("-", "")));
+            var boolCheck = user != null && !string.IsNullOrEmpty(user.inv_user_id.ToString());
+            if (boolCheck)
+            {
+                return new JObject
+                {
+                    {"ok", new JObject
+                    {
+                        {"id", user.inv_user_id },
+                        {"username", user.username },
+                        {"mst", user.mst },
+                        {"email", user.email },
+                        {"ma_doi_tuong", user.ma_dt }
+                    } }
+                };
+            }
+
+            return new JObject
+            {
+                {"error",  $"Không tìm thấy thông tin tài khoản: {userName}, Mã số thuế: {mst}"}
+            };
+
         }
     }
 }

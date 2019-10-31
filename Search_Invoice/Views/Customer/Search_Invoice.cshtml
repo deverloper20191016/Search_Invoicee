@@ -107,7 +107,7 @@
             </li>
           </ul>*@
             <div>
-                <a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="In Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+                @*<a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="In Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>*@
                 <a href="#" type="button" id="btn-dowd-zip" class="btn btn-info" style="display: none; color: white" onclick="ExportZipXML()" title="Tải XML"><i class="fas fa-download"></i> Tải XML</a>
                 <a href="#" type="button" id="btn-buyer-sign" class="btn btn-success" style="display: none; color: white" onclick="buyerSignature()" title="Ký hóa đơn"><i class="fas fa-signature"></i> Ký hóa đơn</a>
                 <a href="#" class="btn" id="btn-download-html" style="display: none; color: #6B6B6B; background-color:#EFEFEF" title="Đọc Chữ Ký Số" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Đọc CKS</a>
@@ -210,7 +210,7 @@
 
                 for (var i = 0 ; i < result.data.length ; i++) {
                   var sobaomat = result.data[i].sobaomat ? result.data[i].sobaomat.toString() : "";
-                  var tien = result.data[i].inv_TotalAmount == null ? '' : result.data[i].inv_TotalAmount.toLocaleString();
+                  var tien = result.data[i].inv_TotalAmount == null ? (result.data[i].total_amount_detail == null ? '' : result.data[i].total_amount_detail.toLocaleString()) : result.data[i].inv_TotalAmount.toLocaleString();
                   $("#demo-foo-addrow").find('tbody')
                                .append('<tr><td>' + result.data[i].mau_hd + '</td><td>' + result.data[i].inv_invoiceSeries + '</td><td>' + result.data[i].inv_invoiceNumber + '</td>' +
                                '<td>' + moment(result.data[i].inv_invoiceIssuedDate).format("DD/MM/YYYY") + '</td>' +
@@ -219,7 +219,7 @@
                                //  '<a href="#" onClick = "PrintInvoicePDF(\'' + sobaomat + '\',\'' + result.data[i].mst.toString() + '\',\'PDF\');" data-toggle="tooltip" data-placement="top" title="Dowload File PDF"><i class="fas fa-file-pdf text-info m-r-10"></i></button>' +
                                //'<a href="#" onClick = "ExportZipXML(\'' + sobaomat + '\',\'' + result.data[i].mst.toString() + '\');" data-toggle="tooltip" data-placement="top" title="Dowload File .Zip XML"><i class="fas fa-file-archive text-danger m-r-10"></i></a>' +
                                //'<a href="#" onClick = "PrintInvoicePDF(\'' + sobaomat + '\',\'' + result.data[i].mst.toString() + '\',\'Html\');" data-toggle="tooltip" data-placement="top" title="Dowload HTML"><i class="fab fa-html5 text-success"></i></a>'
-                               '<a href="#" onClick = "displayInvoice(\'' + result.data[i].sobaomat.toString() + '\',\'' + result.data[i].mst.toString() + '\',\'' + result.data[i].inv_InvoiceAuth_id.toString() + '\',\'' + result.data[i].a.toString() + '\');" data-toggle="modal" data-target="#myModal" data-placement="top" title="Xem hóa đơn"><i class="fas fa-search text-success"></i></a>'
+                               '<a href="#" onClick = "displayInvoice(\'' + sobaomat + '\',\'' + result.data[i].mst.toString() + '\',\'' + result.data[i].inv_InvoiceAuth_id.toString() + '\',\'' + result.data[i].a.toString() + '\');" data-toggle="modal" data-target="#myModal" data-placement="top" title="Xem hóa đơn"><i class="fas fa-search text-success"></i></a>'
                                +
                       '</td></tr>');
                 }

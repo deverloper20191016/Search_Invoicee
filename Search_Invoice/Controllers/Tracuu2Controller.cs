@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using Search_Invoice.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Search_Invoice.Controllers
 {
@@ -155,7 +157,7 @@ namespace Search_Invoice.Controllers
         [AllowAnonymous]
         public JObject searchTax(String model)
         {
-            
+
             return _tracuuService2.Search_Tax(model);
         }
 
@@ -204,6 +206,27 @@ namespace Search_Invoice.Controllers
         public JObject SearchInvoice(JObject model)
         {
             return _tracuuService2.SearchInvoice(model);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("tracuu2/getinfo")]
+        public JObject GetInfoLogin()
+        {
+            var userName = "";
+            var mst = "";
+            var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var listClaim = claimsIdentity.Claims.ToList();
+                userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
+                mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+            }
+
+
+
+            var result = _tracuuService2.GetInfoLogin(userName, mst);
+            return result;
         }
     }
 }

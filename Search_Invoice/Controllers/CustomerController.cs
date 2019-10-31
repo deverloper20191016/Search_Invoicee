@@ -40,12 +40,22 @@ namespace Search_Invoice.Controllers
             DataTable dt = cn.ExecuteCmd(sql);
             dt.Columns.Add("mst", typeof(string));
             dt.Columns.Add("a", typeof(string));
+            dt.Columns.Add("total_amount_detail", typeof(decimal));
 
             var connectionString = cn.GetInvoiceDb().Database.Connection.ConnectionString;
 
             foreach (DataRow row in dt.Rows)
             {
+                var id = row["inv_InvoiceAuth_id"].ToString();
+                var tableDetail =
+                    cn.ExecuteCmd(
+                        $"SELECT SUM(inv_TotalAmount) AS total_amount FROM dbo.inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '{id}'");
+                
                 row.BeginEdit();
+                if (tableDetail.Rows.Count > 0)
+                {
+                    row["total_amount_detail"] = tableDetail.Rows[0]["total_amount"].ToString();
+                }
                 row["mst"] = us.mst;
                 row["a"] = connectionString;
                 row.EndEdit();
