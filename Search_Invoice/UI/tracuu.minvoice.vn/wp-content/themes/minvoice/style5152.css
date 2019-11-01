@@ -5772,7 +5772,7 @@ body  .um-account-side li a:hover span , body .um-account-side li a.current span
 	}
 
 	#hs-site-branding{
-		width: auto;
+		
 	}
 
 	.hs-main-navigation li{
@@ -6118,7 +6118,7 @@ body  .um-account-side li a:hover span , body .um-account-side li a.current span
 }
 .dealer-locator {
     width: 100%;
-    display: inline-block;
+    display: inline-table;
    height: 60px;
 
 }
@@ -6126,7 +6126,7 @@ body  .um-account-side li a:hover span , body .um-account-side li a.current span
     line-height: 26px;
     font-size: 13px;
     color:#ffffff;
-    padding-left:120px;
+    margin-left:50px;
 }
 .abc {
   display: initial;
@@ -6895,4 +6895,7 @@ aside#nav_menu-2 {
     width: auto;
     margin-top: -5px;
     margin-left: 22px;
+}
+aside#media_image {
+    text-align:center;
 }
