@@ -1626,7 +1626,7 @@ namespace Search_Invoice.Services
 
                     if (filterObject.ContainsKey("gia_tri_hoa_don"))
                     {
-                        var soHoaDonObject = (JObject)filterObject["so_hoa_don"];
+                        var soHoaDonObject = (JObject)filterObject["gia_tri_hoa_don"];
                         var min = soHoaDonObject.ContainsKey("min") ? soHoaDonObject["min"] : 0;
                         var max = soHoaDonObject.ContainsKey("max") ? soHoaDonObject["max"] : 10000;
                         where += $" AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM dbo.inv_InvoiceAuthDetail GROUP BY inv_InvoiceAuth_id HAVING (SUM(inv_TotalAmount) >= {min} AND SUM(inv_TotalAmount) <= {max})) ";
