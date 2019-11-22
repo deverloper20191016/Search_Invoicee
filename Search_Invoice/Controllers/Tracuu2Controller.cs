@@ -205,6 +205,17 @@ namespace Search_Invoice.Controllers
         [Authorize]
         public JObject SearchInvoice(JObject model)
         {
+            var userName = "";
+            var mst = "";
+            var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var listClaim = claimsIdentity.Claims.ToList();
+                userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
+                mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+                model.Add("user_name", userName);
+                model.Add("mst", mst);
+            }
             return _tracuuService2.SearchInvoice(model);
         }
 
@@ -221,12 +232,46 @@ namespace Search_Invoice.Controllers
                 var listClaim = claimsIdentity.Claims.ToList();
                 userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
                 mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
+                {
+                    var json = new JObject();
+                    json.Add("error", "Vui lòng đăng nhập để tiếp tục");
+                    return json;
+                }
             }
 
 
 
             var result = _tracuuService2.GetInfoLogin(userName, mst);
             return result;
+        }
+
+        [Authorize]
+        [Route("tracuu2/getlistinvoice")]
+        [HttpPost]
+        public JObject GetListInvoice(JObject model)
+        {
+            var userName = "";
+            var mst = "";
+            var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var listClaim = claimsIdentity.Claims.ToList();
+                userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
+                mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
+                {
+                    var json = new JObject();
+                    json.Add("error","Vui lòng đăng nhập để tiếp tục");
+                    return json;
+                }
+
+                model.Add("user_name", userName);
+                model.Add("mst", mst);
+            }
+            return _tracuuService2.GetListInvoice(model);
         }
     }
 }

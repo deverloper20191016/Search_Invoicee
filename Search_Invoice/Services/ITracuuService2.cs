@@ -23,5 +23,7 @@ namespace Search_Invoice.Services
         JObject SearchInvoice(JObject data);
 
         JObject GetInfoLogin(string userName, string mst);
+
+        JObject GetListInvoice(JObject data);
     }
 }

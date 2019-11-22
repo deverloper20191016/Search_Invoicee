@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿
+using System.Threading.Tasks;
 using System.Data;
 using System.Drawing;
 using Search_Invoice.Data.Domain;
@@ -1565,6 +1566,108 @@ namespace Search_Invoice.Services
                 {"error",  $"Không tìm thấy thông tin tài khoản: {userName}, Mã số thuế: {mst}"}
             };
 
+        }
+
+        public JObject GetListInvoice(JObject data)
+        {
+            var json = new JObject();
+            try
+            {
+                var userName = data["user_name"].ToString();
+                string sql = "SELECT * FROM inv_InvoiceAuth";
+                var where = $"WHERE ma_dt = '{userName}'";
+                var orderBy = "ORDER BY inv_invoiceNumber";
+                var paging = "";
+                if (data.ContainsKey("filter"))
+                {
+                    var filterObject = (JObject)data["filter"];
+
+                    if (filterObject.ContainsKey("trang_thai_hoa_don"))
+                    {
+                        var trangThaiHoaDon = filterObject.ContainsKey("trang_thai_hoa_don") ? filterObject["trang_thai_hoa_don"] : 1;
+                        where += $" AND trang_thai_hd = {trangThaiHoaDon}";
+                    }
+
+                    if (filterObject.ContainsKey("ngay_hoa_don"))
+                    {
+
+
+                        var ngayHoaDonObject = (JObject)filterObject["ngay_hoa_don"];
+
+                        var tuNgay = ngayHoaDonObject.ContainsKey("tu_ngay") ? ngayHoaDonObject["tu_ngay"].ToString() : "";
+                        var denNgay = ngayHoaDonObject.ContainsKey("den_ngay") ? ngayHoaDonObject["den_ngay"].ToString() : "";
+
+                        var now = DateTime.Now;
+
+                        var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
+                        var dayNow = $"{now.Year}-{now.Month}-{daysInMonth}";
+
+                        if (string.IsNullOrEmpty(tuNgay))
+                        {
+                            tuNgay = $"{now.Year}-{now.Month}-1";
+                        }
+
+                        if (string.IsNullOrEmpty(denNgay))
+                        {
+                            denNgay = dayNow;
+                        }
+
+                        where += $" AND CONVERT(DATE, inv_invoiceIssuedDate) BETWEEN '{tuNgay}' AND '{denNgay}'";
+
+                    }
+
+                    if (filterObject.ContainsKey("so_hoa_don"))
+                    {
+                        var soHoaDonObject = (JObject)filterObject["so_hoa_don"];
+                        var tuSo = soHoaDonObject.ContainsKey("tu_so") ? soHoaDonObject["tu_so"] : 0;
+                        var denSo = soHoaDonObject.ContainsKey("den_so") ? soHoaDonObject["den_so"] : 1;
+                        where += $" AND  CONVERT(INT, inv_invoiceNumber) BETWEEN {tuSo} AND {denSo}";
+                    }
+
+                    if (filterObject.ContainsKey("gia_tri_hoa_don"))
+                    {
+                        var soHoaDonObject = (JObject)filterObject["so_hoa_don"];
+                        var min = soHoaDonObject.ContainsKey("min") ? soHoaDonObject["min"] : 0;
+                        var max = soHoaDonObject.ContainsKey("max") ? soHoaDonObject["max"] : 10000;
+                        where += $" AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM dbo.inv_InvoiceAuthDetail GROUP BY inv_InvoiceAuth_id HAVING (SUM(inv_TotalAmount) >= {min} AND SUM(inv_TotalAmount) <= {max})) ";
+                    }
+
+                    if (data.ContainsKey("paging"))
+                    {
+                        var pagingObject = (JObject)data["paging"];
+                        var index = pagingObject.ContainsKey("index") ? (int)pagingObject["index"] : 1;
+                        var count = pagingObject.ContainsKey("count") ? (int)pagingObject["count"] : 50;
+                        var start = index <= 1 ? 0 : (index - 1) * count;
+                        paging = $" OFFSET {start} ROWS FETCH NEXT {count} ROW ONLY ";
+                        var sqlBuilder = $"{sql} {where} {orderBy} {paging}";
+
+                        var mst = data["mst"].ToString();
+                        _nopDbContext2.setConnect(mst);
+
+                        var table = _nopDbContext2.ExecuteCmd(sqlBuilder);
+                        if (table.Rows.Count > 0)
+                        {
+                            var arr = JArray.FromObject(table);
+                            json.Add("ok", arr);
+                            return json;
+                        }
+                        json.Add("error", "Không tìm thấy hóa đơn");
+                        return json;
+                    }
+
+                    json.Add("error", "Chưa có thông tin phân trang");
+                    return json;
+                }
+
+                json.Add("error", "Chưa có thông tin tìm kiếm");
+                return json;
+            }
+            catch (Exception ex)
+            {
+
+                json.Add("error", ex.Message);
+                return json;
+            }
         }
     }
 }
