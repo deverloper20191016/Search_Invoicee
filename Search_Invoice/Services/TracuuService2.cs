@@ -16,6 +16,7 @@ using System.Drawing.Imaging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
+using DevExpress.XtraReports.Parameters;
 using ICSharpCode.SharpZipLib.Zip;
 using Search_Invoice.Data;
 
@@ -317,6 +318,11 @@ namespace Search_Invoice.Services
                         report.Parameters["NGAY_IN_CDOI"].Visible = true;
                     }
                 }
+
+                report.Parameters["FM_inv_quantity"].Value = 2;
+                report.Parameters["FM_inv_unitPrice"].Value = 2;
+                report.Parameters["FM_inv_TotalAmountWithoutVat"].Value = 2;
+                report.Parameters["FM_inv_TotalAmount"].Value = 2;
 
                 report.DataSource = ds;
 
@@ -728,6 +734,7 @@ namespace Search_Invoice.Services
                 DataTable tblInv_InvoiceAuthDetail = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '" + inv_InvoiceAuth_id + "'");
                 DataTable tblInvoiceXmlData = this._nopDbContext2.ExecuteCmd("SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id='" + inv_InvoiceAuth_id + "'");
 
+               
                 //if (masothue == "2700638514" && tblInv_InvoiceAuthDetail.Rows.Count > 9)
                 //{
                 //    xml = db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice_BK '" + inv_InvoiceAuth_id + "'").FirstOrDefault<string>();
@@ -902,6 +909,113 @@ namespace Search_Invoice.Services
                     }
                 }
 
+                var inv_currencyCode = tblInv_InvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
+
+                var tbldmnt = _nopDbContext2.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{inv_currencyCode}'");
+                if (tbldmnt.Rows.Count > 0)
+                {
+                    var rowDmnt = tbldmnt.Rows[0];
+                    var quantityDmnt = 0;
+                    var unitPriceDmnt = 0;
+                    var totalAmountWithoutVatDmnt = 0;
+                    var totalAmountDmnt = 0;
+
+                    var quantityFomart = "n0";
+                    var unitPriceFomart = "n0";
+                    var totalAmountWithoutVatFomart = "n0";
+                    var totalAmountFomart = "n0";
+
+                    if (tbldmnt.Columns.Contains("inv_quantity"))
+                    {
+                        quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                            ? rowDmnt["inv_quantity"].ToString()
+                            : "0");
+                        quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_unitPrice"))
+                    {
+                        unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                            ? rowDmnt["inv_unitPrice"].ToString()
+                            : "0");
+                        unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+
+                    }
+
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
+                    {
+                        totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                            ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
+                            : "0");
+                        totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmount"))
+                    {
+                        totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                            ? rowDmnt["inv_TotalAmount"].ToString()
+                            : "0");
+                        totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+
+                    }
+
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = quantityFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = unitPriceFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = totalAmountWithoutVatFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = totalAmountFomart
+                    });
+                }
+                else
+                {
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = "n0"
+                    });
+                }
+
+
+
                 report.DataSource = ds;
 
                 var t = Task.Run(() =>
@@ -912,6 +1026,8 @@ namespace Search_Invoice.Services
 
                     System.Threading.Thread.CurrentThread.CurrentCulture = newCulture;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = newCulture;
+
+
 
                     report.CreateDocument();
 
@@ -1668,6 +1784,45 @@ namespace Search_Invoice.Services
                 json.Add("error", ex.Message);
                 return json;
             }
+        }
+
+        private string GetFormatString(DataTable table, int formatDefault, string columnName)
+        {
+            string result = $"n{formatDefault}";
+            foreach (DataRow row in table.Rows)
+            {
+                var value = row[columnName].ToString();
+                var a = value.Split('.');
+                if (a.Length > 1)
+                {
+                    var resultGetMin = GetMinOfNumber(int.Parse(a[1]));
+                    if (resultGetMin == 0)
+                    {
+                        return $"n0";
+                    }
+                    var resultString = resultGetMin.ToString();
+
+
+                    if (resultString.Length < formatDefault)
+                    {
+                        result = $"n{resultString.Length}";
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private int GetMinOfNumber(int number)
+        {
+            if (number <= 0) return 0;
+            while (number % 10 == 0)
+            {
+                number = number / 10;
+
+            }
+
+            return number;
         }
     }
 }
