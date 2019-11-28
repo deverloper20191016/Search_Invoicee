@@ -1640,9 +1640,19 @@ namespace Search_Invoice.Services
 
 
                 }
+
+                var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
                 var table = _nopDbContext2.ExecuteCmd(sql);
+                table.Columns.Add("a", typeof(string));
                 if (table.Rows.Count > 0)
                 {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        row.BeginEdit();
+                        row["a"] = connectionString;
+                        row.EndEdit();
+                    }
+
                     var arr = JArray.FromObject(table);
                     result.Add("ok", arr);
                     return result;
