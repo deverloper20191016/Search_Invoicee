@@ -39,10 +39,13 @@ namespace Search_Invoice.Controllers
             string sql = "SELECT * FROM inv_InvoiceAuth WHERE inv_invoiceIssuedDate >= '" + tu_ngay.ToString("yyyy-MM-dd") + "' and inv_invoiceIssuedDate <= '" + den_ngay.ToString("yyyy-MM-dd") + "' AND ma_dt ='" + us.ma_dt + "' AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ORDER BY inv_invoiceNumber ASC";
             DataTable dt = cn.ExecuteCmd(sql);
             dt.Columns.Add("mst", typeof(string));
-            dt.Columns.Add("a", typeof(string));
+            dt.Columns.Add("inv_auth_id", typeof(string));
             dt.Columns.Add("total_amount_detail", typeof(decimal));
 
             var connectionString = cn.GetInvoiceDb().Database.Connection.ConnectionString;
+
+            byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
+            var b = Convert.ToBase64String(byt);
 
             foreach (DataRow row in dt.Rows)
             {
@@ -57,7 +60,8 @@ namespace Search_Invoice.Controllers
                     row["total_amount_detail"] = tableDetail.Rows[0]["total_amount"].ToString();
                 }
                 row["mst"] = us.mst;
-                row["a"] = connectionString;
+                //row["a"] = connectionString;
+                row["inv_auth_id"] = b;
                 row.EndEdit();
             }
 

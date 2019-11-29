@@ -88,15 +88,18 @@ namespace Search_Invoice.Services
                 _nopDbContext2.setConnect(mst);
                 DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
                 dt.Columns.Add("mst", typeof(string));
-                dt.Columns.Add("a", typeof(string));
+                dt.Columns.Add("inv_auth_id", typeof(string));
 
                 var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
+                byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
+                var b = Convert.ToBase64String(byt);
 
                 foreach (DataRow row in dt.Rows)
                 {
                     row.BeginEdit();
                     row["mst"] = mst;
-                    row["a"] = connectionString;
+                    //row["a"] = connectionString;
+                    row["inv_auth_id"] = b;
                     row.EndEdit();
                 }
                 if (dt.Rows.Count > 0)
@@ -319,10 +322,110 @@ namespace Search_Invoice.Services
                     }
                 }
 
-                report.Parameters["FM_inv_quantity"].Value = 2;
-                report.Parameters["FM_inv_unitPrice"].Value = 2;
-                report.Parameters["FM_inv_TotalAmountWithoutVat"].Value = 2;
-                report.Parameters["FM_inv_TotalAmount"].Value = 2;
+                var inv_currencyCode = tblInv_InvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
+
+                var tbldmnt = _nopDbContext2.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{inv_currencyCode}'");
+                if (tbldmnt.Rows.Count > 0)
+                {
+                    var rowDmnt = tbldmnt.Rows[0];
+                    var quantityDmnt = 0;
+                    var unitPriceDmnt = 0;
+                    var totalAmountWithoutVatDmnt = 0;
+                    var totalAmountDmnt = 0;
+
+                    var quantityFomart = "n0";
+                    var unitPriceFomart = "n0";
+                    var totalAmountWithoutVatFomart = "n0";
+                    var totalAmountFomart = "n0";
+
+                    if (tbldmnt.Columns.Contains("inv_quantity"))
+                    {
+                        quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                            ? rowDmnt["inv_quantity"].ToString()
+                            : "0");
+                        quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_unitPrice"))
+                    {
+                        unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                            ? rowDmnt["inv_unitPrice"].ToString()
+                            : "0");
+                        unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+
+                    }
+
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
+                    {
+                        totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                            ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
+                            : "0");
+                        totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmount"))
+                    {
+                        totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                            ? rowDmnt["inv_TotalAmount"].ToString()
+                            : "0");
+                        totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+
+                    }
+
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = quantityFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = unitPriceFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = totalAmountWithoutVatFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = totalAmountFomart
+                    });
+                }
+                else
+                {
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = "n0"
+                    });
+                }
 
                 report.DataSource = ds;
 
@@ -1642,14 +1745,17 @@ namespace Search_Invoice.Services
                 }
 
                 var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
+                byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
+                var b = Convert.ToBase64String(byt);
                 var table = _nopDbContext2.ExecuteCmd(sql);
-                table.Columns.Add("a", typeof(string));
+                table.Columns.Add("inv_auth_id", typeof(string));
                 if (table.Rows.Count > 0)
                 {
                     foreach (DataRow row in table.Rows)
                     {
                         row.BeginEdit();
-                        row["a"] = connectionString;
+                        //row["a"] = connectionString;
+                        row["inv_auth_id"] = b;
                         row.EndEdit();
                     }
 
