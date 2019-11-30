@@ -41,6 +41,13 @@ namespace Search_Invoice.Services
                 invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
             }
         }
+
+        public DataTable GetAllColumnsOfTable(string tableName)
+        {
+            var data = ExecuteCmd($"SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'{tableName}'");
+            return data;
+        }
+
         public InvoiceDbContext GetInvoiceDb()
         {
             return this.invoiceDbContext;

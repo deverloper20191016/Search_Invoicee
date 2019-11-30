@@ -24,5 +24,6 @@ namespace Search_Invoice.Services
         void ExecuteNoneQuery(string sql, Dictionary<string, object> parameters);
         Task<string> ExecuteNoneQueryAsync(string sql, CommandType commandType, Dictionary<string, object> parameters);
         void setConnect(string mst);
+        DataTable GetAllColumnsOfTable(string tableName);
     }
 }

@@ -837,7 +837,7 @@ namespace Search_Invoice.Services
                 DataTable tblInv_InvoiceAuthDetail = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '" + inv_InvoiceAuth_id + "'");
                 DataTable tblInvoiceXmlData = this._nopDbContext2.ExecuteCmd("SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id='" + inv_InvoiceAuth_id + "'");
 
-               
+
                 //if (masothue == "2700638514" && tblInv_InvoiceAuthDetail.Rows.Count > 9)
                 //{
                 //    xml = db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice_BK '" + inv_InvoiceAuth_id + "'").FirstOrDefault<string>();
@@ -1657,7 +1657,6 @@ namespace Search_Invoice.Services
                 {
                     result.Add("error", "Vui lòng nhập mã số thuế");
                     return result;
-
                 }
 
                 _nopDbContext2.setConnect(mst);
@@ -1688,7 +1687,7 @@ namespace Search_Invoice.Services
                     soHd = data["so_hd"].ToString();
                 }
 
-                var sqlBuilder = "SELECT * FROM dbo.inv_InvoiceAuth WHERE trang_thai_hd != 13";
+                var sqlBuilder = "SELECT * FROM dbo.inv_InvoiceAuth WHERE trang_thai_hd != 13 ";
                 var sql = "";
                 switch (type)
                 {
@@ -1699,7 +1698,7 @@ namespace Search_Invoice.Services
                         }
                     case "date":
                         {
-                            sql = $"{sqlBuilder} AND (inv_invoiceIssuedDate >= '{tuNgay}' AND inv_invoiceIssuedDate <= '{denNgay}')";
+                            sql = $"{sqlBuilder} AND (inv_invoiceIssuedDate >= '{tuNgay}' AND inv_invoiceIssuedDate <= '{denNgay}') ";
                             break;
                         }
                     case "number":
@@ -1721,7 +1720,14 @@ namespace Search_Invoice.Services
                                 result.Add("error", "Vui lòng nhập mẫu số, ký hiệu");
                                 return result;
                             }
-                            sql = $"{sqlBuilder} AND mau_hd = '{mauSo.Trim()}' AND inv_invoiceSeries = '{kyHieu.Trim()}'";
+                            sql = $"{sqlBuilder} AND mau_hd = '{mauSo.Trim()}' AND inv_invoiceSeries = '{kyHieu.Trim()}' ";
+
+                            var invoiceType = data.ContainsKey("invoice_type") ? data["invoice_type"].ToString() : "";
+                            if (!string.IsNullOrEmpty(invoiceType))
+                            {
+                                sql += $"AND inv_invoiceType = '{invoiceType}' ";
+                            }
+
                             break;
                         }
                     case "id":
@@ -1732,7 +1738,7 @@ namespace Search_Invoice.Services
                                 result.Add("error", "Vui lòng nhập id");
                                 return result;
                             }
-                            sql = $"SELECT * FROM dbo.inv_InvoiceAuth WHERE inv_InvoiceAuth_id = '{id}'";
+                            sql = $"SELECT * FROM dbo.inv_InvoiceAuth WHERE inv_InvoiceAuth_id = '{id}' ";
                             break;
                         }
                     default:
@@ -1740,14 +1746,13 @@ namespace Search_Invoice.Services
                             sql = sqlBuilder;
                             break;
                         }
-
-
                 }
 
                 var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
                 byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
                 var b = Convert.ToBase64String(byt);
                 var table = _nopDbContext2.ExecuteCmd(sql);
+
                 table.Columns.Add("inv_auth_id", typeof(string));
                 if (table.Rows.Count > 0)
                 {
@@ -1807,12 +1812,43 @@ namespace Search_Invoice.Services
             {
                 var userName = data["user_name"].ToString();
                 string sql = "SELECT * FROM inv_InvoiceAuth";
-                var where = $"WHERE ma_dt = '{userName}'";
+                var where = $"WHERE trang_thai_hd != 13 AND ma_dt = '{userName}'";
                 var orderBy = "ORDER BY inv_invoiceNumber";
                 var paging = "";
+
+
+
                 if (data.ContainsKey("filter"))
                 {
                     var filterObject = (JObject)data["filter"];
+
+                    //if (filterObject.ContainsKey("invoice_type"))
+                    //{
+                    //    var invoiceTypeObject = (JObject)filterObject["invoice_type"];
+                    //    var mauSo = invoiceTypeObject.ContainsKey("mau_so") ? invoiceTypeObject["mau_so"].ToString() : "";
+                    //    var kyHieu = invoiceTypeObject.ContainsKey("ky_hieu") ? invoiceTypeObject["ky_hieu"].ToString() : "";
+                    //    var invoiceTypeName = invoiceTypeObject.ContainsKey("type_name")
+                    //        ? invoiceTypeObject["type_name"].ToString()
+                    //        : "";
+                    //    if (string.IsNullOrEmpty(mauSo) || string.IsNullOrEmpty(kyHieu))
+                    //    {
+                    //        json.Add("error", "Chưa có thông tin mẫu số, ký hiệu");
+                    //        return json;
+                    //    }
+
+                    //    where += $" AND mau_hd = '{mauSo}' AND inv_invoiceSeries = '{kyHieu}' ";
+
+                    //    if (!string.IsNullOrEmpty(invoiceTypeName))
+                    //    {
+                    //        where += $" AND inv_invoiceType = '{invoiceTypeName}' ";
+                    //    }
+
+                    //}
+                    //else
+                    //{
+                    //    json.Add("error", "Chưa có thông tin mẫu số, ký hiệu");
+                    //    return json;
+                    //}
 
                     if (filterObject.ContainsKey("trang_thai_hoa_don"))
                     {
@@ -1902,6 +1938,195 @@ namespace Search_Invoice.Services
             }
         }
 
+        public JObject GetListInvoiceType(JObject data)
+        {
+            JObject json = new JObject();
+            try
+            {
+                var value = data.ContainsKey("value") ? data["value"].ToString() : "";
+                if (string.IsNullOrEmpty(value))
+                {
+                    json.Add("error", "Vui lòng nhập giá trị");
+                    return json;
+                }
+
+                var sql = "";
+                sql = value.Equals("all") ? "SELECT DISTINCT ma_loai, ten_loai FROM dbo.ctthongbao  " : $"SELECT ctthongbao_id, ma_loai, ten_loai, mau_so, ky_hieu FROM dbo.ctthongbao WHERE ma_loai = '{value}'";
+
+
+                var mst = data["mst"].ToString();
+                _nopDbContext2.setConnect(mst);
+
+                var table = _nopDbContext2.ExecuteCmd(sql);
+                if (table.Rows.Count > 0)
+                {
+                    var arr = JArray.FromObject(table);
+                    json.Add("ok", arr);
+                    return json;
+                }
+                json.Add("error", "Không tìm thấy dữ liệu");
+                return json;
+            }
+            catch (Exception e)
+            {
+                json.Add("error", e.Message);
+                return json;
+            }
+        }
+
+        public JObject Search(JObject data)
+        {
+            var json = new JObject();
+            try
+            {
+                var userName = data["user_name"].ToString();
+                var sqlSelect = "SELECT * FROM dbo.inv_InvoiceAuth ";
+                var where = $"WHERE trang_thai_hd != 13 AND ma_dt = '{userName}'";
+                var orderBy = "ORDER BY inv_invoiceNumber";
+
+                var index = 0;
+                var count = 50;
+                var start = 0;
+
+                var pagination = $" OFFSET {start} ROWS FETCH NEXT {count} ROW ONLY ";
+
+                var mst = data.ContainsKey("mst") ? data["mst"].ToString() : "";
+                if (string.IsNullOrEmpty(mst))
+                {
+                    json.Add("error", "Vui lòng nhập mã số thuế");
+                    return json;
+
+                }
+
+
+                //if (data.ContainsKey("invoice_type"))
+                //{
+                //    var invoiceTypeObject = (JObject)data["invoice_type"];
+                //    var mauSo = invoiceTypeObject.ContainsKey("mau_so") ? invoiceTypeObject["mau_so"].ToString() : "";
+                //    var kyHieu = invoiceTypeObject.ContainsKey("ky_hieu") ? invoiceTypeObject["ky_hieu"].ToString() : "";
+
+                //    if (string.IsNullOrEmpty(mauSo) || string.IsNullOrEmpty(kyHieu))
+                //    {
+                //        json.Add("error", "Chưa có thông tin mẫu số, ký hiệu");
+                //        return json;
+                //    }
+
+                //    where += $" AND mau_hd = '{mauSo.Trim()}' AND inv_invoiceSeries = '{kyHieu.Trim()}' ";
+
+                //    var invoiceTypeName = invoiceTypeObject.ContainsKey("type_name")
+                //        ? invoiceTypeObject["type_name"].ToString()
+                //        : "";
+
+                //    if (!string.IsNullOrEmpty(invoiceTypeName))
+                //    {
+                //        where += $" AND inv_invoiceType = '{invoiceTypeName}' ";
+                //    }
+                //}
+                //else
+                //{
+                //    json.Add("error", "Chưa có thông tin mẫu số, ký hiệu");
+                //    return json;
+                //}
+
+
+                var value = data.ContainsKey("value") ? data["value"].ToString() : "";
+                if (string.IsNullOrEmpty(value))
+                {
+                    json.Add("error", "Vui lòng nhập giá trị tìm kiếm");
+                    return json;
+
+                }
+                _nopDbContext2.setConnect(mst);
+
+
+                var tableColumn = _nopDbContext2.GetAllColumnsOfTable("inv_InvoiceAuth");
+                if (tableColumn.Rows.Count > 0)
+                {
+
+                    where += " AND ( ";
+                    var i = 0;
+                    foreach (DataRow row in tableColumn.Rows)
+                    {
+
+
+                        var dataType = !string.IsNullOrEmpty(row["DATA_TYPE"].ToString())
+                            ? row["DATA_TYPE"].ToString()
+                            : "string";
+                        var columnName = row["COLUMN_NAME"].ToString();
+                        if (columnName == "ma_dt")
+                        {
+                            where += "";
+                        }
+
+                        if (i == 0)
+                        {
+                            if (dataType.Equals("datetime") || dataType.Equals("date"))
+                            {
+                                where += $" CONVERT(DATE ,{columnName}) LIKE N'%{value}%' ";
+                            }
+                            else
+                            {
+                                where += $" {columnName} LIKE N'%{value}%' ";
+                            }
+                        }
+                        else
+                        {
+                            if (dataType.Equals("datetime") || dataType.Equals("date"))
+                            {
+                                where += $" OR CONVERT(DATE ,{columnName}) LIKE N'%{value}%' ";
+                            }
+                            else
+                            {
+                                where += $" OR {columnName} LIKE N'%{value}%' ";
+                            }
+                        }
+
+                        i++;
+
+                    }
+                    where += " ) ";
+
+                }
+                else
+                {
+                    json.Add("error", "Không tìm thấy dữ liệu");
+                    return json;
+                }
+
+
+
+                if (data.ContainsKey("paging"))
+                {
+                    var pagingObject = (JObject)data["paging"];
+                    index = pagingObject.ContainsKey("index") ? (int)pagingObject["index"] : 1;
+                    count = pagingObject.ContainsKey("count") ? (int)pagingObject["count"] : 50;
+                    start = index <= 1 ? 0 : (index - 1) * count;
+                    pagination = $" OFFSET {start} ROWS FETCH NEXT {count} ROW ONLY ";
+
+                }
+
+                var sqlBuilder = $"{sqlSelect} {where} {orderBy} {pagination}";
+
+
+
+                var table = _nopDbContext2.ExecuteCmd(sqlBuilder);
+                if (table.Rows.Count > 0)
+                {
+                    var arr = JArray.FromObject(table);
+                    json.Add("ok", arr);
+                    return json;
+                }
+                json.Add("error", "Không tìm thấy hóa đơn");
+                return json;
+
+            }
+            catch (Exception ex)
+            {
+                json.Add("error", ex.Message);
+                return json;
+            }
+        }
+
         private string GetFormatString(DataTable table, int formatDefault, string columnName)
         {
             string result = $"n{formatDefault}";
@@ -1940,5 +2165,7 @@ namespace Search_Invoice.Services
 
             return number;
         }
+
+
     }
 }

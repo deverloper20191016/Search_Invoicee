@@ -273,5 +273,52 @@ namespace Search_Invoice.Controllers
             }
             return _tracuuService2.GetListInvoice(model);
         }
+
+        [Authorize]
+        [HttpPost]
+        [Route("tracuu2/getlistinvoicetype")]
+        public JObject GetListInvoiceType(JObject model)
+        {
+            var userName = "";
+            var mst = "";
+            var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var listClaim = claimsIdentity.Claims.ToList();
+                userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
+                mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
+                {
+                    var json = new JObject();
+                    json.Add("error", "Vui lòng đăng nhập để tiếp tục");
+                    return json;
+                }
+
+                model.Add("user_name", userName);
+                model.Add("mst", mst);
+            }
+
+            return _tracuuService2.GetListInvoiceType(model);
+        }
+
+        [HttpPost]
+        [Route("tracuu2/search")]
+        [Authorize]
+        public JObject Search(JObject model)
+        {
+            var userName = "";
+            var mst = "";
+            var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
+            if (claimsIdentity != null)
+            {
+                var listClaim = claimsIdentity.Claims.ToList();
+                userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
+                mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+                model.Add("user_name", userName);
+                model.Add("mst", mst);
+            }
+            return _tracuuService2.Search(model);
+        }
     }
 }
