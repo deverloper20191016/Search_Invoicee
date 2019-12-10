@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.ExceptionHandling;
+using Search_Invoice.Authorization;
 
 namespace Search_Invoice
 {
@@ -17,6 +18,7 @@ namespace Search_Invoice
             config.EnableCors();
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.Filters.Add(new BaseAuthenticationAttribute());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

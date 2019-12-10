@@ -805,3 +805,35 @@ Stack Trace:
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
 
+********** 12/9/2019 16:56:44 **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /tracuu2/getinfo
+Stack Trace: 
+   at Search_Invoice.Authorization.BaseAuthenticationAttribute.OnAuthorization(HttpActionContext actionContext) in E:\Minvoice\CodeTeamWork\Search_Invoicee_20191012\Search_Invoicee\Search_Invoice\Authorization\BaseAuthenticationAttribute.cs:line 21
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+
+********** 12/9/2019 16:57:01 **********
+Exception Type: System.NullReferenceException
+Exception: Object reference not set to an instance of an object.
+Source: /tracuu2/getinfo
+Stack Trace: 
+   at Search_Invoice.Authorization.BaseAuthenticationAttribute.OnAuthorization(HttpActionContext actionContext) in E:\Minvoice\CodeTeamWork\Search_Invoicee_20191012\Search_Invoicee\Search_Invoice\Authorization\BaseAuthenticationAttribute.cs:line 21
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Dispatcher.HttpControllerDispatcher.<SendAsync>d__15.MoveNext()
+

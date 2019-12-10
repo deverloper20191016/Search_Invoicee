@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Search_Invoice.Authorization;
 
 namespace Search_Invoice.Controllers
 {
@@ -101,6 +102,7 @@ namespace Search_Invoice.Controllers
 
         [HttpPost]
         [Route("Tracuu2/ExportZipFileXML")]
+        [AllowAnonymous]
         public HttpResponseMessage ExportZipFileXML(JObject model)
         {
 
@@ -138,6 +140,87 @@ namespace Search_Invoice.Controllers
             return result;
         }
 
+        [HttpPost]
+        [Route("Tracuu2/ExportZipFile")]
+        [Authorize]
+        [BaseAuthentication]
+        public HttpResponseMessage ExportZipFile(JObject model)
+        {
+
+            HttpResponseMessage result = null;
+
+            try
+            {
+                string masothue = model["masothue"].ToString();
+                string sobaomat = model["sobaomat"].ToString();
+                string originalString = this.ActionContext.Request.RequestUri.OriginalString;
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+
+                var folder = System.Web.HttpContext.Current.Server.MapPath(path);
+
+                string fileName = "";
+                string key = "";
+                byte[] bytes = _tracuuService2.ExportZipFileXML(sobaomat, masothue, folder, ref fileName, ref key);
+
+                result = new HttpResponseMessage(HttpStatusCode.OK);
+
+                result.Content = new ByteArrayContent(bytes);
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
+                result.Content.Headers.ContentDisposition.FileName = fileName + ".zip";
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                result.Content.Headers.ContentLength = bytes.Length;
+            }
+            catch (Exception ex)
+            {
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                result.Content = new StringContent(ex.Message);
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+                result.Content.Headers.ContentLength = ex.Message.Length;
+            }
+
+            return result;
+        }
+
+        [HttpPost]
+        [Route("tracuu2/exportpdffile")]
+        [Authorize]
+        [BaseAuthentication]
+        public HttpResponseMessage ExportPdfFile(JObject model)
+        {
+
+            HttpResponseMessage result = null;
+
+            try
+            {
+                string masothue = model["masothue"].ToString();
+                string sobaomat = model["sobaomat"].ToString();
+                string originalString = this.ActionContext.Request.RequestUri.OriginalString;
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+
+                var folder = System.Web.HttpContext.Current.Server.MapPath(path);
+
+                string fileName = "";
+                string key = "";
+                byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, "pdf");
+
+                result = new HttpResponseMessage(HttpStatusCode.OK);
+
+                result.Content = new ByteArrayContent(bytes);
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
+                result.Content.Headers.ContentDisposition.FileName = fileName + ".pdf";
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                result.Content.Headers.ContentLength = bytes.Length;
+            }
+            catch (Exception ex)
+            {
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                result.Content = new StringContent(ex.Message);
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+                result.Content.Headers.ContentLength = ex.Message.Length;
+            }
+
+            return result;
+        }
 
         [HttpPost]
         [Route("tracuu2/gethtml")]
@@ -203,6 +286,7 @@ namespace Search_Invoice.Controllers
         [HttpPost]
         [Route("tracuu2/searchinvoice")]
         [Authorize]
+        [BaseAuthentication]
         public JObject SearchInvoice(JObject model)
         {
             var userName = "";
@@ -222,6 +306,7 @@ namespace Search_Invoice.Controllers
         [HttpGet]
         [Authorize]
         [Route("tracuu2/getinfo")]
+        [BaseAuthentication]
         public JObject GetInfoLogin()
         {
             var userName = "";
@@ -235,8 +320,11 @@ namespace Search_Invoice.Controllers
 
                 if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
                 {
-                    var json = new JObject();
-                    json.Add("error", "Vui lòng đăng nhập để tiếp tục");
+                    var json = new JObject
+                    {
+                        {"status_code", 401 },
+                        {"error", "Vui lòng đăng nhập để tiếp tục"}
+                    };
                     return json;
                 }
             }
@@ -248,6 +336,7 @@ namespace Search_Invoice.Controllers
         }
 
         [Authorize]
+        [BaseAuthentication]
         [Route("tracuu2/getlistinvoice")]
         [HttpPost]
         public JObject GetListInvoice(JObject model)
@@ -276,6 +365,7 @@ namespace Search_Invoice.Controllers
 
         [Authorize]
         [HttpPost]
+        [BaseAuthentication]
         [Route("tracuu2/getlistinvoicetype")]
         public JObject GetListInvoiceType(JObject model)
         {
@@ -303,6 +393,7 @@ namespace Search_Invoice.Controllers
         }
 
         [HttpPost]
+        [BaseAuthentication]
         [Route("tracuu2/search")]
         [Authorize]
         public JObject Search(JObject model)

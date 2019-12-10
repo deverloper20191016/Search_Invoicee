@@ -15,6 +15,16 @@ namespace Search_Invoice.Authorization
             context.Validated();
         }
 
+        public override Task AuthorizeEndpoint(OAuthAuthorizeEndpointContext context)
+        {
+            return base.AuthorizeEndpoint(context);
+        }
+
+        public override Task GrantAuthorizationCode(OAuthGrantAuthorizationCodeContext context)
+        {
+            return base.GrantAuthorizationCode(context);
+        }
+
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
 

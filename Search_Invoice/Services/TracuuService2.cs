@@ -167,7 +167,7 @@ namespace Search_Invoice.Services
                 string inv_InvoiceCode_id = tblInv_InvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
                 int trang_thai_hd = Convert.ToInt32(tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"]);
                 string inv_originalId = tblInv_InvoiceAuth.Rows[0]["inv_originalId"].ToString();
-                string user_name = _webHelper.GetUser();
+                //string user_name = _webHelper.GetUser();
                 // wb_user wbuser = invoiceDb.WbUsers.Where(c => c.username == user_name).FirstOrDefault<wb_user>();
                 DataTable tblCtthongbao = this._nopDbContext2.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + inv_InvoiceCode_id + "'");
                 string hang_nghin = ".";
@@ -1655,6 +1655,7 @@ namespace Search_Invoice.Services
                 var mst = data["mst"].ToString();
                 if (string.IsNullOrEmpty(mst))
                 {
+                    result.Add("status_code", 400);
                     result.Add("error", "Vui lòng nhập mã số thuế");
                     return result;
                 }
@@ -1705,6 +1706,7 @@ namespace Search_Invoice.Services
                         {
                             if (string.IsNullOrEmpty(soHd))
                             {
+                                result.Add("status_code", 400);
                                 result.Add("error", "Vui lòng nhập số hóa đơn");
                                 return result;
                             }
@@ -1717,6 +1719,7 @@ namespace Search_Invoice.Services
                             var kyHieu = data.ContainsKey("ky_hieu") ? data["ky_hieu"].ToString() : "";
                             if (string.IsNullOrEmpty(mauSo) || string.IsNullOrEmpty(kyHieu))
                             {
+                                result.Add("status_code", 400);
                                 result.Add("error", "Vui lòng nhập mẫu số, ký hiệu");
                                 return result;
                             }
@@ -1735,6 +1738,7 @@ namespace Search_Invoice.Services
                             var id = data.ContainsKey("id") ? data["id"].ToString() : "";
                             if (string.IsNullOrEmpty(id))
                             {
+                                result.Add("status_code", 400);
                                 result.Add("error", "Vui lòng nhập id");
                                 return result;
                             }
@@ -1765,14 +1769,17 @@ namespace Search_Invoice.Services
                     }
 
                     var arr = JArray.FromObject(table);
+                    result.Add("status_code", 200);
                     result.Add("ok", arr);
                     return result;
                 }
+                result.Add("status_code", 400);
                 result.Add("error", "Không tìm thấy hóa đơn");
                 return result;
             }
             catch (Exception ex)
             {
+                result.Add("status_code", 400);
                 result.Add("error", ex.Message);
                 return result;
             }
@@ -1782,24 +1789,34 @@ namespace Search_Invoice.Services
         {
             var traCuu = new TracuuHDDTContext();
             var user = traCuu.inv_users.FirstOrDefault(x => x.username.Replace("-", "").Equals(userName.Replace("-", "")) && x.mst.Replace("-", "").Equals(mst.Replace("-", "")));
+            _nopDbContext2.setConnect(mst);
+            var infoTable = _nopDbContext2.ExecuteCmd($"SELECT TOP 1 * FROM dmdt WHERE ma_dt = '{userName}'");
+            var tenDoiTuong = "";
+            if (infoTable.Rows.Count > 0)
+            {
+                tenDoiTuong = infoTable.Rows[0]["ten_dt"].ToString();
+            }
             var boolCheck = user != null && !string.IsNullOrEmpty(user.inv_user_id.ToString());
             if (boolCheck)
             {
                 return new JObject
                 {
+                    {"status_code", 200 },
                     {"ok", new JObject
                     {
                         {"id", user.inv_user_id },
                         {"username", user.username },
                         {"mst", user.mst },
                         {"email", user.email },
-                        {"ma_doi_tuong", user.ma_dt }
+                        {"ma_doi_tuong", user.ma_dt },
+                        {"ten_doi_tuong", tenDoiTuong }
                     } }
                 };
             }
 
             return new JObject
             {
+                {"status_code", 400 },
                 {"error",  $"Không tìm thấy thông tin tài khoản: {userName}, Mã số thuế: {mst}"}
             };
 
@@ -1858,8 +1875,6 @@ namespace Search_Invoice.Services
 
                     if (filterObject.ContainsKey("ngay_hoa_don"))
                     {
-
-
                         var ngayHoaDonObject = (JObject)filterObject["ngay_hoa_don"];
 
                         var tuNgay = ngayHoaDonObject.ContainsKey("tu_ngay") ? ngayHoaDonObject["tu_ngay"].ToString() : "";
@@ -1916,23 +1931,25 @@ namespace Search_Invoice.Services
                         if (table.Rows.Count > 0)
                         {
                             var arr = JArray.FromObject(table);
+                            json.Add("status_code", 200);
                             json.Add("ok", arr);
                             return json;
                         }
+                        json.Add("status_code", 404);
                         json.Add("error", "Không tìm thấy hóa đơn");
                         return json;
                     }
-
+                    json.Add("status_code", 400);
                     json.Add("error", "Chưa có thông tin phân trang");
                     return json;
                 }
-
+                json.Add("status_code", 400);
                 json.Add("error", "Chưa có thông tin tìm kiếm");
                 return json;
             }
             catch (Exception ex)
             {
-
+                json.Add("status_code", 400);
                 json.Add("error", ex.Message);
                 return json;
             }
@@ -1946,6 +1963,7 @@ namespace Search_Invoice.Services
                 var value = data.ContainsKey("value") ? data["value"].ToString() : "";
                 if (string.IsNullOrEmpty(value))
                 {
+                    json.Add("status_code", 400);
                     json.Add("error", "Vui lòng nhập giá trị");
                     return json;
                 }
@@ -1961,14 +1979,17 @@ namespace Search_Invoice.Services
                 if (table.Rows.Count > 0)
                 {
                     var arr = JArray.FromObject(table);
+                    json.Add("status_code", 200);
                     json.Add("ok", arr);
                     return json;
                 }
+                json.Add("status_code", 400);
                 json.Add("error", "Không tìm thấy dữ liệu");
                 return json;
             }
             catch (Exception e)
             {
+                json.Add("status_code", 400);
                 json.Add("error", e.Message);
                 return json;
             }
@@ -1993,6 +2014,7 @@ namespace Search_Invoice.Services
                 var mst = data.ContainsKey("mst") ? data["mst"].ToString() : "";
                 if (string.IsNullOrEmpty(mst))
                 {
+                    json.Add("status_code", 400);
                     json.Add("error", "Vui lòng nhập mã số thuế");
                     return json;
 
@@ -2032,6 +2054,7 @@ namespace Search_Invoice.Services
                 var value = data.ContainsKey("value") ? data["value"].ToString() : "";
                 if (string.IsNullOrEmpty(value))
                 {
+                    json.Add("status_code", 400);
                     json.Add("error", "Vui lòng nhập giá trị tìm kiếm");
                     return json;
 
@@ -2089,6 +2112,7 @@ namespace Search_Invoice.Services
                 }
                 else
                 {
+                    json.Add("status_code", 404);
                     json.Add("error", "Không tìm thấy dữ liệu");
                     return json;
                 }
@@ -2113,15 +2137,18 @@ namespace Search_Invoice.Services
                 if (table.Rows.Count > 0)
                 {
                     var arr = JArray.FromObject(table);
+                    json.Add("status_code", 200);
                     json.Add("ok", arr);
                     return json;
                 }
+                json.Add("status_code", 404);
                 json.Add("error", "Không tìm thấy hóa đơn");
                 return json;
 
             }
             catch (Exception ex)
             {
+                json.Add("status_code", 400);
                 json.Add("error", ex.Message);
                 return json;
             }
