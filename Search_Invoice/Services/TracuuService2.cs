@@ -320,6 +320,21 @@ namespace Search_Invoice.Services
                         report.Parameters["NGAY_IN_CDOI"].Value = DateTime.Now;
                         report.Parameters["NGAY_IN_CDOI"].Visible = true;
                     }
+
+                    if (report.Parameters["LINK_TRACUU"] != null)
+                    {
+                        var sqlQrCodeLink = "SELECT TOP 1 * FROM wb_setting WHERE ma = 'QR_CODE_LINK'";
+                        var tblQrCodeLink = _nopDbContext2.ExecuteCmd(sqlQrCodeLink);
+                        if (tblQrCodeLink.Rows.Count > 0)
+                        {
+                            var giatri = tblQrCodeLink.Rows[0]["gia_tri"].ToString();
+                            if (giatri.Equals("C"))
+                            {
+                                report.Parameters["LINK_TRACUU"].Value = $"http://{masothue.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={inv_InvoiceAuth_id}";
+                                report.Parameters["LINK_TRACUU"].Visible = true;
+                            }
+                        }
+                    }
                 }
 
                 var inv_currencyCode = tblInv_InvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
@@ -857,7 +872,7 @@ namespace Search_Invoice.Services
                 string inv_InvoiceCode_id = tblInv_InvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
                 int trang_thai_hd = Convert.ToInt32(tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"]);
                 string inv_originalId = tblInv_InvoiceAuth.Rows[0]["inv_originalId"].ToString();
-                string user_name = _webHelper.GetUser();
+                //string user_name = _webHelper.GetUser();
                 // wb_user wbuser = invoiceDb.WbUsers.Where(c => c.username == user_name).FirstOrDefault<wb_user>();
                 DataTable tblCtthongbao = this._nopDbContext2.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + inv_InvoiceCode_id + "'");
                 string hang_nghin = ".";
@@ -1009,6 +1024,21 @@ namespace Search_Invoice.Services
                     {
                         report.Parameters["NGAY_IN_CDOI"].Value = DateTime.Now;
                         report.Parameters["NGAY_IN_CDOI"].Visible = true;
+                    }
+                }
+
+                if (report.Parameters["LINK_TRACUU"] != null)
+                {
+                    var sqlQrCodeLink = "SELECT TOP 1 * FROM wb_setting WHERE ma = 'QR_CODE_LINK'";
+                    var tblQrCodeLink = _nopDbContext2.ExecuteCmd(sqlQrCodeLink);
+                    if (tblQrCodeLink.Rows.Count > 0)
+                    {
+                        var giatri = tblQrCodeLink.Rows[0]["gia_tri"].ToString();
+                        if (giatri.Equals("C"))
+                        {
+                            report.Parameters["LINK_TRACUU"].Value = $"http://{masothue.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={inv_InvoiceAuth_id}";
+                            report.Parameters["LINK_TRACUU"].Visible = true;
+                        }
                     }
                 }
 
@@ -1758,6 +1788,8 @@ namespace Search_Invoice.Services
                 var table = _nopDbContext2.ExecuteCmd(sql);
 
                 table.Columns.Add("inv_auth_id", typeof(string));
+                table.Columns.Add("masothue", typeof(string));
+                table.Columns.Add("url_preview", typeof(string));
                 if (table.Rows.Count > 0)
                 {
                     foreach (DataRow row in table.Rows)
@@ -1765,6 +1797,8 @@ namespace Search_Invoice.Services
                         row.BeginEdit();
                         //row["a"] = connectionString;
                         row["inv_auth_id"] = b;
+                        row["masothue"] = mst;
+                        row["url_preview"] = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={row["inv_invoiceAuth_id"].ToString()}";
                         row.EndEdit();
                     }
 
@@ -1925,11 +1959,27 @@ namespace Search_Invoice.Services
                         var sqlBuilder = $"{sql} {where} {orderBy} {paging}";
 
                         var mst = data["mst"].ToString();
+
                         _nopDbContext2.setConnect(mst);
 
                         var table = _nopDbContext2.ExecuteCmd(sqlBuilder);
+
+
+
                         if (table.Rows.Count > 0)
                         {
+                            table.Columns.Add("masothue", typeof(string));
+                            table.Columns.Add("url_preview", typeof(string));
+
+                            foreach (DataRow row in table.Rows)
+                            {
+                                row.BeginEdit();
+                                //row["a"] = connectionString;
+                                row["masothue"] = mst;
+                                row["url_preview"] = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={row["inv_invoiceAuth_id"].ToString()}";
+                                row.EndEdit();
+                            }
+
                             var arr = JArray.FromObject(table);
                             json.Add("status_code", 200);
                             json.Add("ok", arr);
@@ -2136,6 +2186,18 @@ namespace Search_Invoice.Services
                 var table = _nopDbContext2.ExecuteCmd(sqlBuilder);
                 if (table.Rows.Count > 0)
                 {
+                    table.Columns.Add("masothue", typeof(string));
+                    table.Columns.Add("url_preview", typeof(string));
+
+                    foreach (DataRow row in table.Rows)
+                    {
+                        row.BeginEdit();
+                        //row["a"] = connectionString;
+                        row["masothue"] = mst;
+                        row["url_preview"] = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={row["inv_invoiceAuth_id"].ToString()}";
+                        row.EndEdit();
+                    }
+
                     var arr = JArray.FromObject(table);
                     json.Add("status_code", 200);
                     json.Add("ok", arr);
