@@ -62,6 +62,11 @@ namespace Search_Invoice.Controllers
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 string masothue = model["masothue"].ToString();
+                bool inchuyendoi = false;
+                if (model.ContainsKey("inchuyendoi"))
+                {
+                    inchuyendoi = true;
+                }
                 //if (_tracuuService2 == null)
                 //{
                 //    throw new Exception("Không tồn tại mst:");
@@ -72,7 +77,7 @@ namespace Search_Invoice.Controllers
                 //string path = "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
-                byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type);
+                byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type, inchuyendoi);
 
                 result = new HttpResponseMessage(HttpStatusCode.OK);
                 result.Content = new ByteArrayContent(bytes);

@@ -11,17 +11,14 @@
     }
 
     .modal-dialog {
-        /*height: 80% !important;*/
         padding-top: 10%;
     }
 
     .modal-content {
-        /*height: 100% !important;*/
         overflow: visible;
     }
 
     .modal-body {
-        /*height: 70%;*/
         overflow: auto;
     }
 </style>
@@ -141,44 +138,6 @@
                         </div>
                     </div>
                 </div>
-
-                @*@using (Html.BeginForm("UploadInv", "TracuuFile", FormMethod.Post, new { enctype = "multipart/form-data" , target = "_blank" })) {*@
-                @*<div class="white-box">
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <label for="file">File hóa đơn (*.zip)</label>
-                                <div class="dropify-wrapper">
-                                    <div class="dropify-message">
-                                        <span class="file-icon"></span>
-                                        <p>Drag and drop a file here or click</p>
-                                        <p class="dropify-error">Ooops, something wrong appended.</p>
-                                    </div>
-                                    <div class="dropify-loader"></div>
-                                    <div class="dropify-errors-container">
-                                        <ul></ul>
-                                    </div>
-                                    <input type="file" name="file" id="input-file-now" class="dropify">
-                                    <button type="button" class="dropify-clear">Remove</button>
-                                    <div class="dropify-preview">
-                                        <span class="dropify-render"></span>
-                                        <div class="dropify-infos">
-                                            <div class="dropify-infos-inner">
-                                                <p class="dropify-filename"><span class="file-icon"></span> <span class="dropify-filename-inner"></span></p>
-                                                <p class="dropify-infos-message">Drag and drop or click to replace</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group text-center m-t-20">
-                            <div class="col-xs-12">
-                                <button class="btn btn-danger btn-sm btn-block text-uppercase waves-effect waves-light" disabled="disabled" id="btnUpFile" type="submit"> Xem hóa đơn</button>
-
-                            </div>
-                        </div>
-                    </div>*@
-                @* }*@
             </div>
             <!--</em>-->
             <!--</p>-->
@@ -250,8 +209,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
@@ -270,9 +227,7 @@
                     </div>
                 </div>
             </section>
-
     </article>
-
     <!-- #post-## -->
 </main>
 <!-- #main -->
@@ -312,44 +267,13 @@
                 <div class="form-group">
                     @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
                 </div>
-                <!-- <div class="form-group">
-                  <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                  <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                </div> -->
-                @*<div class="checkboxx">
-                      <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                      <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
-                    </div>*@
                 <div class="form-group form-button">
                     <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
                 </div>
             }
-            @*<form method="POST" class="register-form" id="register-form">
-                  <div class="form-group">
-                    <input type="text" name="name" id="name" placeholder="Mã số thuế"/>
-                  </div>
-                  <div class="form-group">
-                    <input type="text" name="email" id="email" placeholder="Tên đăng nhập"/>
-                  </div>
-                  <div class="form-group">
-                    <input type="password" name="pass" id="pass" placeholder="Mật khẩu"/>
-                  </div>
-                  <!-- <div class="form-group">
-                    <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                    <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                  </div> -->
-                  <div class="checkboxx">
-                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term"/>
-                    <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản <!-- <a href="#" class="term-service">Terms of service</a> --></label>
-                  </div>
-                  <div class="form-group form-button">
-                    <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600"/>
-                  </div>
-                </form>*@
         </div>
     </aside>
     <aside id="media_image" class="widget widget_media_image">
-
         <img width="300" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/img2.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
     </aside>
 </div>
@@ -358,16 +282,15 @@
 
 </div>
 
-
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog" style="margin-left: 250px; margin-top: 0px; padding-top: 0">
-
         <!-- Modal content-->
         <div class="modal-content" style="width: 1000px">
             <div class="modal-header" style="height: 70px">
                 <div>
-                    <a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+                  <a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+                  <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển Đổi</a>
                     <a href="#" type="button" id="btn-dowd-zip" class="btn btn-info" style="display: none; color: white" onclick="ExportZipXML()" title="Tải XML"><i class="fas fa-download"></i> Tải XML</a>
                     <a href="#" type="button" id="btn-buyer-sign" class="btn btn-success" style="display: none; color: white" onclick="buyerSignature()" title="Ký hóa đơn"><i class="fas fa-signature"></i> Ký hóa đơn</a>
                     <a href="#" class="btn" id="btn-download-html" style="display: none; color: #6B6B6B; background-color:#EFEFEF" title="Đọc Chữ Ký Số" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Đọc CKS</a>
@@ -385,26 +308,16 @@
                 <div id="abcdefg" hidden></div>
                 <div id="ecd" hidden></div>
                 <div id="htm-content" class="text-center">
-
                 </div>
-
             </div>
-            @*<div class="modal-footer">
-
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                </div>*@
         </div>
-
     </div>
 </div>
-
-
 
 <script>
     function handleFileSelect(evt) {
         var files = evt.target.files;
         var arr = ['application/zip', 'application/octet-stream', 'application/x-zip-compressed', 'multipart/x-zip'];
-
         if (arr.indexOf(files[0].type) === -1) {
             bootbox.alert("Định dạng File không đúng (*.zip) !");
             return;
@@ -441,7 +354,6 @@
         });
         var interVal = setTimeout(function (){
             var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '","type":"' + type + '" }';
-            
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/Tracuu2/PrintInvoice', true);
             xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -502,6 +414,90 @@
                 }
             };
         }, 1000);
+    }
+
+    function PrintInvoiceChuyenDoiPDF() {
+      var mst = $("#mst_html").val();
+      var sbm = $("#sobaomat_html").val();
+      var inchuyendoi = 1;
+      var type = "PDF";
+      bootbox.dialog({
+        title: "Đang in hóa đơn ...",
+        message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
+        buttons: {
+          cancel: {
+            label: '<i class="fa fa-times"></i> Hủy',
+            className: 'btn-danger',
+            callback: function () {
+              clearTimeout(interVal);
+              bootbox.hideAll();
+            }
+          }
+        }
+      });
+      var interVal = setTimeout(function () {
+        var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '","type":"' + type + '", "inchuyendoi":"' + inchuyendoi + '" }';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/Tracuu2/PrintInvoice', true);
+        xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+        xhr.responseType = 'arraybuffer';
+        xhr.send(model);
+        xhr.onload = function () {
+          if (this.status === 200) {
+            var filename = "";
+            var disposition = xhr.getResponseHeader('Content-Disposition');
+            if (disposition && disposition.indexOf('attachment') !== -1) {
+              var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+              var matches = filenameRegex.exec(disposition);
+              if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+            }
+            var type = xhr.getResponseHeader('Content-Type');
+            var blob = typeof File === 'function' ? new File([this.response], filename, {
+              type: type
+            }) : new Blob([this.response], {
+              type: type
+            });
+
+            if (typeof window.navigator.msSaveBlob !== 'undefined') {
+              window.navigator.msSaveBlob(blob, filename);
+            } else {
+              var URL = window.URL || window.webkitURL;
+              var downloadUrl = URL.createObjectURL(blob);
+
+              if (filename) {
+                var a = document.createElement("a");
+                if (typeof a.download === 'undefined') {
+                  bootbox.hideAll();
+                  clearTimeout(interVal);
+                  var newWindow = window.open('/');
+                  newWindow.onload = () => {
+                    newWindow.location = downloadUrl;
+                  };
+                } else {
+                  bootbox.hideAll();
+                  clearTimeout(interVal);
+                  var newWindow = window.open('/');
+                  newWindow.onload = () => {
+                    newWindow.location = downloadUrl;
+                  };
+                }
+              } else {
+                bootbox.hideAll();
+                clearTimeout(interVal);
+                var newWindow = window.open('/');
+                newWindow.onload = () => {
+                  newWindow.location = downloadUrl;
+                };
+              }
+            }
+          } else {
+            bootbox.hideAll();
+            clearTimeout(interVal);
+            bootbox.alert("Có lỗi xảy ra !");
+          }
+        };
+      }, 1000);
     }
 </script>
 <script>
@@ -654,9 +650,6 @@
                                     '<td>' + moment(result.data[i].inv_invoiceIssuedDate).format("DD/MM/YYYY") + '</td>' +
                                     '<td>' + tien + '</td>' +
                                     '<td>' +
-                                    //'<a href="#" onClick = "PrintInvoicePDF(\'' + result.data[i].sobaomat.toString() + '\',\'' + result.data[i].mst.toString() + '\',\'PDF\');" data-toggle="tooltip" data-placement="top" title="Dowload File PDF"><i class="fas fa-file-pdf text-info m-r-10"></i></button>' +
-                                    //'<a href="#" onClick = "ExportZipXML(\'' + result.data[i].sobaomat.toString() + '\',\'' + result.data[i].mst.toString() + '\');" data-toggle="tooltip" data-placement="top" title="Dowload File .Zip XML"><i class="fas fa-file-archive text-danger m-r-10"></i></a>' +
-                                    //'<a href="#" onClick = "PrintInvoicePDF(\'' + result.data[i].sobaomat.toString() + '\',\'' + result.data[i].mst.toString() + '\',\'Html\');" data-toggle="tooltip" data-placement="top" title="Dowload HTML"><i class="fab fa-html5 text-success"></i></a>'
                                     '<a href="#" onClick = "displayInvoice(\'' + result.data[i].sobaomat.toString() + '\',\'' + result.data[i].mst.toString() + '\',\'' + result.data[i].inv_InvoiceAuth_id.toString() + '\',\'' + result.data[i].inv_auth_id.toString() + '\');" data-toggle="modal" data-target="#myModal" data-placement="top" title="Xem hóa đơn"><i class="fas fa-search text-success"></i></a>'
                                     +
                                     '</td></tr>');
@@ -745,14 +738,12 @@
                                     newWindow.onload = () => {
                                         newWindow.location = downloadUrl;
                                     };
-                                    //window.location = downloadUrl;
                                 } else {
                                     bootbox.hideAll();
                                     var newWindow = window.open('/');
                                     newWindow.onload = () => {
                                         newWindow.location = downloadUrl;
                                     };
-                                    //window.location = downloadUrl;
                                 }
                             } else {
                                 bootbox.hideAll();
@@ -761,7 +752,6 @@
                                     newWindow.location = downloadUrl;
 
                                 };
-                                //window.location = downloadUrl;
                             }
                         }
                     } else {
@@ -771,15 +761,10 @@
                             bootbox.alert(a.error);
                             bootbox.hideAll();
                         }
-                        /// test
-                        //kjkjk
-                        // cường commit
                     }
                 };
             },
               1000);
-
-
         });
 
         $('input[type=radio][name=radio]').change(function () {
@@ -814,6 +799,7 @@
         $("#btn-download-html").hide();
         $("#btn-dowd-zip").hide();
         $("#btn-download-pdf").hide();
+        $("#btn-download-pdf-inchuyendoi").hide();
 
         $.ajax({
             url: "/Tracuu2/PrintInvoicePdf",
@@ -827,9 +813,6 @@
                     objbuilder += ('<object width="100%" height="800px" data="data:application/pdf;base64,');
                     objbuilder += (response.ok);
                     objbuilder += ('" type="application/pdf" class="internal">');
-                    //objbuilder += ('<embed width="100%" height="520px" src="data:application/pdf;base64,');
-                    //objbuilder += (response.ok);
-                    //objbuilder += ('" type="application/pdf" />');
                     objbuilder += ('</object>');
 
                     $("#htm-content").html('');
@@ -844,12 +827,14 @@
                     $("#btn-download-html").show();
                     $("#btn-dowd-zip").show();
                     $("#btn-download-pdf").show();
+                    $("#btn-download-pdf-inchuyendoi").show();
                 } else {
                     $("#htm-content").html(response.error);
                     $("#btn-buyer-sign").hide();
                     $("#btn-dowdload-html").hide();
                     $("#btn-dowd-zip").hide();
                     $("#btn-download-pdf").hide();
+                    $("#btn-download-pdf-inchuyendoi").hide();
                 }
             }
         });
@@ -857,7 +842,6 @@
 
     function buyerSignature() {
         debugger;
-
         var SignalrConnection;
         $.connection.hub.url = "http://localhost:19898/signalr";
         SignalrConnection = $.connection.invoiceHub;
@@ -866,7 +850,6 @@
             bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra và tải lại trang web để thực hiện chức năng");
             return false;
         }
-
 
         $.connection.hub.start().done(function () {
             var mst = $("#mst_html").val();
@@ -895,7 +878,6 @@
                             message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
                             callback: function () {
                               debugger;
-                              //$('#myModal').modal('hide');
                               $("#myModal").removeClass("in");
                               $(".modal-backdrop").remove();
                               $("#myModal").hide();
@@ -918,8 +900,6 @@
           .fail(function () {
               bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
           });
-
-
     }
 
     function readSignature(id) {
