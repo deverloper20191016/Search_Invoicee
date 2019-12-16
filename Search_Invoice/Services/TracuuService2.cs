@@ -1875,9 +1875,9 @@ namespace Search_Invoice.Services
                     //    return json;
                     //}
 
-                    if (filterObject.ContainsKey("trang_thai_hoa_don"))
+                    if (filterObject.ContainsKey("trang_thai_hd"))
                     {
-                        var trangThaiHoaDon = filterObject.ContainsKey("trang_thai_hoa_don") ? filterObject["trang_thai_hoa_don"] : 1;
+                        var trangThaiHoaDon = filterObject.ContainsKey("trang_thai_hd") ? filterObject["trang_thai_hd"] : 1;
                         where += $" AND trang_thai_hd = {trangThaiHoaDon}";
                     }
 
