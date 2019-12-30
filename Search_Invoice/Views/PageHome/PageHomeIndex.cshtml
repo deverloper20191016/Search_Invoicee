@@ -644,7 +644,7 @@
                             $("#tableInvoice tbody>tr").remove();
 
                             for (var i = 0 ; i < result.data.length ; i++) {
-                                var tien = result.data[i].inv_TotalAmount == null ? '' : result.data[i].inv_TotalAmount.toLocaleString();
+                              var tien = result.data[i].inv_TotalAmount == null ? result.data[i].sum_tien.toLocaleString() : result.data[i].inv_TotalAmount.toLocaleString();
                                 $("#tableInvoice").find('tbody')
                                   .append('<tr><td>' + result.data[i].mau_hd + '</td><td>' + result.data[i].inv_invoiceSeries + '</td><td>' + result.data[i].inv_invoiceNumber + '</td>' +
                                     '<td>' + moment(result.data[i].inv_invoiceIssuedDate).format("DD/MM/YYYY") + '</td>' +

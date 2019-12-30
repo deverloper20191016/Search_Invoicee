@@ -86,9 +86,13 @@ namespace Search_Invoice.Services
 
                 string sobaomat = model["sobaomat"].ToString();
                 _nopDbContext2.setConnect(mst);
-                DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
+                DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
                 dt.Columns.Add("mst", typeof(string));
                 dt.Columns.Add("inv_auth_id", typeof(string));
+                dt.Columns.Add("sum_tien", typeof(decimal));
+
+                var sumTien = _nopDbContext2.ExecuteCmd($"SELECT SUM(ISNULL(inv_TotalAmount, 0)) AS sum_total_amount FROM dbo.inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '{dt.Rows[0]["inv_InvoiceAuth_id"].ToString()}'");
+
 
                 var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
                 byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
@@ -100,6 +104,7 @@ namespace Search_Invoice.Services
                     row["mst"] = mst;
                     //row["a"] = connectionString;
                     row["inv_auth_id"] = b;
+                    row["sum_tien"] = sumTien.Rows[0]["sum_total_amount"];
                     row.EndEdit();
                 }
                 if (dt.Rows.Count > 0)
