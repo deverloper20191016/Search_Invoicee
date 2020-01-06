@@ -250,6 +250,8 @@ namespace Search_Invoice.Controllers
         }
 
 
+
+
         [HttpPost]
         [Route("Tracuu2/PrintInvoicePdf")]
         [AllowAnonymous]

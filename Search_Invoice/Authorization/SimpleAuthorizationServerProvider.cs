@@ -36,24 +36,24 @@ namespace Search_Invoice.Authorization
             var mst = param[0].Replace("-", "");
             var passWord = context.Password;
 
-            if (string.IsNullOrEmpty(mst)||string.IsNullOrEmpty(userName)||string.IsNullOrEmpty(passWord))
+            if (string.IsNullOrEmpty(mst) || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord))
             {
                 context.SetError("error", "Nhập đủ thông tin đăng nhập");
                 return;
             }
-           
+
             var traCuu = new TracuuHDDTContext();
-            var user = traCuu.inv_users.FirstOrDefault(x => x.username.Replace("-", "").Equals(userName));
+            var user = traCuu.inv_users.FirstOrDefault(x => x.username.Replace("-", "").Equals(userName.Replace("-", "")) & x.mst.Replace("-", "").Equals(mst.Replace("-", "")));
             if (user == null)
             {
                 context.SetError("error_login", $"Tài khoản {context.UserName} không tồn tại");
                 return;
             }
-            if (!user.mst.Replace("-", "").Equals(mst))
-            {
-                context.SetError("error_login", $"Không tìm thấy tài khoản {context.UserName} với mã số thuế {param[0]}");
-                return;
-            }
+            //if (!user.mst.Replace("-", "").Equals(mst))
+            //{
+            //    context.SetError("error_login", $"Không tìm thấy tài khoản {context.UserName} với mã số thuế {param[0]}");
+            //    return;
+            //}
 
             PassCommand crypt = new PassCommand(user.password);
 

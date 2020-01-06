@@ -1255,6 +1255,8 @@ namespace Search_Invoice.Services
                         page.AssignWatermark(pmk);
                     }
 
+
+
                     string fileName = folder + "\\BienBanXoaBo.repx";
                     XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
 

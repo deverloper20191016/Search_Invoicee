@@ -298,7 +298,7 @@ namespace Search_Invoice.Services
                 if (tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"].ToString() == "7")
                 {
 
-                    Bitmap bmp = ReportUtil.DrawDiagonalLine(report);
+                    var bmp = ReportUtil.DrawDiagonalLine(report);
                     int pageCount = report.Pages.Count;
 
 
@@ -375,7 +375,7 @@ namespace Search_Invoice.Services
 
                 if (trang_thai_hd == 13 || trang_thai_hd == 17)
                 {
-                    Bitmap bmp = ReportUtil.DrawDiagonalLine(report);
+                    var bmp = ReportUtil.DrawDiagonalLine(report);
                     int pageCount = report.Pages.Count;
 
                     for (int i = 0; i < pageCount; i++)
