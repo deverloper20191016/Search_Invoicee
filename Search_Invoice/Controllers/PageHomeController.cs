@@ -15,12 +15,18 @@ namespace Search_Invoice.Controllers
     public class PageHomeController : Controller
     {
         private INopDbContext _nopDbContext;
-       
-        // GET: PageHome
 
+        // GET: PageHome
         [AllowAnonymous]
-        public ActionResult PageHomeIndex()
+        public ActionResult PageHomeIndex(string mst, string sobaomat)
         {
+            TracuuModels lst = new TracuuModels()
+            {
+                mst = mst,
+                sobaomat = sobaomat
+            };
+
+            ViewBag.Tracuu = lst;
             return View();
         }
         [AllowAnonymous]
