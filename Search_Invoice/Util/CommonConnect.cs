@@ -25,7 +25,14 @@ namespace Search_Invoice.Util
             }
             else
             {
-                invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                if (inv_admin.ConnectString.StartsWith("Data Source"))
+                {
+                    invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                }
+                else
+                {
+                    invoiceDbContext = new InvoiceDbContext(EncodeXML.Decrypt(inv_admin.ConnectString, "NAMPV18081202"));
+                }
             }
         }
         public InvoiceDbContext GetInvoiceDb()

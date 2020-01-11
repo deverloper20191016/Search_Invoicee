@@ -8,6 +8,7 @@ using Search_Invoice.Data;
 using Search_Invoice.Data.Domain;
 using System.Threading.Tasks;
 using System.Data.Common;
+using Search_Invoice.Util;
 
 namespace Search_Invoice.Services
 {
@@ -50,7 +51,14 @@ namespace Search_Invoice.Services
                 }
                 else
                 {
-                    invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                    if (inv_admin.ConnectString.StartsWith("Data Source"))
+                    {
+                        invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                    }
+                    else
+                    {
+                        invoiceDbContext = new InvoiceDbContext(EncodeXML.Decrypt(inv_admin.ConnectString, "NAMPV18081202"));
+                    }
                 }
             }
 
@@ -77,7 +85,15 @@ namespace Search_Invoice.Services
             }
             else
             {
-                invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                //invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                if (inv_admin.ConnectString.StartsWith("Data Source"))
+                {
+                    invoiceDbContext = new InvoiceDbContext(inv_admin.ConnectString);
+                }
+                else
+                {
+                    invoiceDbContext = new InvoiceDbContext(EncodeXML.Decrypt(inv_admin.ConnectString, "NAMPV18081202"));
+                }
             }
         } 
         public InvoiceDbContext GetInvoiceDb()
