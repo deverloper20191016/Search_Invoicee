@@ -32,15 +32,22 @@ namespace Search_Invoice
         // check cookie đăng nhập
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
-            var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
+            try
             {
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket != null && !authTicket.Expired)
+                var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                if (authCookie != null)
                 {
-                    var roles = authTicket.UserData.Split(',');
-                    HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null && !authTicket.Expired)
+                    {
+                        var roles = authTicket.UserData.Split(',');
+                        HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                FormsAuthentication.SignOut();
             }
         }
         protected void Application_BeginRequest(Object sender, EventArgs e)

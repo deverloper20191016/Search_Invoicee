@@ -107,7 +107,7 @@ namespace Search_Invoice.Util
 
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
             var inv_admin = tracuu.Inv_admin.Where(c => c.MST == mst || c.alias == mst).FirstOrDefault<inv_admin>();
-            InvoiceDbContext invoiceContext = new InvoiceDbContext(inv_admin.ConnectString);
+            InvoiceDbContext invoiceContext = new InvoiceDbContext(EncodeXML.Decrypt(inv_admin.ConnectString, "NAMPV18081202"));
 
             Guid inv_InvoiceAuth_id = Guid.Parse(input);
             Inv_InvoiceAuth invoice = (from c in invoiceContext.Inv_InvoiceAuths
