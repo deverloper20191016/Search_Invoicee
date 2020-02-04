@@ -347,7 +347,9 @@ namespace Search_Invoice.Services
                         quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
                             ? rowDmnt["inv_quantity"].ToString()
                             : "0");
-                        quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+
+                        //quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+                        quantityFomart = GetFormatString(quantityDmnt);
 
                     }
 
@@ -356,7 +358,8 @@ namespace Search_Invoice.Services
                         unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
                             ? rowDmnt["inv_unitPrice"].ToString()
                             : "0");
-                        unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+                        //unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+                        unitPriceFomart = GetFormatString( unitPriceDmnt);
 
                     }
 
@@ -366,8 +369,8 @@ namespace Search_Invoice.Services
                         totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
                             ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
                             : "0");
-                        totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
-
+                        //totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+                        totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
                     }
 
                     if (tbldmnt.Columns.Contains("inv_TotalAmount"))
@@ -375,7 +378,8 @@ namespace Search_Invoice.Services
                         totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
                             ? rowDmnt["inv_TotalAmount"].ToString()
                             : "0");
-                        totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+                        //totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+                        totalAmountFomart = GetFormatString(totalAmountDmnt);
 
                     }
 
@@ -1042,7 +1046,9 @@ namespace Search_Invoice.Services
                         quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
                             ? rowDmnt["inv_quantity"].ToString()
                             : "0");
-                        quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+                        //quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+
+                        quantityFomart = GetFormatString(quantityDmnt);
 
                     }
 
@@ -1051,7 +1057,11 @@ namespace Search_Invoice.Services
                         unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
                             ? rowDmnt["inv_unitPrice"].ToString()
                             : "0");
-                        unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+
+
+                        //unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+
+                        unitPriceFomart = GetFormatString(unitPriceDmnt);
 
                     }
 
@@ -1061,7 +1071,9 @@ namespace Search_Invoice.Services
                         totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
                             ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
                             : "0");
-                        totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+                        //totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+
+                        totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
 
                     }
 
@@ -1070,7 +1082,8 @@ namespace Search_Invoice.Services
                         totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
                             ? rowDmnt["inv_TotalAmount"].ToString()
                             : "0");
-                        totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+                        //totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+                        totalAmountFomart = GetFormatString(totalAmountDmnt);
 
                     }
 
@@ -2195,6 +2208,25 @@ namespace Search_Invoice.Services
                 json.Add("error", ex.Message);
                 return json;
             }
+        }
+
+        private string GetFormatString(int formatDefault)
+        {
+            var format = "#,#";
+            var format2 = string.Empty;
+           
+
+            if (formatDefault == 0)
+            {
+                return format;
+            }
+
+            for (int i = 0; i < formatDefault; i++)
+            {
+                format2 += "#";
+            }
+
+            return $"{format}.{format2}";
         }
 
         private string GetFormatString(DataTable table, int formatDefault, string columnName)

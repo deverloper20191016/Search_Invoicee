@@ -23,6 +23,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Xml;
+using DevExpress.XtraReports.Parameters;
 
 namespace Search_Invoice.Util
 {
@@ -424,7 +425,7 @@ namespace Search_Invoice.Util
                     {
                         signedXml.LoadXml(element);
                         bool passes = signedXml.CheckSignature(dcert2, true);
-                        json.Add(passes?"ok":"error", passes?"Hóa đơn chưa bị chính sửa":"Hóa đơn đã bị chỉnh sửa");
+                        json.Add(passes ? "ok" : "error", passes ? "Hóa đơn chưa bị chính sửa" : "Hóa đơn đã bị chỉnh sửa");
                     }
 
                 }
@@ -633,6 +634,30 @@ namespace Search_Invoice.Util
 
 
             return bmap;
+        }
+
+
+        public static string FormatCurrency(string formatValue)
+        {
+            var format = "#,#";
+            var format2 = string.Empty;
+            int num = string.IsNullOrEmpty(formatValue) ? 0 : Convert.ToInt32(formatValue);
+            if (Convert.ToDouble(formatValue) < 0.0)
+            {
+                return "0:0,0";
+            }
+
+            if (num == 0)
+            {
+                return format;
+            }
+
+            for (int i = 0; i < num; i++)
+            {
+                format2 += "#";
+            }
+
+            return $"{format}.{format2}";
         }
     }
 }
