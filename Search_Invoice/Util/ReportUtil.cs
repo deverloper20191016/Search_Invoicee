@@ -124,6 +124,8 @@ namespace Search_Invoice.Util
             string inv_InvoiceCode_id = invoice.Inv_InvoiceCode_id.ToString();
 
 
+         
+
             if (trang_thai_hd == 11 || trang_thai_hd == 13 || trang_thai_hd == 17)
             {
                 if (!string.IsNullOrEmpty(inv_originalId))

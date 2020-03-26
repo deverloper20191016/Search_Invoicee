@@ -19,6 +19,7 @@ using System.Linq;
 using DevExpress.XtraReports.Parameters;
 using ICSharpCode.SharpZipLib.Zip;
 using Search_Invoice.Data;
+using Encoder = System.Text.Encoder;
 
 namespace Search_Invoice.Services
 {
@@ -1530,6 +1531,9 @@ namespace Search_Invoice.Services
 
             return bytes;
         }
+
+
+
         public byte[] ExportZipFileXML(string sobaomat, string masothue, string pathReport, ref string fileName, ref string key)
         {
             this._nopDbContext2.setConnect(masothue);
@@ -1628,6 +1632,36 @@ namespace Search_Invoice.Services
             outputMemStream.Close();
 
             return result;
+        }
+
+        public byte[] GetInvoiceXml(string soBaoMat, string maSoThue)
+        {
+            try
+            {
+                _nopDbContext2.setConnect(maSoThue);
+                var db = _nopDbContext2.GetInvoiceDb();
+
+                byte[] bytes = null;
+
+                DataTable tblInvInvoiceAuth = _nopDbContext2.ExecuteCmd($"SELECT * FROM inv_InvoiceAuth WHERE sobaomat = '{soBaoMat}' ");
+                if (tblInvInvoiceAuth.Rows.Count == 0)
+                {
+                    throw new Exception("Không tồn tại hóa đơn có số bảo mật " + soBaoMat);
+                }
+                string invInvoiceAuthId = tblInvInvoiceAuth.Rows[0]["inv_InvoiceAuth_id"].ToString();
+                DataTable tblInvoiceXmlData = _nopDbContext2.ExecuteCmd("SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id='" + invInvoiceAuthId + "'");
+
+                var xml = tblInvoiceXmlData.Rows.Count > 0 ? tblInvoiceXmlData.Rows[0]["data"].ToString() : db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice '" + invInvoiceAuthId + "'").FirstOrDefault();
+
+                if (xml != null) bytes = Encoding.UTF8.GetBytes(xml);
+                return bytes;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            
         }
 
         public JObject GetHtml(JObject model)
@@ -2212,7 +2246,7 @@ namespace Search_Invoice.Services
 
         private string GetFormatString(int formatDefault)
         {
-            var format = "#,#";
+            var format = "#,#0";
             var format2 = string.Empty;
            
 

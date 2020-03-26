@@ -7,8 +7,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Search_Invoice.Authorization;
 
 namespace Search_Invoice.Controllers
@@ -25,7 +23,7 @@ namespace Search_Invoice.Controllers
         [HttpGet]
         [AllowAnonymous]
         [Route("Tracuu2/nam1")]
-        public JArray nam1()
+        public JArray Nam1()
         {
             JArray jarr = new JArray() { "avvvvvvv", "aaaaaaaaaaaa" };
             return jarr;
@@ -56,7 +54,7 @@ namespace Search_Invoice.Controllers
         public HttpResponseMessage PrintInvoice(JObject model)
         {
 
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
             try
             {
                 string type = model["type"].ToString();
@@ -108,10 +106,10 @@ namespace Search_Invoice.Controllers
         [HttpPost]
         [Route("Tracuu2/ExportZipFileXML")]
         [AllowAnonymous]
-        public HttpResponseMessage ExportZipFileXML(JObject model)
+        public HttpResponseMessage ExportZipFileXml(JObject model)
         {
 
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
 
             try
             {
@@ -152,7 +150,7 @@ namespace Search_Invoice.Controllers
         public HttpResponseMessage ExportZipFile(JObject model)
         {
 
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
 
             try
             {
@@ -193,7 +191,7 @@ namespace Search_Invoice.Controllers
         public HttpResponseMessage ExportPdfFile(JObject model)
         {
 
-            HttpResponseMessage result = null;
+            HttpResponseMessage result;
 
             try
             {
@@ -205,7 +203,6 @@ namespace Search_Invoice.Controllers
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
                 string fileName = "";
-                string key = "";
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, "pdf");
 
                 result = new HttpResponseMessage(HttpStatusCode.OK);
@@ -243,7 +240,7 @@ namespace Search_Invoice.Controllers
         [HttpGet]
         [Route("tracuu2/searchTax")]
         [AllowAnonymous]
-        public JObject searchTax(String model)
+        public JObject SearchTax(String model)
         {
 
             return _tracuuService2.Search_Tax(model);
@@ -274,7 +271,7 @@ namespace Search_Invoice.Controllers
                 //string path = "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
-                string xml = "";
+                string xml;
 
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type, out xml);
 
@@ -290,14 +287,52 @@ namespace Search_Invoice.Controllers
             return result;
         }
 
+
+
+        [HttpPost]
+        [Route("tracuu2/getinvoicexml")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetInvoiceXml(JObject model)
+        {
+
+            HttpResponseMessage result;
+
+            try
+            {
+                string masothue = model["masothue"].ToString();
+                string sobaomat = model["sobaomat"].ToString();
+              
+                byte[] bytes = _tracuuService2.GetInvoiceXml(sobaomat, masothue);
+
+                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach")
+                {
+                    FileName = "invoice.xml"
+                };
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/xml");
+                result.Content.Headers.ContentLength = bytes.Length;
+            }
+            catch (Exception ex)
+            {
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest) {Content = new StringContent(ex.Message)};
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+                result.Content.Headers.ContentLength = ex.Message.Length;
+            }
+
+            return result;
+        }
+
+
+
         [HttpPost]
         [Route("tracuu2/searchinvoice")]
         [Authorize]
         [BaseAuthentication]
         public JObject SearchInvoice(JObject model)
         {
-            var userName = "";
-            var mst = "";
+            string userName;
+            string mst;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -348,8 +383,8 @@ namespace Search_Invoice.Controllers
         [HttpPost]
         public JObject GetListInvoice(JObject model)
         {
-            var userName = "";
-            var mst = "";
+            string userName;
+            string mst;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -376,8 +411,8 @@ namespace Search_Invoice.Controllers
         [Route("tracuu2/getlistinvoicetype")]
         public JObject GetListInvoiceType(JObject model)
         {
-            var userName = "";
-            var mst = "";
+            string userName;
+            string mst;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {
@@ -405,8 +440,8 @@ namespace Search_Invoice.Controllers
         [Authorize]
         public JObject Search(JObject model)
         {
-            var userName = "";
-            var mst = "";
+            string userName;
+            string mst;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
             if (claimsIdentity != null)
             {

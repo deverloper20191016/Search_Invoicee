@@ -57,7 +57,10 @@ namespace Search_Invoice.Controllers
                 row.BeginEdit();
                 if (tableDetail.Rows.Count > 0)
                 {
-                    row["total_amount_detail"] = tableDetail.Rows[0]["total_amount"].ToString();
+                    if (!string.IsNullOrEmpty(tableDetail.Rows[0]["total_amount"].ToString()))
+                    {
+                        row["total_amount_detail"] = tableDetail.Rows[0]["total_amount"].ToString();
+                    }
                 }
                 row["mst"] = us.mst;
                 //row["a"] = connectionString;
