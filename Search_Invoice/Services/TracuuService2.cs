@@ -88,6 +88,14 @@ namespace Search_Invoice.Services
                 string sobaomat = model["sobaomat"].ToString();
                 _nopDbContext2.setConnect(mst);
                 DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
+
+
+                if (dt.Rows.Count == 0)
+                {
+                    json.Add("error", "Không tồn tại hóa đơn có số bảo mật: " + sobaomat);
+                    return json;
+                }
+
                 dt.Columns.Add("mst", typeof(string));
                 dt.Columns.Add("inv_auth_id", typeof(string));
                 dt.Columns.Add("sum_tien", typeof(decimal));
@@ -108,16 +116,8 @@ namespace Search_Invoice.Services
                     row["sum_tien"] = sumTien.Rows[0]["sum_total_amount"];
                     row.EndEdit();
                 }
-                if (dt.Rows.Count > 0)
-                {
-                    JArray jar = JArray.FromObject(dt);
-                    json.Add("data", jar);
-                }
-                else
-                {
-                    json.Add("error", "Không tồn tại hóa đơn có số bảo mật: " + sobaomat);
-                    return json;
-                }
+                JArray jar = JArray.FromObject(dt);
+                json.Add("data", jar);
             }
             catch (Exception ex)
             {

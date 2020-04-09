@@ -36,8 +36,30 @@ namespace Search_Invoice.Controllers
 ;
             CommonConnect cn = new CommonConnect();
             cn.setConnect(us.mst);
+
+
+
             string sql = "SELECT * FROM inv_InvoiceAuth WHERE inv_invoiceIssuedDate >= '" + tu_ngay.ToString("yyyy-MM-dd") + "' and inv_invoiceIssuedDate <= '" + den_ngay.ToString("yyyy-MM-dd") + "' AND ma_dt ='" + us.ma_dt + "' AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ORDER BY inv_invoiceNumber ASC";
+
+
+
+            var mst = us.mst;
+            if (!string.IsNullOrEmpty(mst))
+            {
+                if (mst.Equals("0107009894") || mst.Equals("0107009894001") || mst.Equals("0107009894-001"))
+                {
+                    var maDoiTuong = us.ma_dt;
+                    var userName = us.username;
+
+                    sql = $"SELECT * FROM inv_InvoiceAuth WHERE (inv_invoiceIssuedDate >= '{tu_ngay:yyyy-MM-dd}' AND inv_invoiceIssuedDate <= '{den_ngay:yyyy-MM-dd}') AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ";
+                    sql +=
+                        $" AND ma_dt IN (SELECT ma_dt FROM dbo.dmdt WHERE dt_me_id IN (SELECT dt_me_id FROM dbo.dmdt WHERE ma_dt = '{maDoiTuong}' OR ma_dt = '{userName}')) ";
+                    sql += " ORDER BY inv_invoiceNumber ASC ";
+                }
+            }
+
             DataTable dt = cn.ExecuteCmd(sql);
+
             dt.Columns.Add("mst", typeof(string));
             dt.Columns.Add("inv_auth_id", typeof(string));
             dt.Columns.Add("total_amount_detail", typeof(decimal));

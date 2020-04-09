@@ -160,6 +160,7 @@
             success: function (result) {
 
               if (!result.hasOwnProperty("error")) {
+                debugger;
                 $("#demo-foo-addrow tbody").empty();
                 $('#tblfoot').prop('hidden', false);
                 $("#demo-foo-addrow tbody>tr").remove();
