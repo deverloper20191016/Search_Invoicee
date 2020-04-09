@@ -29,11 +29,11 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        public JObject GetInvoiceFromdateTodate(DateTime tu_ngay ,DateTime  den_ngay)
+        public JObject GetInvoiceFromdateTodate(DateTime tu_ngay, DateTime den_ngay)
         {
-       
+
             inv_user us = (inv_user)Session[CommonConstants.USER_SESSION];
-;
+            ;
             CommonConnect cn = new CommonConnect();
             cn.setConnect(us.mst);
 
@@ -51,10 +51,24 @@ namespace Search_Invoice.Controllers
                     var maDoiTuong = us.ma_dt;
                     var userName = us.username;
 
-                    sql = $"SELECT * FROM inv_InvoiceAuth WHERE (inv_invoiceIssuedDate >= '{tu_ngay:yyyy-MM-dd}' AND inv_invoiceIssuedDate <= '{den_ngay:yyyy-MM-dd}') AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ";
-                    sql +=
-                        $" AND ma_dt IN (SELECT ma_dt FROM dbo.dmdt WHERE dt_me_id IN (SELECT dt_me_id FROM dbo.dmdt WHERE ma_dt = '{maDoiTuong}' OR ma_dt = '{userName}')) ";
-                    sql += " ORDER BY inv_invoiceNumber ASC ";
+                    var doiTuong =
+                        cn.ExecuteCmd($"SELECT TOP 1 * FROM dbo.dmdt WHERE ma_dt = '{maDoiTuong}' OR ma_dt = '{userName}'");
+
+                    if (doiTuong.Rows.Count > 0)
+                    {
+                        var dt_me_id = doiTuong.Rows[0]["dt_me_id"].ToString();
+                        var quyen_tracuu = doiTuong.Rows[0]["quyen_tracuu"].ToString();
+                        if (!string.IsNullOrEmpty(quyen_tracuu))
+                        {
+                            if (quyen_tracuu.Equals("Tất cả"))
+                            {
+                                sql = $"SELECT * FROM inv_InvoiceAuth WHERE (inv_invoiceIssuedDate >= '{tu_ngay:yyyy-MM-dd}' AND inv_invoiceIssuedDate <= '{den_ngay:yyyy-MM-dd}') AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ";
+                                sql +=
+                                    $" AND ma_dt IN (SELECT ma_dt FROM dbo.dmdt WHERE dt_me_id = '{dt_me_id}') ";
+                                sql += " ORDER BY inv_invoiceNumber ASC ";
+                            }
+                        }
+                    }
                 }
             }
 
@@ -75,7 +89,7 @@ namespace Search_Invoice.Controllers
                 var tableDetail =
                     cn.ExecuteCmd(
                         $"SELECT SUM(inv_TotalAmount) AS total_amount FROM dbo.inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '{id}'");
-                
+
                 row.BeginEdit();
                 if (tableDetail.Rows.Count > 0)
                 {
@@ -128,7 +142,7 @@ namespace Search_Invoice.Controllers
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
                 byte[] bytes = null;
-                    //_tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type);
+                //_tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type);
 
                 result = new HttpResponseMessage(HttpStatusCode.OK);
                 result.Content = new ByteArrayContent(bytes);
