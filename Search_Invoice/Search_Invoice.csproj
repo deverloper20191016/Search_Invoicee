@@ -384,6 +384,7 @@
     <Content Include="Content\css\colors\megna.css" />
     <Content Include="Content\css\colors\purple-dark.css" />
     <Content Include="Content\css\colors\purple.css" />
+    <Content Include="Content\css\custom.css" />
     <Content Include="Content\css\icons\linea-icons\linea.css" />
     <Content Include="Content\css\spinners.css" />
     <Content Include="Content\css\style.css" />

@@ -1,0 +1,38 @@
+﻿
+@media only screen and (min-width: 576px) {
+    .modal-invoice {
+        max-width: 1000px;
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    .modal-button > a {
+        margin: 10px 40px;
+    }
+    #nav_menu-2, .menu-gioi-thieu-footer-container > p {
+        text-align: center
+    }
+}
+
+
+@media only screen and (max-width: 768px) {
+    .hservice-desc p {
+        text-align: center;
+    }
+    #hs-colophon {
+        margin-top: 20px;
+    }
+
+    .dky > h3 {
+        text-align: center;
+    }
+
+    .lienhe .titlee {
+        text-align: center
+    }
+
+    .hs-footer .widget-title:after, .hs-footer .widget-title {
+        right: 0
+    }
+}
+
