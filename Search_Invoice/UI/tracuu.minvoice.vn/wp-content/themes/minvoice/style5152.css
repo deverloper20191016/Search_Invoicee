@@ -3603,10 +3603,11 @@ top:0;
 /*--------------------------------------------------------------
 ## Footer
 --------------------------------------------------------------*/
+/*
 #hs-colophon{
-	margin-top: 60px;
+	margin-top: 30px;
 }
-
+*/
 .woocommerce ul.products li.product .woocommerce-loop-category__title {
 	text-align: center;
     font-size: 18px;
@@ -6247,7 +6248,7 @@ p {
     font-weight:500;
 }
 #home-services {
-    padding: 20px 0px 20px 0px;
+    padding: 20px 0px 0px 0px;
 }
 .wrapper {
   *zoom: 1;
