@@ -333,14 +333,17 @@ namespace Search_Invoice.Controllers
         {
             string userName;
             string mst;
+            string maDt;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
-            if (claimsIdentity != null)
+            if (claimsIdentity != null) 
             {
                 var listClaim = claimsIdentity.Claims.ToList();
                 userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
                 mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
+                maDt = listClaim.FirstOrDefault(x => x.Type == "ma_dt")?.Value;
                 model.Add("user_name", userName);
                 model.Add("mst", mst);
+                model.Add("ma_dt", maDt);
             }
             return _tracuuService2.SearchInvoice(model);
         }

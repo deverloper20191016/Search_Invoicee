@@ -1271,7 +1271,7 @@ namespace Search_Invoice.Services
 
 
 
-                    string fileName = folder + "\\BienBanXoaBo.repx";
+                    string fileName = folder + "\\BienBanXoaBo2.repx";
                     XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
 
                     rpBienBan.ScriptReferencesString = "AccountSignature.dll";
@@ -1711,6 +1711,7 @@ namespace Search_Invoice.Services
             {
 
                 var mst = data["mst"].ToString();
+
                 if (string.IsNullOrEmpty(mst))
                 {
                     result.Add("status_code", 400);
@@ -1718,6 +1719,22 @@ namespace Search_Invoice.Services
                     return result;
                 }
 
+                var userName = data.ContainsKey("user_name") ? data["user_name"].ToString() : "";
+                if (string.IsNullOrEmpty(userName))
+                {
+                    result.Add("status_code", 400);
+                    result.Add("error", "Không có thông tin đăng nhập");
+                    return result;
+                }
+
+
+                var maDt = data.ContainsKey("ma_dt") ? data["ma_dt"].ToString() : "";
+                if (string.IsNullOrEmpty(maDt))
+                {
+                    result.Add("status_code", 400);
+                    result.Add("error", "Không có thông tin đăng nhập");
+                    return result;
+                }
                 _nopDbContext2.setConnect(mst);
                 // type: all tất cả, date: Từ ngày - Đến ngày, number: Số hóa đơn, series: Mẫu số - Ký hiệu
                 var type = data["type"].ToString();
@@ -1746,7 +1763,7 @@ namespace Search_Invoice.Services
                     soHd = data["so_hd"].ToString();
                 }
 
-                var sqlBuilder = "SELECT * FROM dbo.inv_InvoiceAuth WHERE trang_thai_hd != 13 ";
+                var sqlBuilder = $"SELECT * FROM dbo.inv_InvoiceAuth WHERE trang_thai_hd != 13 AND ma_dt = '{maDt}' AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ";
                 var sql = "";
                 switch (type)
                 {

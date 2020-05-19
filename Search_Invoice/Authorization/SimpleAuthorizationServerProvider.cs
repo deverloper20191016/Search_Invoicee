@@ -66,6 +66,7 @@ namespace Search_Invoice.Authorization
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("username", context.UserName));
+            identity.AddClaim(new Claim("ma_dt", user.ma_dt));
             identity.AddClaim(new Claim("mst", mst));
             context.Validated(identity);
         }
