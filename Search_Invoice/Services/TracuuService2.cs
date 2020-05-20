@@ -555,7 +555,7 @@ namespace Search_Invoice.Services
                         page.AssignWatermark(pmk);
                     }
 
-                    string fileName = folder + $"\\{masothue}_BienBanXoaBo.repx";
+                    string fileName = folder + $@"\{masothue}_BienBanXoaBo.repx";
                     if (!File.Exists(fileName))
                     {
                         fileName = folder + $"\\BienBanXoaBo.repx";
@@ -1275,7 +1275,7 @@ namespace Search_Invoice.Services
 
 
 
-                    string fileName = folder + $"\\{masothue}_BienBanXoaBo.repx";
+                    string fileName = folder + $@"\{masothue}_BienBanXoaBo.repx";
                     if (!File.Exists(fileName))
                     {
                         fileName = folder + $"\\BienBanXoaBo.repx";
