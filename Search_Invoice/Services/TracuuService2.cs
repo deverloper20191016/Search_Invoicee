@@ -555,7 +555,11 @@ namespace Search_Invoice.Services
                         page.AssignWatermark(pmk);
                     }
 
-                    string fileName = folder + "\\BienBanXoaBo.repx";
+                    string fileName = folder + $"\\{masothue}_BienBanXoaBo.repx";
+                    if (!File.Exists(fileName))
+                    {
+                        fileName = folder + $"\\BienBanXoaBo.repx";
+                    }
                     XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
 
                     rpBienBan.ScriptReferencesString = "AccountSignature.dll";
@@ -1271,7 +1275,12 @@ namespace Search_Invoice.Services
 
 
 
-                    string fileName = folder + "\\BienBanXoaBo2.repx";
+                    string fileName = folder + $"\\{masothue}_BienBanXoaBo.repx";
+                    if (!File.Exists(fileName))
+                    {
+                        fileName = folder + $"\\BienBanXoaBo.repx";
+                    }
+
                     XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
 
                     rpBienBan.ScriptReferencesString = "AccountSignature.dll";

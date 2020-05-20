@@ -233,7 +233,11 @@ namespace Search_Invoice.Util
                     page.AssignWatermark(pmk);
                 }
 
-                string fileName = folder + "\\BienBanXoaBo.repx";
+                string fileName = folder + $"\\{mst}_BienBanXoaBo.repx";
+                if (!File.Exists(fileName))
+                {
+                    fileName = folder + $"\\BienBanXoaBo.repx";
+                }
                 XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
 
                 rpBienBan.ScriptReferencesString = "AccountSignature.dll";
