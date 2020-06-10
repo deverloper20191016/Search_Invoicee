@@ -500,18 +500,26 @@
         data: JSON.stringify(data),
         success: function (response) {
           if (response.hasOwnProperty("ok")) {
-            var objbuilder = '';
-            objbuilder += ('<object width="100%" height="520px" data="data:application/pdf;base64,');
-            objbuilder += (response.ok);
-            objbuilder += ('" type="application/pdf" class="internal">');
-            objbuilder += ('<embed src="data:application/pdf;base64,');
-            objbuilder += (response.ok);
-            objbuilder += ('" type="application/pdf" />');
-            objbuilder += ('</object>');
+            var builder = '';
+            //builder += ('<object width="100%" height="700px" data="data:application/pdf;base64,');
+            //builder += (response.ok);
+            //builder += ('" type="application/pdf" class="internal">');
+            //builder += ('<embed width="100%" height="520px" src="data:application/pdf;base64,');
+            //builder += (response.ok);
+            //builder += ('" type="application/pdf" />');
+            //builder += ('</object>');
+
+            var blob = b64toBlob(response.ok, 'application/pdf');
+            var blobUrl = URL.createObjectURL(blob);
+
+            builder += '<iframe class="responsive-iframe" src="' + blobUrl + '" frameborder="0" height="700px" width="100%"></iframe>';
+
+
 
             $("#htm-content").html('');
+            $("#htm-content").append(builder);
 
-            $("#htm-content").append(objbuilder);
+
             $("#mst_html").val(mst);
             $("#sobaomat_html").val(sobaomat);
             $("#invoiceauth").val(auth);
@@ -634,6 +642,30 @@
         .fail(function () {
           bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
         });
+    }
+
+    function b64toBlob(b64Data, contentType, sliceSize) {
+      contentType = contentType || '';
+      sliceSize = sliceSize || 512;
+
+      var byteCharacters = atob(b64Data);
+      var byteArrays = [];
+
+      for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+
+        byteArrays.push(byteArray);
+      }
+
+      var blob = new Blob(byteArrays, { type: contentType });
+      return blob;
     }
 
   </script>

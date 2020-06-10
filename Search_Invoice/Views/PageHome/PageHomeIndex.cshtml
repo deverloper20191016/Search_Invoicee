@@ -190,12 +190,12 @@
         <div class="wrapper">
           <div class="inner">
             @*<div class="section-title wow fadeInDown text-center">
-              <h2>
-                LỢI ÍCH
-              </h2>
-              <h3 style="color:black; font-weight:800;font-size:18px">HÓA ĐƠN ĐIỆN TỬ</h3>
-              <span class="section-title-border"></span>
-            </div>*@
+                <h2>
+                  LỢI ÍCH
+                </h2>
+                <h3 style="color:black; font-weight:800;font-size:18px">HÓA ĐƠN ĐIỆN TỬ</h3>
+                <span class="section-title-border"></span>
+              </div>*@
             <div class="grid-uniform md-mg-left-10">
 
 
@@ -296,12 +296,12 @@
           <div class="form-group">
             @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
           </div>
-                <div class="form-group">
-                  @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
-                </div>
-                <div class="form-group">
-                  @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                </div>
+          <div class="form-group">
+            @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
+          </div>
+          <div class="form-group">
+            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+          </div>
                 <!-- <div class="form-group">
                   <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
                   <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
@@ -610,7 +610,7 @@
       xhr.responseType = 'arraybuffer';
       xhr.send(model);
       xhr.onload = function () {
-        
+
         if (this.status === 200) {
           var filename = "";
           var disposition = xhr.getResponseHeader('Content-Disposition');
@@ -619,7 +619,7 @@
             var matches = filenameRegex.exec(disposition);
             if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
           }
-          
+
           var type = xhr.getResponseHeader('Content-Type');
           var blob = typeof File === 'function' ? new File([this.response], filename, {
             type: type
@@ -754,7 +754,7 @@
     });
 
     $('#input-file-now').change(function (e) {
-      
+
       $("#file-input-name").html('');
       var fileName = e.target.files[0].name;
       $("#file-input-name").html(fileName);
@@ -788,7 +788,7 @@
         xhr.responseType = 'arraybuffer';
 
         xhr.onload = function (rs) {
-          
+
           if (this.status === 200) {
             var filename = "";
             var disposition = xhr.getResponseHeader('Content-Disposition');
@@ -843,7 +843,7 @@
               }
             }
           } else {
-            
+
             var a = JSON.parse(new TextDecoder("utf-8").decode(new Uint8Array(xhr.response)));
             if (a.hasOwnProperty("error")) {
               bootbox.alert(a.error);
@@ -879,7 +879,7 @@
 
 <script>
   function displayInvoice(sobaomat, mst, auth, abc) {
-    
+
     var data = {
       sobaomat: sobaomat,
       masothue: mst,
@@ -901,24 +901,29 @@
       contentType: "application/json; charset=utf-8",
       data: JSON.stringify(data),
       success: function (response) {
-        
+
         if (response.hasOwnProperty("ok")) {
           var builder = '';
-          builder += ('<object width="100%" height="700px" data="data:application/pdf;base64,');
-          builder += (response.ok);
-          builder += ('" type="application/pdf" class="internal">');
-          builder += ('<embed width="100%" height="520px" src="data:application/pdf;base64,');
-          builder += (response.ok);
-          builder += ('" type="application/pdf" />');
-          builder += ('</object>');
+          //builder += ('<object width="100%" height="700px" data="data:application/pdf;base64,');
+          //builder += (response.ok);
+          //builder += ('" type="application/pdf" class="internal">');
+          //builder += ('<embed width="100%" height="520px" src="data:application/pdf;base64,');
+          //builder += (response.ok);
+          //builder += ('" type="application/pdf" />');
+          //builder += ('</object>');
+
+          var blob = b64toBlob(response.ok, 'application/pdf');
+          var blobUrl = URL.createObjectURL(blob);
+
+          builder += '<iframe class="responsive-iframe" src="' + blobUrl + '" frameborder="0" height="700px" width="100%"></iframe>';
+
+
 
           $("#htm-content").html('');
           $("#htm-content").append(builder);
 
-          //var file = new Blob([base64ToArrayBuffer(response.ok)], {
-          //  type: "application/pdf"
-          //});
-          //var fileUrl = URL.createObjectURL(file);
+
+
           //$("#htm-content > iframe").attr("src", fileUrl);
 
           $("#htm-content").show();
@@ -947,7 +952,7 @@
   }
 
   function buyerSignature() {
-    
+
 
     var SignalrConnection;
     $.connection.hub.url = "http://localhost:19898/signalr";
@@ -985,7 +990,7 @@
             bootbox.alert({
               message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
               callback: function () {
-                
+
                 //$('#myModal').modal('hide');
                 $("#myModal").removeClass("in");
                 $(".modal-backdrop").remove();
@@ -1014,7 +1019,7 @@
   }
 
   function readSignature(id) {
-    
+
 
     var SignalrConnection;
     $.connection.hub.url = "http://localhost:19898/signalr";
@@ -1066,7 +1071,7 @@
     xhr.responseType = 'json';
     xhr.send(data);
     xhr.onload = function () {
-      
+
       var a = xhr.response;
       if (a.hasOwnProperty("error")) {
         bootbox.alert(a.error);
@@ -1081,20 +1086,34 @@
     //  data: data,
     //    processData: false,
     //  success: function (response) {
-    //    
+    //
     //    var a = JSON.parse(response);
     //  }
     //});
   }
 
-  function base64ToArrayBuffer(base64) {
-    var binary_string = window.atob(base64);
-    var len = binary_string.length;
-    var bytes = new Uint8Array(len);
-    for (var i = 0; i < len; i++) {
-      bytes[i] = binary_string.charCodeAt(i);
+  function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      var byteNumbers = new Array(slice.length);
+      for (var i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      var byteArray = new Uint8Array(byteNumbers);
+
+      byteArrays.push(byteArray);
     }
-    return bytes.buffer;
+
+    var blob = new Blob(byteArrays, { type: contentType });
+    return blob;
   }
 
 </script>

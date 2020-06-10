@@ -16,6 +16,7 @@ using DevExpress.XtraReports.UI;
 using System.Globalization;
 using System.Xml;
 using System.Drawing.Imaging;
+using DevExpress.XtraReports.Parameters;
 using Newtonsoft.Json.Linq;
 
 namespace Search_Invoice.Services
@@ -38,11 +39,17 @@ namespace Search_Invoice.Services
         }
         public byte[] PrintInvoiceFromSBM(string id, string folder, string type)
         {
-            byte[] results = PrintInvoiceFromSBM(id, folder, type, false);
+            byte[] results = PrintInvoiceFromSBM(id, "", folder, type, false);
             return results;
         }
 
-        public byte[] PrintInvoiceFromSBM(string id, string folder, string type, bool inchuyendoi)
+        public byte[] PrintInvoiceFromSBM(string id, string mst, string folder, string type)
+        {
+            byte[] results = PrintInvoiceFromSBM(id, mst, folder, type, false);
+            return results;
+        }
+
+        public byte[] PrintInvoiceFromSBM(string id, string mst, string folder, string type, bool inchuyendoi)
         {
             var db = this._nopDbContext.GetInvoiceDb();
 
@@ -77,7 +84,7 @@ namespace Search_Invoice.Services
                 int trang_thai_hd = Convert.ToInt32(tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"]);
                 string inv_originalId = tblInv_InvoiceAuth.Rows[0]["inv_originalId"].ToString();
                 string user_name = _webHelper.GetUser();
-               // wb_user wbuser = invoiceDb.WbUsers.Where(c => c.username == user_name).FirstOrDefault<wb_user>();
+                // wb_user wbuser = invoiceDb.WbUsers.Where(c => c.username == user_name).FirstOrDefault<wb_user>();
                 DataTable tblCtthongbao = this._nopDbContext.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + inv_InvoiceCode_id + "'");
                 string hang_nghin = ".";
                 string thap_phan = ",";
@@ -86,15 +93,15 @@ namespace Search_Invoice.Services
                 {
                     hang_nghin = tblCtthongbao.Rows[0]["hang_nghin"].ToString();
                 }
-                if(columns.Contains("thap_phan"))
+                if (columns.Contains("thap_phan"))
                 {
                     thap_phan = tblCtthongbao.Rows[0]["thap_phan"].ToString();
                 }
-                if(hang_nghin == null || hang_nghin == "")
+                if (hang_nghin == null || hang_nghin == "")
                 {
                     hang_nghin = ".";
                 }
-                if(thap_phan == "" || thap_phan == null)
+                if (thap_phan == "" || thap_phan == null)
                 {
                     thap_phan = ",";
                 }
@@ -230,6 +237,133 @@ namespace Search_Invoice.Services
                         report.Parameters["NGAY_IN_CDOI"].Visible = true;
                     }
                 }
+
+
+                if (report.Parameters["LINK_TRACUU"] != null)
+                {
+                    var sqlQrCodeLink = "SELECT TOP 1 * FROM wb_setting WHERE ma = 'QR_CODE_LINK'";
+                    var tblQrCodeLink = _nopDbContext.ExecuteCmd(sqlQrCodeLink);
+                    if (tblQrCodeLink.Rows.Count > 0)
+                    {
+                        var giatri = tblQrCodeLink.Rows[0]["gia_tri"].ToString();
+                        if (giatri.Equals("C"))
+                        {
+                            report.Parameters["LINK_TRACUU"].Value = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={inv_InvoiceAuth_id}";
+                            report.Parameters["LINK_TRACUU"].Visible = true;
+                        }
+                    }
+                }
+
+
+                var inv_currencyCode = tblInv_InvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
+
+                var tbldmnt = _nopDbContext.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{inv_currencyCode}'");
+                if (tbldmnt.Rows.Count > 0)
+                {
+                    var rowDmnt = tbldmnt.Rows[0];
+                    var quantityDmnt = 0;
+                    var unitPriceDmnt = 0;
+                    var totalAmountWithoutVatDmnt = 0;
+                    var totalAmountDmnt = 0;
+
+                    var quantityFomart = "n0";
+                    var unitPriceFomart = "n0";
+                    var totalAmountWithoutVatFomart = "n0";
+                    var totalAmountFomart = "n0";
+
+                    if (tbldmnt.Columns.Contains("inv_quantity"))
+                    {
+                        quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                            ? rowDmnt["inv_quantity"].ToString()
+                            : "0");
+
+                        //quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
+                        quantityFomart = GetFormatString(quantityDmnt);
+
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_unitPrice"))
+                    {
+                        unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                            ? rowDmnt["inv_unitPrice"].ToString()
+                            : "0");
+                        //unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
+                        unitPriceFomart = GetFormatString(unitPriceDmnt);
+
+                    }
+
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
+                    {
+                        totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                            ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
+                            : "0");
+                        //totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
+                        totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_TotalAmount"))
+                    {
+                        totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                            ? rowDmnt["inv_TotalAmount"].ToString()
+                            : "0");
+                        //totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
+                        totalAmountFomart = GetFormatString(totalAmountDmnt);
+
+                    }
+
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = quantityFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = unitPriceFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = totalAmountWithoutVatFomart
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = totalAmountFomart
+                    });
+                }
+                else
+                {
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = "n0"
+                    });
+
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = "n0"
+                    });
+                }
+
 
                 report.DataSource = ds;
 
@@ -563,12 +697,31 @@ namespace Search_Invoice.Services
             catch (Exception ex)
             {
                 //_logService.Insert("PrintInvoiceFromId", ex.ToString());
-                
+
                 throw new Exception(ex.Message.ToString());
 
             }
 
             return bytes;
+        }
+
+        private string GetFormatString(int formatDefault)
+        {
+            var format = "#,#0";
+            var format2 = string.Empty;
+
+
+            if (formatDefault == 0)
+            {
+                return format;
+            }
+
+            for (int i = 0; i < formatDefault; i++)
+            {
+                format2 += "#";
+            }
+
+            return $"{format}.{format2}";
         }
     }
 }

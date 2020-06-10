@@ -79,7 +79,7 @@ namespace Search_Invoice.Controllers
                 //string path = "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
-                byte[] bytes = _tracuuService.PrintInvoiceFromSBM(id, folder, type);
+                byte[] bytes = _tracuuService.PrintInvoiceFromSBM(id, mst, folder, type);
 
                 result = new HttpResponseMessage(HttpStatusCode.OK);
                 result.Content = new ByteArrayContent(bytes);
