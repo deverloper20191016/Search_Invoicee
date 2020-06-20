@@ -961,9 +961,9 @@ namespace Search_Invoice.Services
                         DataTable tblInv = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE inv_InvoiceAuth_id='" + inv_originalId + "'");
                         string inv_adjustmentType = tblInv.Rows[0]["inv_adjustmentType"].ToString();
 
-                        string loai = inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21" ? "điều chỉnh" : inv_adjustmentType.ToString() == "3" ? "thay thế" : inv_adjustmentType.ToString() == "7" ? "xóa bỏ" : "";
+                        string loai = inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21" || inv_adjustmentType.ToString() == "23" ? "điều chỉnh" : inv_adjustmentType.ToString() == "3" ? "thay thế" : inv_adjustmentType.ToString() == "7" ? "xóa bỏ" : "";
 
-                        if (inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "7" || inv_adjustmentType.ToString() == "3" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21")
+                        if (inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "7" || inv_adjustmentType.ToString() == "3" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21"  || inv_adjustmentType.ToString() == "23")
                         {
                             msg_tb = "Hóa đơn bị " + loai + " bởi hóa đơn số: " + tblInv.Rows[0]["inv_invoiceNumber"] + " ngày " + string.Format("{0:dd/MM/yyyy}", tblInv.Rows[0]["inv_invoiceIssuedDate"]) + ", mẫu số " + tblInv.Rows[0]["mau_hd"] + " ký hiệu " + tblInv.Rows[0]["inv_invoiceSeries"];
 
