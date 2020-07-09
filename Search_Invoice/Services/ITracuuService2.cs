@@ -12,7 +12,7 @@ namespace Search_Invoice.Services
         JObject GetInfoInvoice(JObject model);
         byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type);
         byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, bool inchuyendoi);
-        byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, out string xml);
+        byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, out string xml, out string fileName);
         byte[] ExportZipFileXML(string sobaomat, string masothue, string pathReport, ref string fileName, ref string key);
 
         byte[] GetInvoiceXml(string soBaoMat, string maSoThue);

@@ -22,6 +22,13 @@
     overflow: visible;
   }
 
+  .alertCss {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px
+  }
+
   .modal-body {
     /*height: 70%;*/
     /*overflow: auto;*/
@@ -302,17 +309,17 @@
           <div class="form-group">
             @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
           </div>
-                <!-- <div class="form-group">
-                  <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                  <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                </div> -->
-                @*<div class="checkboxx">
-                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                    <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
-                  </div>*@
-                <div class="form-group form-button">
-                  <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
-                </div>
+          <!-- <div class="form-group">
+            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+          </div> -->
+          @*<div class="checkboxx">
+              <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+              <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
+            </div>*@
+          <div class="form-group form-button">
+            <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
+          </div>
       }
       @*<form method="POST" class="register-form" id="register-form">
           <div class="form-group">
@@ -366,6 +373,7 @@
             <a class="dropdown-item" href="#" id="readSignatureSeller" onclick="readSignature('seller')">Người bán</a>
             <a class="dropdown-item" href="#" id="readSignatureBuyer" onclick="readSignature('buyer')">Người mua</a>
           </div>
+          <a target="_blank" href="http://installupdate.minvoice.vn/MinvoicePlugin/setup.exe" id="btn-plugin" type="button" class="btn btn-success" style="display: none; color: white" title="Tỉa Plugin ký hóa đơn"><i class="fas fa-signature"></i>Tải Plugin</a>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
       </div>
@@ -375,6 +383,7 @@
         <div id="invoiceauth" hidden></div>
         <div id="abcdefg" hidden></div>
         <div id="ecd" hidden></div>
+        <div id="fileName" hidden></div>
 
         <p id="title-load" style="text-align:center">Đang tải dữ liệu...</p>
 
@@ -612,7 +621,7 @@
       xhr.onload = function () {
 
         if (this.status === 200) {
-          var filename = "";
+          var filename = $("#fileName").val();
           var disposition = xhr.getResponseHeader('Content-Disposition');
           if (disposition && disposition.indexOf('attachment') !== -1) {
             var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
@@ -633,24 +642,35 @@
             var downloadUrl = URL.createObjectURL(blob);
 
             if (filename) {
+
               var a = document.createElement("a");
-              if (typeof a.download === 'undefined') {
-                bootbox.hideAll();
-                clearTimeout(interVal);
-                //var newWindow = window.open('/');
-                //newWindow.onload = () => {
-                //  newWindow.location = downloadUrl;
-                //};
-                window.location = downloadUrl;
-              } else {
-                bootbox.hideAll();
-                clearTimeout(interVal);
-                //var newWindow = window.open('/');
-                //newWindow.onload = () => {
-                //  newWindow.location = downloadUrl;
-                //};
-                window.location = downloadUrl;
-              }
+              document.body.appendChild(a);
+              a.href = downloadUrl;
+              a.download = filename;
+              a.click();
+              window.URL.revokeObjectURL(downloadUrl);
+              document.body.removeChild(a);
+
+              bootbox.hideAll();
+
+              //var a = document.createElement("a");
+              //if (typeof a.download === 'undefined') {
+              //  bootbox.hideAll();
+              //  clearTimeout(interVal);
+              //  //var newWindow = window.open('/');
+              //  //newWindow.onload = () => {
+              //  //  newWindow.location = downloadUrl;
+              //  //};
+              //  window.location = downloadUrl;
+              //} else {
+              //  bootbox.hideAll();
+              //  clearTimeout(interVal);
+              //  //var newWindow = window.open('/');
+              //  //newWindow.onload = () => {
+              //  //  newWindow.location = downloadUrl;
+              //  //};
+              //  window.location = downloadUrl;
+              //}
             } else {
               bootbox.hideAll();
               clearTimeout(interVal);
@@ -893,6 +913,7 @@
     $("#btn-download-html").hide();
     $("#btn-dowd-zip").hide();
     $("#btn-download-pdf").hide();
+    $("#btn-plugin").hide();
     $("#btn-download-pdf-inchuyendoi").hide();
 
     $.ajax({
@@ -933,10 +954,12 @@
           $("#sobaomat_html").val(sobaomat);
           $("#invoiceauth").val(auth);
           $("#ecd").val(response.ecd);
+          $("#fileName").val(response.fileName);
           $("#abcdefg").val(abc);
           $("#btn-buyer-sign").show();
           $("#btn-download-html").show();
           $("#btn-dowd-zip").show();
+          $("#btn-plugin").show();
           $("#btn-download-pdf").show();
           $("#btn-download-pdf-inchuyendoi").show();
         } else {
@@ -944,6 +967,7 @@
           $("#btn-buyer-sign").hide();
           $("#btn-dowdload-html").hide();
           $("#btn-dowd-zip").hide();
+          $("#btn-plugin").hide();
           $("#btn-download-pdf").hide();
           $("#btn-download-pdf-inchuyendoi").hide();
         }
@@ -959,7 +983,7 @@
     SignalrConnection = $.connection.invoiceHub;
 
     if (SignalrConnection == null) {
-      bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra và tải lại trang web để thực hiện chức năng");
+      bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
       return false;
     }
 
@@ -1026,7 +1050,7 @@
     SignalrConnection = $.connection.invoiceHub;
 
     if (SignalrConnection == null) {
-      bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra và tải lại trang web để thực hiện chức năng");
+      bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
       return false;
     }
 
@@ -1076,7 +1100,10 @@
       if (a.hasOwnProperty("error")) {
         bootbox.alert(a.error);
       } else {
-        bootbox.alert(a.ok);
+        bootbox.alert({
+          message: a.ok,
+          className: "alertCss"
+        });
       }
     }
 

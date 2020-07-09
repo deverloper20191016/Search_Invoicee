@@ -816,7 +816,7 @@ namespace Search_Invoice.Services
             return bytes;
         }
 
-        public byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, out string xml)
+        public byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, out string xml, out string fileNamePrint)
         {
             bool inchuyendoi = false;
             _nopDbContext2.setConnect(masothue);
@@ -825,6 +825,7 @@ namespace Search_Invoice.Services
             byte[] bytes = null;
 
             xml = "";
+
             string msg_tb = "";
 
             try
@@ -840,6 +841,10 @@ namespace Search_Invoice.Services
                 DataTable tblInv_InvoiceAuthDetail = this._nopDbContext2.ExecuteCmd("SELECT * FROM inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '" + inv_InvoiceAuth_id + "'");
                 DataTable tblInvoiceXmlData = this._nopDbContext2.ExecuteCmd("SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id='" + inv_InvoiceAuth_id + "'");
 
+                string mau_hd = tblInv_InvoiceAuth.Rows[0]["mau_hd"].ToString();
+                string so_serial = tblInv_InvoiceAuth.Rows[0]["inv_invoiceSeries"].ToString();
+                string so_hd = tblInv_InvoiceAuth.Rows[0]["inv_invoiceNumber"].ToString();
+                fileNamePrint = masothue + "_invoice_" + mau_hd.Replace("/", "") + "_" + so_serial.Replace("/", "").Trim() + "_" + so_hd;
 
                 //if (masothue == "2700638514" && tblInv_InvoiceAuthDetail.Rows.Count > 9)
                 //{

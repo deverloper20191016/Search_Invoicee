@@ -431,7 +431,7 @@ namespace Search_Invoice.Util
                     {
                         signedXml.LoadXml(element);
                         bool passes = signedXml.CheckSignature(dcert2, true);
-                        json.Add(passes ? "ok" : "error", passes ? "Hóa đơn chưa bị chính sửa" : "Hóa đơn đã bị chỉnh sửa");
+                        json.Add(passes ? "ok" : "error", passes ? "Hóa đơn toàn vẹn và hợp lệ" : "Hóa đơn hợp lệ");
                     }
 
                 }

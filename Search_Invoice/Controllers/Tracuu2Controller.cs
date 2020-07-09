@@ -272,12 +272,13 @@ namespace Search_Invoice.Controllers
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
                 string xml;
-
-                byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type, out xml);
+                string fileName;
+                byte[] bytes = _tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type, out xml, out fileName);
 
                 string a = Convert.ToBase64String(bytes);
                 result.Add("ok", a);
                 result.Add("ecd", xml);
+                result.Add("fileName", fileName);
             }
             catch (Exception ex)
             {
