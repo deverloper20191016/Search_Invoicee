@@ -90,6 +90,16 @@ namespace Search_Invoice.Services
                 DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
 
 
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(mst.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    json.Add("error", $"Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                    return json;
+                }
+
                 if (dt.Rows.Count == 0)
                 {
                     json.Add("error", "Không tồn tại hóa đơn có số bảo mật: " + sobaomat);
@@ -103,7 +113,7 @@ namespace Search_Invoice.Services
                 var sumTien = _nopDbContext2.ExecuteCmd($"SELECT SUM(ISNULL(inv_TotalAmount, 0)) AS sum_total_amount FROM dbo.inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '{dt.Rows[0]["inv_InvoiceAuth_id"].ToString()}'");
 
 
-                var connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
+                var connectionString = EncodeXML.Encrypt(_nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString, "NAMPV18081202");
                 byte[] byt = System.Text.Encoding.UTF8.GetBytes(connectionString);
                 var b = Convert.ToBase64String(byt);
 
@@ -818,6 +828,9 @@ namespace Search_Invoice.Services
 
         public byte[] PrintInvoiceFromSBM(string sobaomat, string masothue, string folder, string type, out string xml, out string fileNamePrint)
         {
+
+           
+
             bool inchuyendoi = false;
             _nopDbContext2.setConnect(masothue);
             var db = this._nopDbContext2.GetInvoiceDb();

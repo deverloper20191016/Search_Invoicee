@@ -12,6 +12,7 @@ using System.Data;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
+using Search_Invoice.Data;
 
 namespace Search_Invoice.Controllers
 {
@@ -33,7 +34,23 @@ namespace Search_Invoice.Controllers
         {
 
             inv_user us = (inv_user)Session[CommonConstants.USER_SESSION];
-            ;
+
+
+            TracuuHDDTContext tracuu = new TracuuHDDTContext();
+
+            var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                x.mst.Replace("-", "").Equals(us.mst.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+
+            if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+            {
+                return new JObject
+                {
+                    {
+                        "error", "Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết !"
+                    }
+                };
+            }
+
             CommonConnect cn = new CommonConnect();
             cn.setConnect(us.mst);
 

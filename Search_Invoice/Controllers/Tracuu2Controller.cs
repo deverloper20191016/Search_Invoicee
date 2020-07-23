@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Web.Http;
 using Search_Invoice.Authorization;
+using Search_Invoice.Data;
 
 namespace Search_Invoice.Controllers
 {
@@ -70,6 +71,16 @@ namespace Search_Invoice.Controllers
                 //    throw new Exception("Không tồn tại mst:");
                 //}
                 //string type = "PDF";
+
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                }
+
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 //string path = "~/Content/report/";
@@ -117,6 +128,15 @@ namespace Search_Invoice.Controllers
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                }
 
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
 
@@ -266,6 +286,18 @@ namespace Search_Invoice.Controllers
                 //    throw new Exception("Không tồn tại mst:");
                 //}
                 //string type = "PDF";
+
+
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU"));
+
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    result.Add("error", $"Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                    return result;
+                }
+
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 //string path = "~/Content/report/";

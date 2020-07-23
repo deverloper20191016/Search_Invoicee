@@ -181,7 +181,19 @@ namespace Search_Invoice.Controllers
             {
                 inv_user user = new inv_user() { mst = model.mst, username = model.username, password = model.password };
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
+
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(model.mst.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    ModelState.AddModelError("ErrorLogin", "Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết !");
+                    return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
+                }
+
                 user = tracuu.inv_users.FirstOrDefault(x => x.mst.Trim().Replace("-", "").Equals(user.mst.Trim().Replace("-", "")));
+
+                
                 if (user == null)
                 {
                     ModelState.AddModelError("ErrorLogin", "Mã số thuế không tồn tại trong hệ thống ! ");

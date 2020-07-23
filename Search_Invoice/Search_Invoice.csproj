@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -295,6 +296,7 @@
     <Compile Include="Data\Domain\dmdvcs.cs" />
     <Compile Include="Data\Domain\dvpermission.cs" />
     <Compile Include="Data\Domain\inv_admin.cs" />
+    <Compile Include="Data\Domain\inv_customer_banned.cs" />
     <Compile Include="Data\Domain\Inv_InvoiceAuth.cs" />
     <Compile Include="Data\Domain\inv_user.cs" />
     <Compile Include="Data\Domain\systemsetting.cs" />
@@ -1372,6 +1374,7 @@
     <Content Include="Views\Admin\Search.cshtml" />
     <Content Include="Views\Customer\Search_Invoice.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Admin\CusomerBanned.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
