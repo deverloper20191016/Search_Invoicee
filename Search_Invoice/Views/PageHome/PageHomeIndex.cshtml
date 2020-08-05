@@ -1,11 +1,11 @@
 ﻿@{
-  ViewBag.Title = "Index";
-  Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
 }
 @using Search_Invoice.Models;
 @model Search_Invoice.Models.LoginViewModel
 @{
-  TracuuModels tracuu = @ViewBag.Tracuu;
+    TracuuModels tracuu = @ViewBag.Tracuu;
 }
 <style>
   .k-grid-content > table > tbody > tr {
@@ -284,42 +284,42 @@
     <div class="signup-form">
 
       @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "register-form", @id = "register-form" }))
-      {
-        <div style="color:red">
-          @Html.ValidationMessage("ErrorLogin")
-        </div>
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            {
+          <div style="color:red">
+            @Html.ValidationMessage("ErrorLogin")
+          </div>
+          @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-          @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
-        </div>
-        <div class="form-group">
-          @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-          @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
-        </div>
-        <div class="form-group">
-          @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
-        </div>
-        <div class="form-group">
-          @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
-        </div>
-        <div class="form-group">
-          @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-        </div>
-        <!-- <div class="form-group">
-          <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-          <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-        </div> -->
-        @*<div class="checkboxx">
-            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-            <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
-          </div>*@
-        <div class="form-group form-button">
-          <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
-        </div>
+          @Html.AntiForgeryToken()
+          <div class="form-group">
+            @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
+          </div>
+          <div class="form-group">
+            @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
+          </div>
+          <div class="form-group">
+            @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
+          </div>
+          <div class="form-group">
+            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+          </div>
+          <div class="form-group">
+            @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
+          </div>
+          <div class="form-group">
+            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+          </div>
+          <!-- <div class="form-group">
+            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+          </div> -->
+          @*<div class="checkboxx">
+              <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+              <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
+            </div>*@
+          <div class="form-group form-button">
+            <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
+          </div>
       }
       @*<form method="POST" class="register-form" id="register-form">
           <div class="form-group">
@@ -745,7 +745,7 @@
               $('#tableInvoice').prop('hidden', false);
               $("#tableInvoice tbody>tr").remove();
 
-              for (var i = 0; i < result.data.length; i++) {
+              for (var i = 0 ; i < result.data.length ; i++) {
                 var tien = result.data[i].inv_TotalAmount == null ? result.data[i].sum_tien.toLocaleString() : result.data[i].inv_TotalAmount.toLocaleString();
                 $("#tableInvoice").find('tbody')
                   .append('<tr><td>' + result.data[i].mau_hd + '</td><td>' + result.data[i].inv_invoiceSeries + '</td><td>' + result.data[i].inv_invoiceNumber + '</td>' +
@@ -1043,6 +1043,19 @@
   }
 
   function readSignature(id) {
+
+
+    var SignalrConnection;
+    $.connection.hub.url = "http://localhost:19898/signalr";
+    SignalrConnection = $.connection.invoiceHub;
+
+    if (SignalrConnection == null) {
+      bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
+      return false;
+    }
+
+
+
     var xml = $("#ecd").val();
 
     if (id === "buyer") {
@@ -1052,25 +1065,23 @@
       }
     }
 
-    var data = {
-      id: id,
-      xml: xml
-    }
-
-    $.ajax({
-      url: "/tracuu2/showcert",
-      method: "POST",
-      contentType: "application/json",
-      data: JSON.stringify(data),
-      success: function (response) {
-        if (response.hasOwnProperty("error")) {
-          bootbox.alert(response.error);
-          return false;
-        }
-      }
-    });
 
 
+    $.connection.hub.start().done(function () {
+      var arg = {
+        xml: xml,
+        id: id
+      };
+
+      SignalrConnection.server.execCommand("ShowCert2", JSON.stringify(arg)).done(function (result) {
+        console.log(result);
+      }).fail(function (error) {
+        console.log('Invocation of NewContosoChatMessage failed. Error: ' + error);
+      });
+    })
+      .fail(function () {
+        bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
+      });
   }
 
 
