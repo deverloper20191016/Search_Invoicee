@@ -30,5 +30,6 @@ namespace Search_Invoice.Services
         JObject GetListInvoiceType(JObject data);
 
         JObject Search(JObject data);
+        JObject ShowCert(string id, string xml);
     }
 }

@@ -15,7 +15,11 @@ using System.Xml;
 using System.Drawing.Imaging;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using DevExpress.XtraReports.Parameters;
 using ICSharpCode.SharpZipLib.Zip;
 using Search_Invoice.Data;
@@ -92,7 +96,7 @@ namespace Search_Invoice.Services
 
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(mst.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+                    x.mst.Replace("-", "").Equals(mst.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
 
                 if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
                 {
@@ -2285,6 +2289,55 @@ namespace Search_Invoice.Services
                 json.Add("status_code", 400);
                 json.Add("error", ex.Message);
                 return json;
+            }
+        }
+
+        public JObject ShowCert(string id, string xml)
+        {
+            JObject result = new JObject();
+
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.LoadXml(xml);
+
+                XmlNodeList nodeList = doc.GetElementsByTagName("Signature");
+
+                foreach (XmlElement element in nodeList)
+                {
+                    string _id = element.Attributes["Id"].Value;
+
+                    if (_id == id)
+                    {
+                        SignedXml signedXml = new SignedXml(doc);
+                        signedXml.LoadXml(element);
+
+                        KeyInfoX509Data x509data = null;
+
+                        IEnumerator enums = signedXml.Signature.KeyInfo.GetEnumerator();
+
+                        while (enums.MoveNext())
+                        {
+                            if (enums.Current is KeyInfoX509Data)
+                            {
+                                x509data = (KeyInfoX509Data)enums.Current;
+                            }
+                        }
+
+                        X509Certificate2 cert = x509data.Certificates[0] as X509Certificate2;
+
+                        X509Certificate2UI.DisplayCertificate(cert);
+                    }
+                }
+
+                result.Add("callback", "ShowCert");
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.Add("error", ex.Message);
+                return result;
             }
         }
 

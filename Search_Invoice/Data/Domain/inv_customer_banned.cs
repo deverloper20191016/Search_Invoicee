@@ -15,5 +15,7 @@ namespace Search_Invoice.Data.Domain
         public string type { get; set; }
         public string link_web { get; set; }
 
+        public bool? is_unblock { get; set; }
+
     }
 }

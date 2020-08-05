@@ -74,7 +74,7 @@ namespace Search_Invoice.Controllers
 
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
 
                 if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
                 {
@@ -131,7 +131,7 @@ namespace Search_Invoice.Controllers
 
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
 
                 if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
                 {
@@ -290,7 +290,7 @@ namespace Search_Invoice.Controllers
 
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU"));
+                    x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
 
                 if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
                 {
@@ -489,5 +489,19 @@ namespace Search_Invoice.Controllers
             }
             return _tracuuService2.Search(model);
         }
+
+        [HttpPost]
+        [Route("tracuu2/showcert")]
+        [AllowAnonymous]
+
+        public JObject ShowCert(JObject model)
+        {
+            var id = model["id"].ToString();
+            var xml = model["xml"].ToString();
+            return _tracuuService2.ShowCert(id, xml);
+            
+        }
+
+
     }
 }

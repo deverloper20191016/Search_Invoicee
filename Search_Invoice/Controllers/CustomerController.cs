@@ -39,7 +39,7 @@ namespace Search_Invoice.Controllers
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
 
             var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                x.mst.Replace("-", "").Equals(us.mst.Replace("-", "")) && x.type.Equals("KHOATRACUU"));
+                x.mst.Replace("-", "").Equals(us.mst.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
 
             if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
             {
