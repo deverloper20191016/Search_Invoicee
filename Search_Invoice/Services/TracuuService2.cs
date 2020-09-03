@@ -91,7 +91,7 @@ namespace Search_Invoice.Services
 
                 string sobaomat = model["sobaomat"].ToString();
                 _nopDbContext2.setConnect(mst);
-                DataTable dt = this._nopDbContext2.ExecuteCmd("SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat ='" + sobaomat + "'");
+                DataTable dt = this._nopDbContext2.ExecuteCmd($"SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat ='{sobaomat}' OR key_api = '{sobaomat}' OR key_api2 = '{sobaomat}'");
 
 
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();

@@ -1,14 +1,17 @@
 ﻿using Newtonsoft.Json.Linq;
 using Search_Invoice.Services;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
 using Search_Invoice.Authorization;
 using Search_Invoice.Data;
+using Search_Invoice.Util;
 
 namespace Search_Invoice.Controllers
 {
@@ -502,6 +505,156 @@ namespace Search_Invoice.Controllers
             
         }
 
+
+
+        [HttpPost]
+        [Route("tracuu2/UploadInv")]
+        [AllowAnonymous]
+        public HttpResponseMessage UploadInv()
+        {
+            HttpResponseMessage result = null;
+            Stream streams = new MemoryStream();
+            string type = "PDF";
+
+            string fileName = null;
+
+            try
+            {
+
+                var httpRequest = HttpContext.Current.Request;
+                if (httpRequest.Files.Count < 1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Chưa chọn file hóa đơn");
+                }
+
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    streams = postedFile.InputStream;
+                    fileName = postedFile.FileName;
+                    //var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
+                    //postedFile.SaveAs(filePath);
+                    // NOTE: To store in memory use postedFile.InputStream
+                }
+
+                // return Request.CreateResponse(HttpStatusCode.Created);
+
+                var json = new JObject();
+
+                if (!fileName.EndsWith("zip"))
+                {
+                    json.Add("error", "File tải lên không đúng *.zip");
+                    json.Add("status", "server");
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, json); ;
+                }
+
+
+                string xml = "";
+                string repx = "";
+                string key = "";
+
+
+                ReportUtil.ExtracInvoice(streams, ref xml, ref repx, ref key);
+                string xmlDecryp = EncodeXML.Decrypt(xml, key);
+
+
+                string originalString = this.ActionContext.Request.RequestUri.OriginalString;
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+
+                string folder = System.Web.HttpContext.Current.Server.MapPath(path);
+
+                byte[] buffer = ReportUtil.InvoiceReport(xmlDecryp, repx, folder, "PDF");
+
+                result = new HttpResponseMessage(HttpStatusCode.OK);
+                result.Content = new ByteArrayContent(buffer);
+
+                if (type == "PDF")
+                {
+                    result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("inline");
+                    result.Content.Headers.ContentDisposition.FileName = "Invoice.pdf";
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                }
+
+                result.Content.Headers.ContentLength = buffer.Length;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //result = new HttpResponseMessage(HttpStatusCode.BadRequest)
+                //{
+                //    Content = new StringContent(new JObject
+                //    {
+                //        {"error", ex.Message}
+                //    }.ToString())
+                //};
+                //result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
+                //result.Content.Headers.ContentLength = ex.Message.Length;
+                var json = new JObject { { "error", ex.Message }, { "status", "server" } };
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest, json); ;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("tracuu2/VeryfyXml")]
+        [AllowAnonymous]
+        public HttpResponseMessage VeryfyXml()
+        {
+            HttpResponseMessage kq = null;
+            var json = new JObject();
+            Stream streams = new MemoryStream();
+            string type = "PDF";
+
+            string fileName = null;
+
+            try
+            {
+
+                var httpRequest = HttpContext.Current.Request;
+                if (httpRequest.Files.Count < 1)
+                {
+                    json.Add("error", "Chưa chọn file hóa đơn");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, json);
+                }
+
+
+
+                foreach (string file in httpRequest.Files)
+                {
+                    var postedFile = httpRequest.Files[file];
+                    streams = postedFile.InputStream;
+                    fileName = postedFile.FileName;
+                }
+
+                if (!fileName.EndsWith("zip"))
+                {
+                    json.Add("error", "File tải lên không đúng *.zip");
+                    json.Add("status", "server");
+
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, json);
+                }
+
+
+                string xml = "";
+                string repx = "";
+                string key = "";
+
+
+                ReportUtil.ExtracInvoice(streams, ref xml, ref repx, ref key);
+                string xmlDecryp = EncodeXML.Decrypt(xml, key);
+
+                var result = ReportUtil.VeryfyXml(xmlDecryp);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, result);
+            }
+            catch (Exception ex)
+            {
+                json.Add("error", ex.Message);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, json);
+            }
+
+        }
 
     }
 }
