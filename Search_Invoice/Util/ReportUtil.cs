@@ -18,12 +18,7 @@ using ICSharpCode.SharpZipLib.Core;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using Search_Invoice.Data;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
-using System.Text;
-using System.Xml;
-using DevExpress.XtraReports.Parameters;
 
 namespace Search_Invoice.Util
 {
@@ -107,35 +102,38 @@ namespace Search_Invoice.Util
             string input = set.Tables["ThongTinHoaDon"].Rows[0]["SellerAppRecordId"].ToString();
 
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
-            var inv_admin = tracuu.Inv_admin.Where(c => c.MST == mst || c.alias == mst).FirstOrDefault<inv_admin>();
-            InvoiceDbContext invoiceContext = new InvoiceDbContext(EncodeXML.Decrypt(inv_admin.ConnectString, "NAMPV18081202"));
+            var invAdmin = tracuu.Inv_admin.Where(c => c.MST == mst || c.alias == mst).FirstOrDefault<inv_admin>();
 
-            Guid inv_InvoiceAuth_id = Guid.Parse(input);
+            if (invAdmin == null)
+            {
+                throw new Exception("Không tìm thấy thông tin kết nối");
+            }
+
+            var invoiceContext = invAdmin.ConnectString.StartsWith("Data Source") ? new InvoiceDbContext(invAdmin.ConnectString) : new InvoiceDbContext(EncodeXML.Decrypt(invAdmin.ConnectString, "NAMPV18081202"));
+
+            Guid invInvoiceAuthId = Guid.Parse(input);
             Inv_InvoiceAuth invoice = (from c in invoiceContext.Inv_InvoiceAuths
-                                       where c.Inv_InvoiceAuth_id.ToString() == inv_InvoiceAuth_id.ToString()
-                                       select c).FirstOrDefault<Inv_InvoiceAuth>();
+                                       where c.Inv_InvoiceAuth_id.ToString() == invInvoiceAuthId.ToString()
+                                       select c).FirstOrDefault();
 
             if (invoice == null)
             {
                 throw new Exception("MST: " + mst + ". Không tồn tại hóa đơn");
             }
-            Int32 trang_thai_hd = (Int32)invoice.Trang_thai_hd;
-            string inv_originalId = invoice.Inv_originalId.ToString();
-            string inv_InvoiceCode_id = invoice.Inv_InvoiceCode_id.ToString();
+            Int32 trangThaiHd = (Int32)invoice.Trang_thai_hd.GetValueOrDefault();
+            string invOriginalId = invoice.Inv_originalId.ToString();
+            string invInvoiceCodeId = invoice.Inv_InvoiceCode_id.ToString();
 
-
-         
-
-            if (trang_thai_hd == 11 || trang_thai_hd == 13 || trang_thai_hd == 17)
+            if (trangThaiHd == 11 || trangThaiHd == 13 || trangThaiHd == 17)
             {
-                if (!string.IsNullOrEmpty(inv_originalId))
+                if (!string.IsNullOrEmpty(invOriginalId))
                 {
-                    Inv_InvoiceAuth tblInv = invoiceContext.Inv_InvoiceAuths.SqlQuery("SELECT * FROM inv_InvoiceAuth WHERE inv_InvoiceAuth_id='" + inv_originalId + "'").FirstOrDefault<Inv_InvoiceAuth>();
-                    string inv_adjustmentType = tblInv.Inv_adjustmentType.ToString();
+                    Inv_InvoiceAuth tblInv = invoiceContext.Inv_InvoiceAuths.SqlQuery("SELECT * FROM inv_InvoiceAuth WHERE inv_InvoiceAuth_id='" + invOriginalId + "'").FirstOrDefault();
+                    string invAdjustmentType = tblInv.Inv_adjustmentType.ToString();
 
-                    string loai = inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21" ? "điều chỉnh" : inv_adjustmentType.ToString() == "3" ? "thay thế" : inv_adjustmentType.ToString() == "7" ? "xóa bỏ" : "";
+                    string loai = invAdjustmentType.ToString() == "5" || invAdjustmentType.ToString() == "19" || invAdjustmentType.ToString() == "21" ? "điều chỉnh" : invAdjustmentType.ToString() == "3" ? "thay thế" : invAdjustmentType.ToString() == "7" ? "xóa bỏ" : "";
 
-                    if (inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "7" || inv_adjustmentType.ToString() == "3" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21")
+                    if (invAdjustmentType.ToString() == "5" || invAdjustmentType.ToString() == "7" || invAdjustmentType.ToString() == "3" || invAdjustmentType.ToString() == "19" || invAdjustmentType.ToString() == "21")
                     {
                         msg_tb = "Hóa đơn bị " + loai + " bởi hóa đơn số: " + tblInv.Inv_invoiceNumber + " ngày " + string.Format("{0:dd/MM/yyyy}", tblInv.Inv_invoiceIssuedDate) + ", mẫu số " + tblInv.Mau_hd + " ký hiệu " + tblInv.Inv_invoiceSeries;
 
@@ -162,7 +160,7 @@ namespace Search_Invoice.Util
             }
             report.DataSource = set;
 
-            DataTable tblCtthongbao = invoiceContext.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + inv_InvoiceCode_id + "'");
+            DataTable tblCtthongbao = invoiceContext.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + invInvoiceCodeId + "'");
             string hang_nghin = ".";
             string thap_phan = ",";
 
