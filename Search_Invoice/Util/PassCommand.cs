@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Text;
 using System.Security.Cryptography;
 
@@ -9,27 +6,27 @@ namespace Search_Invoice.Util
 {
     public class PassCommand
     {
-        private string _passFromDatabase;
+        private readonly string _passFromDatabase;
 
         public PassCommand(string password)
         {
-            this._passFromDatabase = password;
+            _passFromDatabase = password;
         }
 
         public bool CheckPassword(string password)
         {
-            byte[] sourceArray = Convert.FromBase64String(this.Password);
+            byte[] sourceArray = Convert.FromBase64String(Password);
             int sourceIndex = 0x40;
             int length = sourceArray.Length - sourceIndex;
             byte[] destinationArray = new byte[length];
             Array.Copy(sourceArray, sourceIndex, destinationArray, 0, length);
-            string str = this.CreateHashedPassword(password, destinationArray);
-            return (this._passFromDatabase == str);
+            string str = CreateHashedPassword(password, destinationArray);
+            return (_passFromDatabase == str);
         }
 
         public string CreateHashedPassword(string password, byte[] existingSalt)
         {
-            byte[] data = null;
+            byte[] data;
             if (existingSalt == null)
             {
                 Random random = new Random();
@@ -55,7 +52,7 @@ namespace Search_Invoice.Util
         {
             get
             {
-                return this._passFromDatabase;
+                return _passFromDatabase;
             }
         }
     }

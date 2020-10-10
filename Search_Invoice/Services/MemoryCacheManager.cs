@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Runtime.Caching;
 
 namespace Search_Invoice.Services
@@ -10,7 +9,7 @@ namespace Search_Invoice.Services
     /// <summary>
     /// Represents a manager for caching between HTTP requests (long term caching)
     /// </summary>
-    public partial class MemoryCacheManager : ICacheManager
+    public class MemoryCacheManager : ICacheManager
     {
         /// <summary>
         /// Cache object

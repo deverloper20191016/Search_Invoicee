@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Threading.Tasks;
 using System.Data;
 using System.Drawing;
-using Search_Invoice.Data.Domain;
 using System.Text;
 using System.IO;
 using HtmlAgilityPack;
@@ -17,228 +15,157 @@ using System.Globalization;
 using System.Xml;
 using System.Drawing.Imaging;
 using DevExpress.XtraReports.Parameters;
-using Newtonsoft.Json.Linq;
 
 namespace Search_Invoice.Services
 {
     public class TracuuService : ITracuuService
     {
-        private INopDbContext _nopDbContext;
-        private ICacheManager _cacheManager;
-        private IWebHelper _webHelper;
+        private readonly INopDbContext _nopDbContext;
+        private readonly ICacheManager _cacheManager;
+        private readonly IWebHelper _webHelper;
 
-        public TracuuService(
-                                INopDbContext nopDbContext,
-                                ICacheManager cacheManager,
-                                IWebHelper webHelper
-            )
+        public TracuuService(INopDbContext nopDbContext,ICacheManager cacheManager,IWebHelper webHelper)
         {
-            this._nopDbContext = nopDbContext;
-            this._cacheManager = cacheManager;
-            this._webHelper = webHelper;
+            _nopDbContext = nopDbContext;
+            _cacheManager = cacheManager;
+            _webHelper = webHelper;
         }
-        public byte[] PrintInvoiceFromSBM(string id, string folder, string type)
+        public byte[] PrintInvoiceFromSbm(string id, string folder, string type)
         {
-            byte[] results = PrintInvoiceFromSBM(id, "", folder, type, false);
+            byte[] results = PrintInvoiceFromSbm(id, "", folder, type, false);
             return results;
         }
 
-        public byte[] PrintInvoiceFromSBM(string id, string mst, string folder, string type)
+        public byte[] PrintInvoiceFromSbm(string id, string mst, string folder, string type)
         {
-            byte[] results = PrintInvoiceFromSBM(id, mst, folder, type, false);
+            byte[] results = PrintInvoiceFromSbm(id, mst, folder, type, false);
             return results;
         }
 
-        public byte[] PrintInvoiceFromSBM(string id, string mst, string folder, string type, bool inchuyendoi)
+        public byte[] PrintInvoiceFromSbm(string id, string mst, string folder, string type, bool inchuyendoi)
         {
-            var db = this._nopDbContext.GetInvoiceDb();
-
-            byte[] bytes = null;
-
-            string xml = "";
-            string msg_tb = "";
-
+            var db = _nopDbContext.GetInvoiceDb();
+            byte[] bytes;
+            string msgTb = "";
             try
             {
-                // Guid inv_InvoiceAuth_id = Guid.Parse(id);
-
-                DataTable tblInv_InvoiceAuth = this._nopDbContext.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE sobaomat='" + id + "'");
-                if (tblInv_InvoiceAuth.Rows.Count == 0)
+                Dictionary<string, object> parameters = new Dictionary<string, object>
+                {
+                    {"@sobaomat", id}
+                };
+                string sql = "SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat = @sobaomat";
+                DataTable tblInvInvoiceAuth = _nopDbContext.ExecuteCmd(sql, CommandType.Text, parameters);
+                if (tblInvInvoiceAuth.Rows.Count == 0)
                 {
                     throw new Exception("Không tồn tại số bảo mật " + id);
                 }
-                string inv_InvoiceAuth_id = tblInv_InvoiceAuth.Rows[0]["inv_InvoiceAuth_id"].ToString();
-                DataTable tblInvoiceXmlData = this._nopDbContext.ExecuteCmd("SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id='" + inv_InvoiceAuth_id + "'");
-
-
-                if (tblInvoiceXmlData.Rows.Count > 0)
-                {
-                    xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
-                }
-                else
-                {
-                    xml = db.Database.SqlQuery<string>("EXECUTE sproc_export_XmlInvoice '" + inv_InvoiceAuth_id + "'").FirstOrDefault<string>();
-                }
-                var invoiceDb = this._nopDbContext.GetInvoiceDb();
-                string inv_InvoiceCode_id = tblInv_InvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
-                int trang_thai_hd = Convert.ToInt32(tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"]);
-                string inv_originalId = tblInv_InvoiceAuth.Rows[0]["inv_originalId"].ToString();
-                string user_name = _webHelper.GetUser();
-                // wb_user wbuser = invoiceDb.WbUsers.Where(c => c.username == user_name).FirstOrDefault<wb_user>();
-                DataTable tblCtthongbao = this._nopDbContext.ExecuteCmd("SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id=b.dpthongbao_id WHERE a.ctthongbao_id='" + inv_InvoiceCode_id + "'");
-                string hang_nghin = ".";
-                string thap_phan = ",";
+                string invInvoiceAuthId = tblInvInvoiceAuth.Rows[0]["inv_InvoiceAuth_id"].ToString();
+                DataTable tblInvoiceXmlData = _nopDbContext.ExecuteCmd($"SELECT * FROM InvoiceXmlData WHERE inv_InvoiceAuth_id = '{invInvoiceAuthId}'");
+                var xml = tblInvoiceXmlData.Rows.Count > 0 ? tblInvoiceXmlData.Rows[0]["data"].ToString() : db.Database.SqlQuery<string>($"EXECUTE sproc_export_XmlInvoice '{invInvoiceAuthId}'").FirstOrDefault();
+                string invInvoiceCodeId = tblInvInvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
+                int trangThaiHd = Convert.ToInt32(tblInvInvoiceAuth.Rows[0]["trang_thai_hd"]);
+                string invOriginalId = tblInvInvoiceAuth.Rows[0]["inv_originalId"].ToString();
+                DataTable tblCtthongbao = _nopDbContext.ExecuteCmd($"SELECT * FROM ctthongbao a INNER JOIN dpthongbao b ON a.dpthongbao_id = b.dpthongbao_id WHERE a.ctthongbao_id = '{invInvoiceCodeId}'");
+                string hangNghin = ".";
+                string thapPhan = ",";
                 DataColumnCollection columns = tblCtthongbao.Columns;
                 if (columns.Contains("hang_nghin"))
                 {
-                    hang_nghin = tblCtthongbao.Rows[0]["hang_nghin"].ToString();
+                    hangNghin = tblCtthongbao.Rows[0]["hang_nghin"].ToString();
                 }
                 if (columns.Contains("thap_phan"))
                 {
-                    thap_phan = tblCtthongbao.Rows[0]["thap_phan"].ToString();
+                    thapPhan = tblCtthongbao.Rows[0]["thap_phan"].ToString();
                 }
-                if (hang_nghin == null || hang_nghin == "")
+                if (string.IsNullOrEmpty(hangNghin))
                 {
-                    hang_nghin = ".";
+                    hangNghin = ".";
                 }
-                if (thap_phan == "" || thap_phan == null)
+                if (string.IsNullOrEmpty(thapPhan))
                 {
-                    thap_phan = ",";
+                    thapPhan = ",";
                 }
-                //string hang_nghin = tblCtthongbao.Rows[0]["hang_nghin"].ToString();
-                //string thap_phan = tblCtthongbao.Rows[0]["thap_phan"].ToString();
-
-                string cacheReportKey = string.Format(CachePattern.INVOICE_REPORT_PATTERN_KEY + "{0}", tblCtthongbao.Rows[0]["dmmauhoadon_id"]);
-
-                //XtraReport report = _cacheManager.Get<XtraReport>(cacheReportKey);
-                XtraReport report = new XtraReport();
-                report = null;
-
-                if (report == null)
+                string cacheReportKey = string.Format(CachePattern.InvoiceReportPatternKey + "{0}", tblCtthongbao.Rows[0]["dmmauhoadon_id"]);
+                XtraReport report;
+                DataTable tblDmmauhd = _nopDbContext.ExecuteCmd($"SELECT * FROM dmmauhoadon WHERE dmmauhoadon_id = '{tblCtthongbao.Rows[0]["dmmauhoadon_id"].ToString()}'");
+                string invReport = tblDmmauhd.Rows[0]["report"].ToString();
+                if (invReport.Length > 0)
                 {
-
-                    DataTable tblDmmauhd = this._nopDbContext.ExecuteCmd("SELECT * FROM dmmauhoadon WHERE dmmauhoadon_id='" + tblCtthongbao.Rows[0]["dmmauhoadon_id"].ToString() + "'");
-                    string invReport = tblDmmauhd.Rows[0]["report"].ToString();
-
-                    if (invReport.Length > 0)
-                    {
-                        report = ReportUtil.LoadReportFromString(invReport);
-                        _cacheManager.Set(cacheReportKey, report, 30);
-                    }
-                    else
-                    {
-                        throw new Exception("Không tải được mẫu hóa đơn");
-                    }
-
+                    report = ReportUtil.LoadReportFromString(invReport);
+                    _cacheManager.Set(cacheReportKey, report, 30);
                 }
-
+                else
+                {
+                    throw new Exception("Không tải được mẫu hóa đơn");
+                }
                 report.Name = "XtraReport1";
                 report.ScriptReferencesString = "AccountSignature.dll";
-
                 DataSet ds = new DataSet();
-
                 using (XmlReader xmlReader = XmlReader.Create(new StringReader(report.DataSourceSchema)))
                 {
                     ds.ReadXmlSchema(xmlReader);
                     xmlReader.Close();
                 }
-
                 using (XmlReader xmlReader = XmlReader.Create(new StringReader(xml)))
                 {
                     ds.ReadXml(xmlReader);
                     xmlReader.Close();
                 }
-
                 if (ds.Tables.Contains("TblXmlData"))
                 {
                     ds.Tables.Remove("TblXmlData");
                 }
-
-                DataTable tblXmlData = new DataTable();
-                tblXmlData.TableName = "TblXmlData";
+                DataTable tblXmlData = new DataTable {TableName = "TblXmlData"};
                 tblXmlData.Columns.Add("data");
-
                 DataRow r = tblXmlData.NewRow();
                 r["data"] = xml;
                 tblXmlData.Rows.Add(r);
                 ds.Tables.Add(tblXmlData);
-
-                string datamember = report.DataMember;
-
-                if (datamember.Length > 0)
+                if (trangThaiHd == 11 || trangThaiHd == 13 || trangThaiHd == 17)
                 {
-                    if (ds.Tables.Contains(datamember))
+                    if (!string.IsNullOrEmpty(invOriginalId))
                     {
-                        DataTable tblChiTiet = ds.Tables[datamember];
-
-                        int rowcount = ds.Tables[datamember].Rows.Count;
-
-
-                    }
-                }
-
-                if (trang_thai_hd == 11 || trang_thai_hd == 13 || trang_thai_hd == 17)
-                {
-                    if (!string.IsNullOrEmpty(inv_originalId))
-                    {
-                        DataTable tblInv = this._nopDbContext.ExecuteCmd("SELECT * FROM inv_InvoiceAuth WHERE inv_InvoiceAuth_id='" + inv_originalId + "'");
-                        string inv_adjustmentType = tblInv.Rows[0]["inv_adjustmentType"].ToString();
-
-                        string loai = inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21" ? "điều chỉnh" : inv_adjustmentType.ToString() == "3" ? "thay thế" : inv_adjustmentType.ToString() == "7" ? "xóa bỏ" : "";
-
-                        if (inv_adjustmentType.ToString() == "5" || inv_adjustmentType.ToString() == "7" || inv_adjustmentType.ToString() == "3" || inv_adjustmentType.ToString() == "19" || inv_adjustmentType.ToString() == "21")
+                        DataTable tblInv = _nopDbContext.ExecuteCmd($"SELECT * FROM inv_InvoiceAuth WHERE inv_InvoiceAuth_id = '{invOriginalId}'");
+                        string invAdjustmentType = tblInv.Rows[0]["inv_adjustmentType"].ToString();
+                        string loai = invAdjustmentType == "5" || invAdjustmentType == "19" || invAdjustmentType == "21" || invAdjustmentType == "23" ? "điều chỉnh" : invAdjustmentType == "3" ? "thay thế" : invAdjustmentType == "7" ? "xóa bỏ" : "";
+                        if (invAdjustmentType == "5" || invAdjustmentType == "7" || invAdjustmentType == "3" || invAdjustmentType == "19" || invAdjustmentType == "21" || invAdjustmentType == "23")
                         {
-                            msg_tb = "Hóa đơn bị " + loai + " bởi hóa đơn số: " + tblInv.Rows[0]["inv_invoiceNumber"] + " ngày " + string.Format("{0:dd/MM/yyyy}", tblInv.Rows[0]["inv_invoiceIssuedDate"]) + ", mẫu số " + tblInv.Rows[0]["mau_hd"] + " ký hiệu " + tblInv.Rows[0]["inv_invoiceSeries"];
-
+                            msgTb =
+                                $"Hóa đơn bị {loai} bởi hóa đơn số: {tblInv.Rows[0]["inv_invoiceNumber"].ToString()} ngày {tblInv.Rows[0]["inv_invoiceIssuedDate"]:dd/MM/yyyy} mẫu số {tblInv.Rows[0]["mau_hd"].ToString()} ký hiệu {tblInv.Rows[0]["inv_invoiceSeries"].ToString()}";
                         }
                     }
                 }
 
-                if (Convert.ToInt32(tblInv_InvoiceAuth.Rows[0]["inv_adjustmentType"]) == 7)
+                if (Convert.ToInt32(tblInvInvoiceAuth.Rows[0]["inv_adjustmentType"]) == 7)
                 {
-                    msg_tb = "";
+                    msgTb = "";
                 }
-
                 if (report.Parameters["MSG_TB"] != null)
                 {
-                    report.Parameters["MSG_TB"].Value = msg_tb;
+                    report.Parameters["MSG_TB"].Value = msgTb;
                 }
-
-                var lblHoaDonMau = report.AllControls<XRLabel>().Where(c => c.Name == "lblHoaDonMau").FirstOrDefault<XRLabel>();
-
+                var lblHoaDonMau = report.AllControls<XRLabel>().FirstOrDefault(c => c.Name == "lblHoaDonMau");
                 if (lblHoaDonMau != null)
                 {
                     lblHoaDonMau.Visible = false;
                 }
-
                 if (inchuyendoi)
                 {
-                    var tblInChuyenDoi = report.AllControls<XRTable>().Where(c => c.Name == "tblInChuyenDoi").FirstOrDefault<XRTable>();
-
+                    var tblInChuyenDoi = report.AllControls<XRTable>().FirstOrDefault(c => c.Name == "tblInChuyenDoi");
                     if (tblInChuyenDoi != null)
                     {
                         tblInChuyenDoi.Visible = true;
                     }
-
                     if (report.Parameters["MSG_HD_TITLE"] != null)
                     {
                         report.Parameters["MSG_HD_TITLE"].Value = "Hóa đơn chuyển đổi từ hóa đơn điện tử";
                     }
-
-                    //if (report.Parameters["NGUOI_IN_CDOI"] != null)
-                    //{
-                    //    report.Parameters["NGUOI_IN_CDOI"].Value = wbuser.ten_nguoi_sd == null ? "" : wbuser.ten_nguoi_sd;
-                    //    report.Parameters["NGUOI_IN_CDOI"].Visible = true;
-                    //}
-
                     if (report.Parameters["NGAY_IN_CDOI"] != null)
                     {
                         report.Parameters["NGAY_IN_CDOI"].Value = DateTime.Now;
                         report.Parameters["NGAY_IN_CDOI"].Visible = true;
                     }
                 }
-
-
                 if (report.Parameters["LINK_TRACUU"] != null)
                 {
                     var sqlQrCodeLink = "SELECT TOP 1 * FROM wb_setting WHERE ma = 'QR_CODE_LINK'";
@@ -248,89 +175,63 @@ namespace Search_Invoice.Services
                         var giatri = tblQrCodeLink.Rows[0]["gia_tri"].ToString();
                         if (giatri.Equals("C"))
                         {
-                            report.Parameters["LINK_TRACUU"].Value = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={inv_InvoiceAuth_id}";
+                            report.Parameters["LINK_TRACUU"].Value = $"http://{mst.Trim().Replace("-", "")}.minvoice.com.vn/api/Invoice/Preview?id={invInvoiceAuthId}";
                             report.Parameters["LINK_TRACUU"].Visible = true;
                         }
                     }
                 }
-
-
-                var inv_currencyCode = tblInv_InvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
-
-                var tbldmnt = _nopDbContext.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{inv_currencyCode}'");
+                var invCurrencyCode = tblInvInvoiceAuth.Rows[0]["inv_currencyCode"].ToString();
+                var tbldmnt = _nopDbContext.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{invCurrencyCode}'");
                 if (tbldmnt.Rows.Count > 0)
                 {
                     var rowDmnt = tbldmnt.Rows[0];
-                    var quantityDmnt = 0;
-                    var unitPriceDmnt = 0;
-                    var totalAmountWithoutVatDmnt = 0;
-                    var totalAmountDmnt = 0;
-
                     var quantityFomart = "n0";
                     var unitPriceFomart = "n0";
                     var totalAmountWithoutVatFomart = "n0";
                     var totalAmountFomart = "n0";
-
                     if (tbldmnt.Columns.Contains("inv_quantity"))
                     {
-                        quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                        var quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
                             ? rowDmnt["inv_quantity"].ToString()
                             : "0");
-
-                        //quantityFomart = GetFormatString(tblInv_InvoiceAuthDetail, quantityDmnt, "inv_quantity");
                         quantityFomart = GetFormatString(quantityDmnt);
-
                     }
-
                     if (tbldmnt.Columns.Contains("inv_unitPrice"))
                     {
-                        unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                        var unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
                             ? rowDmnt["inv_unitPrice"].ToString()
                             : "0");
-                        //unitPriceFomart = GetFormatString(tblInv_InvoiceAuthDetail, unitPriceDmnt, "inv_unitPrice");
                         unitPriceFomart = GetFormatString(unitPriceDmnt);
-
                     }
-
-
                     if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
                     {
-                        totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                        var totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
                             ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
                             : "0");
-                        //totalAmountWithoutVatFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountWithoutVatDmnt, "inv_TotalAmountWithoutVat");
                         totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
                     }
-
                     if (tbldmnt.Columns.Contains("inv_TotalAmount"))
                     {
-                        totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                        var totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
                             ? rowDmnt["inv_TotalAmount"].ToString()
                             : "0");
-                        //totalAmountFomart = GetFormatString(tblInv_InvoiceAuthDetail, totalAmountDmnt, "inv_TotalAmount");
                         totalAmountFomart = GetFormatString(totalAmountDmnt);
-
                     }
-
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_quantity",
                         Value = quantityFomart
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_unitPrice",
                         Value = unitPriceFomart
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_TotalAmountWithoutVat",
                         Value = totalAmountWithoutVatFomart
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_TotalAmount",
@@ -344,67 +245,39 @@ namespace Search_Invoice.Services
                         Name = "FM_inv_quantity",
                         Value = "n0"
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_unitPrice",
                         Value = "n0"
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_TotalAmountWithoutVat",
                         Value = "n0"
                     });
-
                     report.Parameters.Add(new Parameter
                     {
                         Name = "FM_inv_TotalAmount",
                         Value = "n0"
                     });
                 }
-
-
                 report.DataSource = ds;
-
                 var t = Task.Run(() =>
                 {
                     var newCulture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-                    newCulture.NumberFormat.NumberDecimalSeparator = thap_phan;
-                    newCulture.NumberFormat.NumberGroupSeparator = hang_nghin;
-
+                    newCulture.NumberFormat.NumberDecimalSeparator = thapPhan;
+                    newCulture.NumberFormat.NumberGroupSeparator = hangNghin;
                     System.Threading.Thread.CurrentThread.CurrentCulture = newCulture;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = newCulture;
-
                     report.CreateDocument();
-
                 });
-
                 t.Wait();
-
-                //DataTable tblLicenseInfo = this._nopDbContext.ExecuteCmd("SELECT * FROM LicenseInfo WHERE ma_dvcs=N'" + tblInv_InvoiceAuth.Rows[0]["ma_dvcs"] + "' AND key_license IS NOT NULL AND LicenseXmlInfo IS NOT NULL");
-                //if (tblLicenseInfo.Rows.Count == 0)
-                //{
-                //    Bitmap bmp = ReportUtil.DrawStringDemo(report);
-                //    int pageCount = report.Pages.Count;
-
-                //    for (int i = 0; i < pageCount; i++)
-                //    {
-                //        PageWatermark pmk = new PageWatermark();
-                //        pmk.Image = bmp;
-                //        report.Pages[i].AssignWatermark(pmk);
-                //    }
-                //}
-
-
-                if (tblInv_InvoiceAuth.Columns.Contains("inv_sobangke"))
+                if (tblInvInvoiceAuth.Columns.Contains("inv_sobangke"))
                 {
-                    if (tblInv_InvoiceAuth.Rows[0]["inv_sobangke"].ToString().Length > 0)
+                    if (tblInvInvoiceAuth.Rows[0]["inv_sobangke"].ToString().Length > 0)
                     {
                         string fileName = folder + "\\BangKeDinhKem.repx";
-
-                        XtraReport rpBangKe = null;
-
+                        XtraReport rpBangKe;
                         if (!File.Exists(fileName))
                         {
                             rpBangKe = new XtraReport();
@@ -414,141 +287,73 @@ namespace Search_Invoice.Services
                         {
                             rpBangKe = XtraReport.FromFile(fileName, true);
                         }
-
                         rpBangKe.ScriptReferencesString = "AccountSignature.dll";
                         rpBangKe.Name = "rpBangKe";
                         rpBangKe.DisplayName = "BangKeDinhKem.repx";
-
                         rpBangKe.DataSource = report.DataSource;
-
                         rpBangKe.CreateDocument();
                         report.Pages.AddRange(rpBangKe.Pages);
                     }
-
-
-
                 }
 
-                if (tblInv_InvoiceAuth.Rows[0]["trang_thai_hd"].ToString() == "7")
+                if (tblInvInvoiceAuth.Rows[0]["trang_thai_hd"].ToString() == "7")
                 {
-
                     var bmp = ReportUtil.DrawDiagonalLine(report);
                     int pageCount = report.Pages.Count;
-
-
                     for (int i = 0; i < pageCount; i++)
                     {
                         Page page = report.Pages[i];
-                        PageWatermark pmk = new PageWatermark();
-                        pmk.Image = bmp;
+                        PageWatermark pmk = new PageWatermark {Image = bmp};
                         page.AssignWatermark(pmk);
                     }
-
                     string fileName = folder + "\\BienBanXoaBo.repx";
                     XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
-
                     rpBienBan.ScriptReferencesString = "AccountSignature.dll";
                     rpBienBan.Name = "rpBienBan";
                     rpBienBan.DisplayName = "BienBanXoaBo.repx";
-
                     rpBienBan.DataSource = report.DataSource;
                     rpBienBan.DataMember = report.DataMember;
-
                     rpBienBan.CreateDocument();
-
                     rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
                     report.PrintingSystem.ContinuousPageNumbering = false;
-
                     report.Pages.AddRange(rpBienBan.Pages);
-
                     int idx = pageCount;
                     pageCount = report.Pages.Count;
-
                     for (int i = idx; i < pageCount; i++)
                     {
                         PageWatermark pmk = new PageWatermark();
                         pmk.ShowBehind = false;
                         report.Pages[i].AssignWatermark(pmk);
                     }
-
                 }
-
-                //if (trang_thai_hd == 19 || trang_thai_hd == 21 || trang_thai_hd == 5)
-                //{
-
-                //    string rp_file = trang_thai_hd == 19 || trang_thai_hd == 21 ? "INCT_BBDC_GT.repx" : "INCT_BBDC_DD.repx";
-                //    string rp_code = trang_thai_hd == 19 || trang_thai_hd == 21 ? "sproc_inct_hd_dieuchinhgt" : "sproc_inct_hd_dieuchinhdg";
-
-                //    string fileName = folder + "\\" + rp_file;
-                //    XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
-
-                //    rpBienBan.ScriptReferencesString = "AccountSignature.dll";
-                //    rpBienBan.Name = "rpBienBanDC";
-                //    rpBienBan.DisplayName = rp_file;
-
-                //    Dictionary<string, string> parameters = new Dictionary<string, string>();
-                //    parameters.Add("ma_dvcs", _webHelper.GetDvcs());
-                //    parameters.Add("document_id", id);
-
-                //    DataSet dataSource = this._nopDbContext.GetDataSet(rp_code, parameters);
-
-                //    rpBienBan.DataSource = dataSource;
-                //    rpBienBan.DataMember = dataSource.Tables[0].TableName;
-
-                //    rpBienBan.CreateDocument();
-
-                //    rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
-                //    report.PrintingSystem.ContinuousPageNumbering = false;
-
-                //    report.Pages.AddRange(rpBienBan.Pages);
-
-                //    Page page = report.Pages[report.Pages.Count - 1];
-                //    page.AssignWatermark(new PageWatermark());
-
-                //}
-
-                if (trang_thai_hd == 13 || trang_thai_hd == 17)
+                if (trangThaiHd == 13 || trangThaiHd == 17)
                 {
                     var bmp = ReportUtil.DrawDiagonalLine(report);
                     int pageCount = report.Pages.Count;
-
                     for (int i = 0; i < pageCount; i++)
                     {
-                        PageWatermark pmk = new PageWatermark();
-                        pmk.Image = bmp;
+                        PageWatermark pmk = new PageWatermark {Image = bmp};
                         report.Pages[i].AssignWatermark(pmk);
                     }
                 }
-
-
-
                 MemoryStream ms = new MemoryStream();
-
                 if (type == "Html")
                 {
                     report.ExportOptions.Html.EmbedImagesInHTML = true;
                     report.ExportOptions.Html.ExportMode = HtmlExportMode.SingleFilePageByPage;
                     report.ExportOptions.Html.Title = "Hóa đơn điện tử M-Invoice";
                     report.ExportToHtml(ms);
-
                     string html = Encoding.UTF8.GetString(ms.ToArray());
-
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(html);
-
-
-                    string api = this._webHelper.GetRequest().ApplicationPath.StartsWith("/api") ? "/api" : "";
-                    string serverApi = this._webHelper.GetRequest().Url.Scheme + "://" + this._webHelper.GetRequest().Url.Authority + api;
-
+                    string api = _webHelper.GetRequest().ApplicationPath.StartsWith("/api") ? "/api" : "";
+                    string serverApi = _webHelper.GetRequest().Url.Scheme + "://" + _webHelper.GetRequest().Url.Authority + api;
                     var nodes = doc.DocumentNode.SelectNodes("//td/@onmousedown");
-                    //td[@onmousedown]
-
                     if (nodes != null)
                     {
                         foreach (HtmlNode node in nodes)
                         {
                             string eventMouseDown = node.Attributes["onmousedown"].Value;
-
                             if (eventMouseDown.Contains("showCert('seller')"))
                             {
                                 node.SetAttributeValue("id", "certSeller");
@@ -567,27 +372,20 @@ namespace Search_Invoice.Services
                             }
                         }
                     }
-
                     HtmlNode head = doc.DocumentNode.SelectSingleNode("//head");
-
                     HtmlNode xmlNode = doc.CreateElement("script");
                     xmlNode.SetAttributeValue("id", "xmlData");
                     xmlNode.SetAttributeValue("type", "text/xmldata");
-
                     xmlNode.AppendChild(doc.CreateTextNode(xml));
                     head.AppendChild(xmlNode);
-
                     xmlNode = doc.CreateElement("script");
                     xmlNode.SetAttributeValue("src", serverApi + "/Content/Scripts/jquery-1.6.4.min.js");
                     head.AppendChild(xmlNode);
-
                     xmlNode = doc.CreateElement("script");
                     xmlNode.SetAttributeValue("src", serverApi + "/Content/Scripts/jquery.signalR-2.2.3.min.js");
                     head.AppendChild(xmlNode);
-
                     xmlNode = doc.CreateElement("script");
                     xmlNode.SetAttributeValue("type", "text/javascript");
-
                     xmlNode.InnerHtml = "$(function () { "
                                        + "  var url = 'http://localhost:19898/signalr'; "
                                        + "  var connection = $.hubConnection(url, {  "
@@ -631,46 +429,29 @@ namespace Search_Invoice.Services
                                        + "     alert('failed in connecting to the signalr server'); "
                                        + "});"
                                        + "});";
-
                     head.AppendChild(xmlNode);
-
-                    if (report.Watermark != null)
+                    if (report.Watermark?.Image != null)
                     {
-                        if (report.Watermark.Image != null)
+                        ImageConverter imageConverter = new ImageConverter();
+                        byte[] img = (byte[])imageConverter.ConvertTo(report.Watermark.Image, typeof(byte[]));
+                        string imgUrl = "data:image/png;base64," + Convert.ToBase64String(img);
+                        HtmlNode style = doc.DocumentNode.SelectSingleNode("//style");
+                        string strechMode = report.Watermark.ImageViewMode == ImageViewMode.Stretch ? "background-size: 100% 100%;" : "";
+                        string waterMarkClass = ".waterMark { background-image:url(" + imgUrl + ");background-repeat:no-repeat;background-position:center;" + strechMode + " }";
+                        HtmlTextNode textNode = doc.CreateTextNode(waterMarkClass);
+                        style.AppendChild(textNode);
+                        HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
+                        HtmlNodeCollection pageNodes = body.SelectNodes("div");
+                        foreach (var pageNode in pageNodes)
                         {
-                            ImageConverter _imageConverter = new ImageConverter();
-                            byte[] img = (byte[])_imageConverter.ConvertTo(report.Watermark.Image, typeof(byte[]));
-
-                            string imgUrl = "data:image/png;base64," + Convert.ToBase64String(img);
-
-                            HtmlNode style = doc.DocumentNode.SelectSingleNode("//style");
-
-                            string strechMode = report.Watermark.ImageViewMode == ImageViewMode.Stretch ? "background-size: 100% 100%;" : "";
-                            string waterMarkClass = ".waterMark { background-image:url(" + imgUrl + ");background-repeat:no-repeat;background-position:center;" + strechMode + " }";
-
-                            HtmlTextNode textNode = doc.CreateTextNode(waterMarkClass);
-                            style.AppendChild(textNode);
-
-                            HtmlNode body = doc.DocumentNode.SelectSingleNode("//body");
-
-                            HtmlNodeCollection pageNodes = body.SelectNodes("div");
-
-                            foreach (var pageNode in pageNodes)
-                            {
-                                pageNode.Attributes.Add("class", "waterMark");
-
-                                string divStyle = pageNode.Attributes["style"].Value;
-                                divStyle = divStyle + "margin-left:auto;margin-right:auto;";
-
-                                pageNode.Attributes["style"].Value = divStyle;
-                            }
+                            pageNode.Attributes.Add("class", "waterMark");
+                            string divStyle = pageNode.Attributes["style"].Value;
+                            divStyle = divStyle + "margin-left:auto;margin-right:auto;";
+                            pageNode.Attributes["style"].Value = divStyle;
                         }
                     }
-
                     ms.SetLength(0);
                     doc.Save(ms);
-
-                    doc = null;
                 }
                 else if (type == "Image")
                 {
@@ -684,24 +465,13 @@ namespace Search_Invoice.Services
                 {
                     report.ExportToPdf(ms);
                 }
-
                 bytes = ms.ToArray();
                 ms.Close();
-
-                if (bytes == null)
-                {
-                    throw new Exception("null");
-                }
-
             }
             catch (Exception ex)
             {
-                //_logService.Insert("PrintInvoiceFromId", ex.ToString());
-
-                throw new Exception(ex.Message.ToString());
-
+                throw new Exception(ex.Message);
             }
-
             return bytes;
         }
 
@@ -709,18 +479,14 @@ namespace Search_Invoice.Services
         {
             var format = "#,#0";
             var format2 = string.Empty;
-
-
             if (formatDefault == 0)
             {
                 return format;
             }
-
             for (int i = 0; i < formatDefault; i++)
             {
                 format2 += "#";
             }
-
             return $"{format}.{format2}";
         }
     }

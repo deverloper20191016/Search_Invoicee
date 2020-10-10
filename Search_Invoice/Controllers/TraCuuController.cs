@@ -31,7 +31,7 @@ namespace Search_Invoice.Controllers
             string repx = "";
             string key = "";
             ReportUtil.ExtracInvoice(file.InputStream, ref xml, ref repx, ref key);
-            string xmlDecryp = EncodeXML.Decrypt(xml, key);
+            string xmlDecryp = EncodeXml.Decrypt(xml, key);
 
             // byte[] buffer = null;
             string folder = base.Server.MapPath("~/Content/report/");

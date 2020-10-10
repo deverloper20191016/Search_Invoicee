@@ -14,34 +14,19 @@ namespace Search_Invoice.Authorization
         {
             context.Validated();
         }
-
-        public override Task AuthorizeEndpoint(OAuthAuthorizeEndpointContext context)
-        {
-            return base.AuthorizeEndpoint(context);
-        }
-
-        public override Task GrantAuthorizationCode(OAuthGrantAuthorizationCodeContext context)
-        {
-            return base.GrantAuthorizationCode(context);
-        }
-
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
-
             var data = await context.Request.ReadFormAsync();
             var param = data.Where(x => x.Key == "mst").Select(x => x.Value).FirstOrDefault();
             var userName = context.UserName.Replace("-", "");
             var mst = param[0].Replace("-", "");
             var passWord = context.Password;
-
             if (string.IsNullOrEmpty(mst) || string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(passWord))
             {
                 context.SetError("error", "Nhập đủ thông tin đăng nhập");
                 return;
             }
-
             var traCuu = new TracuuHDDTContext();
             var user = traCuu.inv_users.FirstOrDefault(x => x.username.Replace("-", "").Equals(userName.Replace("-", "")) & x.mst.Replace("-", "").Equals(mst.Replace("-", "")));
             if (user == null)
@@ -49,21 +34,12 @@ namespace Search_Invoice.Authorization
                 context.SetError("error_login", $"Tài khoản {context.UserName} không tồn tại");
                 return;
             }
-            //if (!user.mst.Replace("-", "").Equals(mst))
-            //{
-            //    context.SetError("error_login", $"Không tìm thấy tài khoản {context.UserName} với mã số thuế {param[0]}");
-            //    return;
-            //}
-
             PassCommand crypt = new PassCommand(user.password);
-
             if (!crypt.CheckPassword(passWord))
             {
                 context.SetError("error_login", "Mật khẩu không chính xác");
                 return;
-
             }
-
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("username", context.UserName));
             identity.AddClaim(new Claim("ma_dt", user.ma_dt));
@@ -76,9 +52,7 @@ namespace Search_Invoice.Authorization
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
-
             return Task.FromResult<object>(null);
         }
-
     }
 }

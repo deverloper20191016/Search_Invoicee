@@ -74,7 +74,7 @@ namespace Search_Invoice.Controllers
                 Stream streams = new MemoryStream(bytes);
 
                 ReportUtil.ExtracInvoice(streams, ref xml, ref repx, ref key);
-                string xmlDecryp = EncodeXML.Decrypt(xml, key);
+                string xmlDecryp = EncodeXml.Decrypt(xml, key);
 
                 // byte[] buffer = null;
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
@@ -149,7 +149,7 @@ namespace Search_Invoice.Controllers
 
 
                 ReportUtil.ExtracInvoice(streams, ref xml, ref repx, ref key);
-                string xmlDecryp = EncodeXML.Decrypt(xml, key);
+                string xmlDecryp = EncodeXml.Decrypt(xml, key);
 
 
                 string originalString = this.ActionContext.Request.RequestUri.OriginalString;
@@ -236,7 +236,7 @@ namespace Search_Invoice.Controllers
 
 
                 ReportUtil.ExtracInvoice(streams, ref xml, ref repx, ref key);
-                string xmlDecryp = EncodeXML.Decrypt(xml, key);
+                string xmlDecryp = EncodeXml.Decrypt(xml, key);
 
                 var result = ReportUtil.VeryfyXml(xmlDecryp);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, result);

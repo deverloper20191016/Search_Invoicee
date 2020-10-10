@@ -33,7 +33,7 @@ namespace Search_Invoice.Controllers
         public JObject GetInvoiceFromdateTodate(DateTime tu_ngay, DateTime den_ngay)
         {
 
-            inv_user us = (inv_user)Session[CommonConstants.USER_SESSION];
+            inv_user us = (inv_user)Session[CommonConstants.UserSession];
 
 
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
@@ -52,7 +52,7 @@ namespace Search_Invoice.Controllers
             }
 
             CommonConnect cn = new CommonConnect();
-            cn.setConnect(us.mst);
+            cn.SetConnect(us.mst);
 
 
 

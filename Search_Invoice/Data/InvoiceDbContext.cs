@@ -1,11 +1,8 @@
 ﻿using Search_Invoice.Data.Domain;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace Search_Invoice.Data
 {
@@ -27,33 +24,22 @@ namespace Search_Invoice.Data
         public DataTable ExecuteCmd(string sql)
         {
             DbConnection connection = null;
-
-            var table = new DataTable();
-
+            DataTable table = new DataTable();
             try
             {
                 //var invoiceDb = this.Database.Connection;
-
-                connection = this.Database.Connection;
-                var command = connection.CreateCommand();
-
+                connection = Database.Connection;
+                DbCommand command = connection.CreateCommand();
                 command.CommandText = sql;
-
                 if (connection.State == ConnectionState.Closed)
                 {
                     connection.Open();
                 }
-
-                var reader = command.ExecuteReader();
-
+                DbDataReader reader = command.ExecuteReader();
                 do
                 {
                     table.Load(reader);
-
                 } while (!reader.IsClosed);
-
-
-
             }
             catch (Exception ex)
             {
@@ -61,14 +47,12 @@ namespace Search_Invoice.Data
             }
             finally
             {
-                if (connection.State == ConnectionState.Open)
+                if (connection?.State == ConnectionState.Open)
                 {
                     connection.Close();
                 }
             }
-
             return table;
-
         }
 
         public DbSet<wb_window> WbWindows { get; set; }

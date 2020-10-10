@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Search_Invoice.Data;
-using Search_Invoice.Data.Domain;
-
-namespace Search_Invoice.DAL
+﻿namespace Search_Invoice.DAL
 {
     public class Repository
     {

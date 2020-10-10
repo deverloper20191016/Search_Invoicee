@@ -2,6 +2,6 @@
 {
     public static class CommonConstants
     {
-        public static string USER_SESSION = "USER_SESSION";
+        public static string UserSession = "USER_SESSION";
     }
 }

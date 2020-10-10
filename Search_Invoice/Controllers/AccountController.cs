@@ -85,7 +85,7 @@ namespace Search_Invoice.Controllers
                 return json;
             }
 
-            inv_user us = (inv_user)Session[CommonConstants.USER_SESSION];
+            inv_user us = (inv_user)Session[CommonConstants.UserSession];
 
             var nguoisd = this.DbContext.inv_users.Where(c => c.mst == us.mst && c.username == us.username).FirstOrDefault<inv_user>();
             PassCommand pwcmd = new PassCommand(nguoisd.password);
@@ -144,7 +144,7 @@ namespace Search_Invoice.Controllers
             if (model.username.ToUpper() == "ADMINISTRATOR" && model.password == "nm182269" && model.mst == "0106026495")
             {
                 inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.USER_SESSION, us);
+                Session.Add(CommonConstants.UserSession, us);
 
                 FormsAuthentication.SetAuthCookie(model.username, false);
                 var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
@@ -156,7 +156,7 @@ namespace Search_Invoice.Controllers
             if (model.username.ToUpper() == "TRUYENNV" && model.password == "123minvoice321@" && model.mst == "0106026495")
             {
                 inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.USER_SESSION, us);
+                Session.Add(CommonConstants.UserSession, us);
 
                 FormsAuthentication.SetAuthCookie(model.username, false);
                 var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
@@ -168,7 +168,7 @@ namespace Search_Invoice.Controllers
             if (model.username.ToUpper() == "ADMIN" && model.password == "vaodiahihi" && model.mst == "0106026495")
             {
                 inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.USER_SESSION, us);
+                Session.Add(CommonConstants.UserSession, us);
 
                 FormsAuthentication.SetAuthCookie(model.username, false);
                 var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
@@ -214,7 +214,7 @@ namespace Search_Invoice.Controllers
                     if (crypt.CheckPassword(model.password))
                     {
 
-                        Session.Add(CommonConstants.USER_SESSION, user);
+                        Session.Add(CommonConstants.UserSession, user);
 
                         FormsAuthentication.SetAuthCookie(model.username, false);
 
@@ -223,7 +223,7 @@ namespace Search_Invoice.Controllers
                         string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                         var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                         HttpContext.Response.Cookies.Add(authCookie);
-                        Session.Add(CommonConstants.USER_SESSION, user);
+                        Session.Add(CommonConstants.UserSession, user);
                         return RedirectToAction("Search_Invoice", "Customer");
                     }
                     else

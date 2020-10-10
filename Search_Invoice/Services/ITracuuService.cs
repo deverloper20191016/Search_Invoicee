@@ -1,15 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Search_Invoice.Services
+﻿namespace Search_Invoice.Services
 {
-    public partial interface ITracuuService
+    public interface ITracuuService
     {
-        byte[] PrintInvoiceFromSBM(string id, string folder, string type);
-        byte[] PrintInvoiceFromSBM(string id, string mst, string folder, string type);
-        byte[] PrintInvoiceFromSBM(string id,  string mst, string folder, string type, bool inchuyendoi);
+        byte[] PrintInvoiceFromSbm(string id, string folder, string type);
+        byte[] PrintInvoiceFromSbm(string id, string mst, string folder, string type);
+        byte[] PrintInvoiceFromSbm(string id,  string mst, string folder, string type, bool inchuyendoi);
     }
 }
