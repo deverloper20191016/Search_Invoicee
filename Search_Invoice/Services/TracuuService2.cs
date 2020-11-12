@@ -85,7 +85,7 @@ namespace Search_Invoice.Services
                 {
                     {"@sobaomat", sobaomat}
                 };
-                string sql = "SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat = @sobaomat";
+                string sql = "SELECT TOP 1 a.* FROM inv_InvoiceAuth AS a INNER JOIN dbo.InvoiceXmlData AS b ON b.inv_InvoiceAuth_id = a.inv_InvoiceAuth_id WHERE a.sobaomat = @sobaomat";
                 DataTable dt = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 inv_customer_banned checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
@@ -151,7 +151,7 @@ namespace Search_Invoice.Services
             {
                 {"@sobaomat", sobaomat}
             };
-            string sql = "SELECT TOP 1 * FROM inv_InvoiceAuth WHERE sobaomat = @sobaomat";
+            string sql = "SELECT TOP 1 a.* FROM inv_InvoiceAuth AS a INNER JOIN dbo.InvoiceXmlData AS b ON b.inv_InvoiceAuth_id = a.inv_InvoiceAuth_id WHERE a.sobaomat = @sobaomat";
             DataTable dt = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
             if (dt.Rows.Count <= 0)
             {
@@ -800,7 +800,7 @@ namespace Search_Invoice.Services
                 {
                     {"@sobaomat", sobaomat}
                 };
-                var sql = "SELECT * FROM inv_InvoiceAuth WHERE sobaomat = @sobaomat";
+                var sql = "SELECT TOP 1 a.* FROM inv_InvoiceAuth AS a INNER JOIN dbo.InvoiceXmlData AS b ON b.inv_InvoiceAuth_id = a.inv_InvoiceAuth_id WHERE a.sobaomat = @sobaomat";
                 DataTable tblInvInvoiceAuth = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
                 if (tblInvInvoiceAuth.Rows.Count == 0)
                 {
