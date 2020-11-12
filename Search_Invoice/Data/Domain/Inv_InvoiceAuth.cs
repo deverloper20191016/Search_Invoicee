@@ -116,28 +116,12 @@ namespace Search_Invoice.Data.Domain
 
         public string ghi_chu { get; set; }
 
-        [Column("inv_deliveryOrderNumber")]
-        public string Inv_deliveryOrderNumber { get; set; }
-        [Column("inv_deliveryOrderDate")]
-        public DateTime? Inv_deliveryOrderDate { get; set; }
-        [Column("inv_deliveryBy")]
-        public string Inv_deliveryBy { get; set; }
-        [Column("inv_transportationMethod")]
-        public string Inv_transportationMethod { get; set; }
-        [Column("inv_fromWarehouseName")]
-        public string Inv_fromWarehouseName { get; set; }
-        [Column("inv_toWarehouseName")]
-        public string Inv_toWarehouseName { get; set; }
         [Column("inv_invoiceNote")]
         public string Inv_invoiceNote { get; set; }
         [Column("inv_contractNumber")]
         public string Inv_contractNumber { get; set; }
         [Column("inv_contractDate")]
         public DateTime? Inv_contractDate { get; set; }
-        [Column("inv_sobangke")]
-        public Guid? Inv_sobangke { get; set; }
-        [Column("inv_ngaybangke")]
-        public DateTime? Inv_ngaybangke { get; set; }
 
         [NotMapped]
         public string Inv_sellerLegalName { get; set; }

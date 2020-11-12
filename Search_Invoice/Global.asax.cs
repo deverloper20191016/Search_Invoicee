@@ -1,7 +1,5 @@
 ﻿using Search_Invoice.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -11,14 +9,15 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using System.Reflection;
 using System.Web.Security;
-using Microsoft.Owin;
-using System.Security.Principal;
-using Microsoft.AspNet.Identity.Owin;
+using Autofac.Integration.Mvc;
+using Search_Invoice.Controllers;
+using Search_Invoice.Data;
+using Search_Invoice.DAL;
 
 
 namespace Search_Invoice
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -34,7 +33,7 @@ namespace Search_Invoice
         {
             try
             {
-                var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
+                var authCookie = Request.Cookies[CommonConstants.UserCookie];
                 if (authCookie != null)
                 {
                     FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
@@ -43,6 +42,10 @@ namespace Search_Invoice
                         var roles = authTicket.UserData.Split(',');
                         HttpContext.Current.User = new System.Security.Principal.GenericPrincipal(new FormsIdentity(authTicket), roles);
                     }
+                }
+                else
+                {
+                    FormsAuthentication.SignOut();
                 }
             }
             catch (Exception)
@@ -62,43 +65,30 @@ namespace Search_Invoice
                 HttpContext.Current.Response.AddHeader("Access-Control-Max-Age", "1728000");
                 HttpContext.Current.Response.End();
             }
-
-            //var newCulture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            //newCulture.NumberFormat.NumberDecimalSeparator = ",";
-            //newCulture.NumberFormat.NumberGroupSeparator = ".";
-
-            //System.Threading.Thread.CurrentThread.CurrentCulture = newCulture;
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = newCulture;
         }
 
         private void RegisterAutofacApi()
         {
             var builder = new ContainerBuilder();
-
+            builder.RegisterControllers(typeof(CustomerController).Assembly).PropertiesAutowired();
             // Get your HttpConfiguration.
             var config = GlobalConfiguration.Configuration;
 
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
-
-            //builder.Register(ctx => HttpContext.Current.GetOwinContext()).As<IOwinContext>();
-            //builder.Register(ctx => HttpContext.Current.User.Identity).As<IIdentity>().InstancePerLifetimeScope();
-            //builder.Register(ctx => HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>()).As<ApplicationUserManager>().InstancePerLifetimeScope();
-            //builder.Register(c => BundleTable.Bundles).As<BundleCollection>().InstancePerLifetimeScope();
-            //builder.Register(c => RouteTable.Routes).As<RouteCollection>().InstancePerLifetimeScope();
-
+            builder.RegisterType<InvoiceDbContext>().InstancePerRequest();
             builder.RegisterType<MemoryCacheManager>().As<ICacheManager>().Named<ICacheManager>("nop_cache_static").SingleInstance();
-            builder.Register<IWebHelper>(c => new WebHelper(new HttpContextWrapper(HttpContext.Current) as HttpContextBase)).InstancePerLifetimeScope();
             builder.RegisterType<NopDbContext>().As<INopDbContext>().InstancePerLifetimeScope();
+            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<InvoiceService>().As<IInvoiceService>().InstancePerLifetimeScope();
             builder.RegisterType<TracuuService>().As<ITracuuService>().InstancePerLifetimeScope();
             builder.RegisterType<NopDbContext2>().As<INopDbContext2>().InstancePerLifetimeScope();
             builder.RegisterType<TracuuService2>().As<ITracuuService2>().InstancePerLifetimeScope();
 
+            builder.Register<IWebHelper>(c => new WebHelper(new HttpContextWrapper(HttpContext.Current))).InstancePerLifetimeScope();
             var container = builder.Build();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-
-
-
         }
     }
 }

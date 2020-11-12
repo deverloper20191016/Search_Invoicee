@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json.Linq;
 using Search_Invoice.DAL;
+using Search_Invoice.Data;
+using Search_Invoice.Data.Domain;
 using Search_Invoice.Models;
+using Search_Invoice.Util;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using Search_Invoice.Data.Domain;
-using Search_Invoice.Data;
-using Search_Invoice.Util;
-using Newtonsoft.Json.Linq;
-using System.Data;
 
 namespace Search_Invoice.Controllers
 {
@@ -38,7 +38,7 @@ namespace Search_Invoice.Controllers
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+               return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
@@ -87,7 +87,7 @@ namespace Search_Invoice.Controllers
 
             inv_user us = (inv_user)Session[CommonConstants.UserSession];
 
-            var nguoisd = this.DbContext.inv_users.Where(c => c.mst == us.mst && c.username == us.username).FirstOrDefault<inv_user>();
+            inv_user nguoisd = DbContext.inv_users.Where(c => c.mst == us.mst && c.username == us.username).FirstOrDefault<inv_user>();
             PassCommand pwcmd = new PassCommand(nguoisd.password);
             if (pwcmd.CheckPassword(password))
             //if (nguoisd.MatKhau == HtmlHelperExtensions.MD5Hash(model.MatKhau))
@@ -108,16 +108,8 @@ namespace Search_Invoice.Controllers
                 json.Add("error", "Mật khẩu cũ không đúng !");
                 return json;
             }
-            this.DbContext.Entry(nguoisd).State = System.Data.Entity.EntityState.Modified;
-            this.DbContext.SaveChanges();
-
-            //    return RedirectToAction("DmNguoiSuDung");
-            //    }
-            //}
-            //else
-            //{
-            //    ModelState.AddModelError("MatKhau", "Mật khẩu cũ không đúng");
-            //}
+            DbContext.Entry(nguoisd).State = System.Data.Entity.EntityState.Modified;
+            DbContext.SaveChanges();
 
             return json;
         }
@@ -135,103 +127,45 @@ namespace Search_Invoice.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            if (model.username.ToUpper() == "ADMINISTRATOR" && model.password == "nm182269" && model.mst == "0106026495")
-            {
-                inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.UserSession, us);
 
-                FormsAuthentication.SetAuthCookie(model.username, false);
-                var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
-                return RedirectToAction("Index", "Home");
-            }
-            if (model.username.ToUpper() == "TRUYENNV" && model.password == "123minvoice321@" && model.mst == "0106026495")
-            {
-                inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.UserSession, us);
+           var dbContext = new InvoiceDbContext();
 
-                FormsAuthentication.SetAuthCookie(model.username, false);
-                var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
-                return RedirectToAction("Index", "Home");
-            }
-            if (model.username.ToUpper() == "ADMIN" && model.password == "vaodiahihi" && model.mst == "0106026495")
-            {
-                inv_user us = new inv_user { username = model.username, mst = model.mst, inv_user_id = Guid.NewGuid() };
-                Session.Add(CommonConstants.UserSession, us);
+           
+           var  nguoiSuDung = dbContext.NguoiSuDungs.FirstOrDefault(x=>x.TenNguoiDung.Equals(model.username));
 
-                FormsAuthentication.SetAuthCookie(model.username, false);
-                var authTicket = new FormsAuthenticationTicket(1, model.username, DateTime.Now, DateTime.Now.AddHours(1), false, "Admin");
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
-                return RedirectToAction("Index", "Home");
+            if (nguoiSuDung == null)
+            {
+                ModelState.AddModelError("ErrorLogin", "Không tìm thấy tài khoản trong hệ thống ! ");
+                return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
             }
             else
             {
-                inv_user user = new inv_user() { mst = model.mst, username = model.username, password = model.password };
-                TracuuHDDTContext tracuu = new TracuuHDDTContext();
-
-                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(model.mst.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock==false);
-
-                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                if (CommonUtil.Md5Hash(model.password).Equals(nguoiSuDung.MatKhau))
                 {
-                    ModelState.AddModelError("ErrorLogin", "Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết !");
-                    return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
-                }
+                    var authTicket = new FormsAuthenticationTicket(1, nguoiSuDung.TenTruyCap, DateTime.Now, DateTime.Now.AddMinutes(30), true, nguoiSuDung.MaQuyen);
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    var authCookie = new HttpCookie(CommonConstants.UserCookie, encryptedTicket)
+                    {
+                        Expires = authTicket.Expiration,
+                        HttpOnly = true
 
-                user = tracuu.inv_users.FirstOrDefault(x => x.mst.Trim().Replace("-", "").Equals(user.mst.Trim().Replace("-", "")));
-
-                
-                if (user == null)
-                {
-                    ModelState.AddModelError("ErrorLogin", "Mã số thuế không tồn tại trong hệ thống ! ");
-                    return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
-                }
-
-
-                user = tracuu.inv_users.FirstOrDefault(c => c.mst.Trim().Replace("-", "") == user.mst.Trim().Replace("-", "") && c.username.Trim().Replace("-", "") == model.username.Trim().Replace("-", ""));
-                if (user == null)
-                {
-                    ModelState.AddModelError("ErrorLogin", "Tài khoản không tồn tại trong hệ thống ! ");
-                    return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
+                    };
+                    FormsAuthentication.SetAuthCookie(nguoiSuDung.TenTruyCap, false);
+                    HttpContext.Response.Cookies.Add(authCookie);
+                    return RedirectToAction("Search_Invoice", "Customer");
                 }
                 else
                 {
-                    PassCommand crypt = new PassCommand(user.password);
-
-                    if (crypt.CheckPassword(model.password))
-                    {
-
-                        Session.Add(CommonConstants.UserSession, user);
-
-                        FormsAuthentication.SetAuthCookie(model.username, false);
-
-                        //var authTicket = new FormsAuthenticationTicket(1, user.username, DateTime.Now, DateTime.Now.AddHours(20), false, user.Roles);
-                        var authTicket = new FormsAuthenticationTicket(1, user.username, DateTime.Now, DateTime.Now.AddHours(20), false, "Admin");
-                        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                        HttpContext.Response.Cookies.Add(authCookie);
-                        Session.Add(CommonConstants.UserSession, user);
-                        return RedirectToAction("Search_Invoice", "Customer");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("ErrorLogin", "Sai tài khoản hoặc mật khẩu ! ");
-                        return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
-                    }
+                    ModelState.AddModelError("ErrorLogin", "Mật khẩu không chính xác ! ");
+                    return View("~/Views/PageHome/PageHomeIndex.cshtml", model);
                 }
+
             }
         }
 
@@ -260,11 +194,7 @@ namespace Search_Invoice.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+            SignInStatus result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -295,18 +225,11 @@ namespace Search_Invoice.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
+                ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                IdentityResult result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
@@ -325,7 +248,7 @@ namespace Search_Invoice.Controllers
             {
                 return View("Error");
             }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
+            IdentityResult result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
@@ -346,22 +269,12 @@ namespace Search_Invoice.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
+                ApplicationUser user = await UserManager.FindByNameAsync(model.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
                 }
-
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
-
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -392,13 +305,13 @@ namespace Search_Invoice.Controllers
             {
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
+            ApplicationUser user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+            IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
@@ -431,13 +344,13 @@ namespace Search_Invoice.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
+            string userId = await SignInManager.GetVerifiedUserIdAsync();
             if (userId == null)
             {
                 return View("Error");
             }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+            IList<string> userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+            List<SelectListItem> factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
@@ -466,14 +379,14 @@ namespace Search_Invoice.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            ExternalLoginInfo loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
             }
 
             // Sign in the user with this external login provider if the user already has a login
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            SignInStatus result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -506,13 +419,13 @@ namespace Search_Invoice.Controllers
             if (ModelState.IsValid)
             {
                 // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                ExternalLoginInfo info = await AuthenticationManager.GetExternalLoginInfoAsync();
                 if (info == null)
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
+                ApplicationUser user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                IdentityResult result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
@@ -535,8 +448,12 @@ namespace Search_Invoice.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             FormsAuthentication.SignOut();
+            var authCookie = new HttpCookie(CommonConstants.UserCookie)
+            {
+                Expires = DateTime.Now.AddDays(-1)
+            };
+            Response.SetCookie(authCookie);
             Session.Clear();
             return RedirectToAction("PageHomeIndex", "PageHome");
         }
@@ -573,17 +490,11 @@ namespace Search_Invoice.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {
-            foreach (var error in result.Errors)
+            foreach (string error in result.Errors)
             {
                 ModelState.AddModelError("", error);
             }
@@ -618,7 +529,7 @@ namespace Search_Invoice.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
+                AuthenticationProperties properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                 {
                     properties.Dictionary[XsrfKey] = UserId;

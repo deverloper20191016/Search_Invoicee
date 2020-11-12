@@ -16,17 +16,28 @@ using Search_Invoice.Data;
 
 namespace Search_Invoice.Controllers
 {
-    public class CustomerController : BaseDataController
+    [Authorize]
+    public class CustomerController : Controller
     {
-        //private ITracuuService2 _tracuuService2;
+        private readonly IAccountService _accountService;
 
-        //public CustomerController(ITracuuService2 tracuuService2)
-        //{
-        //    this._tracuuService2 = tracuuService2;
-        //}
+        private readonly IWebHelper _webHelper;
+
+        public CustomerController(IAccountService accountService, IWebHelper webHelper)
+        {
+            _accountService = accountService;
+            _webHelper = webHelper;
+        }
+
         // GET: Customer
         public ActionResult Search_Invoice()
         {
+            var userName = _webHelper.GetUser();
+            var loginResult = _accountService.GetInfoByName(userName);
+            if (loginResult == null)
+            {
+                return RedirectToAction("PageHomeIndex", "PageHome");
+            }
             return View();
         }
 
@@ -135,64 +146,12 @@ namespace Search_Invoice.Controllers
             //return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        //[HttpPost]
-        //[Route("Tracuu2/PrintInvoice")]
-        //[AllowAnonymous]
-        public HttpResponseMessage PrintInvoice(JObject model)
+        public ActionResult _Header()
         {
-
-            HttpResponseMessage result = null;
-            try
-            {
-                string type = model["type"].ToString();
-                string sobaomat = model["sobaomat"].ToString();
-                string masothue = model["masothue"].ToString();
-                //if (_tracuuService2 == null)
-                //{
-                //    throw new Exception("Không tồn tại mst:");
-                //}
-                //string type = "PDF";
-                string path = Server.MapPath("~/Content/report/");
-                //string originalString = this.ActionContext.Request.RequestUri.OriginalString;
-                //string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
-                //string path = "~/Content/report/";
-                var folder = System.Web.HttpContext.Current.Server.MapPath(path);
-
-                byte[] bytes = null;
-                //_tracuuService2.PrintInvoiceFromSBM(sobaomat, masothue, folder, type);
-
-                result = new HttpResponseMessage(HttpStatusCode.OK);
-                result.Content = new ByteArrayContent(bytes);
-
-                if (type == "PDF")
-                {
-                    result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("inline");
-                    result.Content.Headers.ContentDisposition.FileName = "InvoiceTemplate.pdf";
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
-                }
-                else if (type == "Html")
-                {
-                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/html");
-                }
-                result.Content.Headers.ContentLength = bytes.Length;
-            }
-            catch (Exception ex)
-            {
-                result = new HttpResponseMessage(HttpStatusCode.BadRequest);
-                result.Content = new StringContent(ex.Message, System.Text.Encoding.UTF8);
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
-                result.Content.Headers.ContentLength = ex.Message.Length;
-            }
-
-            return result;
-        }
-
-        public JsonResult SaveEmployeeRecord(string id, string name)
-        {
-            string this_id = id;
-            string this_name = name;
-            // do here some operation  
-            return Json(new { id = this_id, name = this_name }, JsonRequestBehavior.AllowGet);
+            var userName = _webHelper.GetUser();
+            var loginResult = _accountService.GetInfoByName(userName);
+           
+            return PartialView("_Header", loginResult);
         }
     }
 }

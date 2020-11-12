@@ -1,0 +1,50 @@
+﻿@using Search_Invoice.DAL
+@model Search_Invoice.Data.Domain.NguoiSuDung
+
+<nav class="navbar navbar-default navbar-static-top m-b-0">
+  <div class="navbar-header">
+    <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="ti-menu"></i></a>
+    <div class="top-left-part">
+      <p>0901 80 16 18 | info@minvoice.vn</p>
+    </div>
+    <ul class="nav navbar-top-links navbar-right pull-right">
+      <li>
+        <a class="profile-pic" href="https://minvoice.vn/" target="_blank">
+          <b class="hidden-xs" style="color:#ff3333">M-INVOICE</b>
+        </a>
+      </li>
+      <!-- /.dropdown -->
+      <li class="dropdown">
+        <a class="profile-pic" href="/tim-kiem-invoice">
+          <b class="hidden-xs">TRA CỨU HÓA ĐƠN</b>
+        </a>
+      </li>
+      
+      @if (!string.IsNullOrEmpty(Model.TenTruyCap) && Model.MaQuyen.Equals(CommonConstants.QuanTri))
+      {
+        <li class="dropdown">
+          <a class="dropdown-toggle profile-pic waves-effect" data-toggle="dropdown" href="forms.html">
+            <b class="hidden-xs">ADMINISTRATOR</b>
+          </a>
+          <ul class="dropdown-menu dropdown-user animated flipInY">
+            <li><a href="/quan-ly/nguoi-su-dung"><i></i>Danh mục người sử dụng</a></li>
+          </ul>
+        </li>
+      }
+
+
+      <li class="dropdown">
+        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#">
+
+          <b class="hidden-xs"><i class="ti-user"></i>@User.Identity.Name.ToUpper()</b>
+        </a>
+        <ul class="dropdown-menu dropdown-user animated flipInY">
+          <li role="separator" class="divider"></li>
+          <li><a href="/Account/LogOff"><i class="fa fa-power-off"></i> Đăng xuất</a></li>
+        </ul>
+        <!-- /.dropdown-user -->
+      </li>
+
+    </ul>
+  </div>
+</nav>

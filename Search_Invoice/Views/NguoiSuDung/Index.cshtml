@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Search_Invoice.Data.Domain.NguoiSuDung>
+
+@{
+  ViewBag.Title = "Danh sách người sử dụng";
+  Layout = "~/Views/Shared/_Danhmuc.cshtml";
+}
+
+@section BoxBody {
+
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1 class="text-center">Danh mục Người sử dụng</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="col-md-6">
+           <a href="@Url.Action("Create", "NguoiSuDung")" class="btn btn-primary" style="color: #FFF"><i class="fa fa-plus"></i>Thêm mới</a>
+        </div>
+        <div class="col-md-6">
+          <input id="demo-input-search2" type="text" placeholder="Tìm kiếm ..." class="form-control pull-right" autocomplete="off">
+        </div>
+       
+
+       
+      </div>
+      <table id="demo-foo-addrow" class="table table-bordered table-hover toggle-circle" data-page-size="7">
+        <thead style="background-color:#268ecd">
+        <tr role="row">
+          <th class="text-center">Tên truy cập</th>
+          <th class="text-center">Tên người dùng</th>
+          <th class="text-center">Nhóm quyền</th>
+          <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var data in Model)
+        {
+          <tr role="row" class="odd">
+            <td class="text-center">
+              @data.TenTruyCap
+            </td>
+            <td>
+              @data.TenNguoiDung
+            </td>
+            <td>
+              @data.TenQuyen
+            </td>
+            <td>
+              <a href="@Url.Action("Edit", "NguoiSuDung", new { id = data.TenTruyCap })" class="btn btn-xs btn-info"><i class="fa fa-pencil"></i></a>
+              <a class="btn btn-xs btn-danger" onclick="deleteItem('@data.TenTruyCap');"><i class="fa fa-trash-o"></i></a>
+            </td>
+          </tr>
+        }
+        </tbody>
+        
+        <tfoot>
+        <tr>
+          <td colspan="6">
+            <div class="text-left">
+              <ul class="pagination"></ul>
+            </div>
+          </td>
+        </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+}
+
+@section scripts
+{
+  <script type="text/javascript">
+    function deleteItem(id) {
+      debugger;
+      var url = '/NguoiSuDung/Delete';
+      bootbox.confirm({
+        message: 'Bạn có chắc chắn muốn xóa bản ghi ngày ?',
+        buttons: {
+          confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+          },
+          cancel: {
+            label: 'No',
+            className: 'btn-danger'
+          }
+        },
+        callback: function (result) {
+          if (result) {
+            $.ajax({
+              type: 'post',
+              url: url,
+              dataType: 'json',
+              data: { id: id },
+              success: function (response) {
+                debugger;
+                if (response.status === "ok") {
+                  debugger;
+                  bootbox.alert(response.message,
+                    function () {
+                      location.reload();
+                    });
+                } else {
+                  bootbox.alert(response.message);
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  </script>
+}

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Search_Invoice.Controllers
 {
     public class HomeController : Controller
     {
-
+       
         [Authorize(Roles = "Admin, Editor")]
         public ActionResult Index()
         {
@@ -33,13 +29,7 @@ namespace Search_Invoice.Controllers
 
             return View();
         }
-        public PartialViewResult Header()
-        {
-            int SoThongBao = 0;
-
-           
-            return PartialView("Header", SoThongBao.ToString());
-        }
+       
 
         public PartialViewResult Sidebar()
         {

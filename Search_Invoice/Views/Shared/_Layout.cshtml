@@ -51,7 +51,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="~/Content/plugins/images/fa-icon.png">
 
   <title>Hóa đơn điện tử M-Invoice</title>
-    <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/style5152.css?ver=1.0' type='text/css' media='all' />
+  <link rel='stylesheet' id='hashone-style-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/style5152.css?ver=1.0' type='text/css' media='all' />
   <link rel='stylesheet' id='font-awesome-css' href='~/UI/tracuu.minvoice.vn/wp-content/themes/minvoice/css/fontawesome/css/all0e7d.css?ver=5.1.0' type='text/css' media='all' />
   <!-- Bootstrap Core CSS -->
   <link href="/Content/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -132,7 +132,7 @@
   </div>
   <div id="wrapper">
 
-    @Html.Action("Header", "Home")
+    @Html.Action("_Header", "Customer")
     <!-- Left side column. contains the logo and sidebar -->
     @*@Html.Action("Sidebar", "Home")*@
     <!-- Content Wrapper. Contains page content -->
@@ -141,176 +141,171 @@
         @RenderBody()
       </div>
       <!-- /#page-wrapper -->
-        <footer id="hs-colophon" class="hs-site-footer">
-            <div id="hs-top-footer">
-                <div class="hs-container">
-                    <div class="hs-top-footer hs-clearfix row">
+      <footer id="hs-colophon" class="hs-site-footer">
+        <div id="hs-top-footer">
+          <div class="hs-container">
+            <div class="hs-top-footer hs-clearfix row">
 
-                        <div class="hs-footer hs-footer2 col-sm-8">
-                            <div class="row lienhe">
-                                <div class="col-md-3 titlee"><h4 style="color:#ffffff; font-weight:800">LIÊN HỆ MUA HÀNG</h4></div>
-                                <div class="col-md-2">
-                                    <aside id="media_image" class="widget_media_image">
-                                        <a href="https://minvoice.vn/dang-ky-su-dung/" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/muangay.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
-                                    </aside>
-                                </div>
-                                <div class="col-md-2">
-                                    <aside id="media_image" class="widget_media_image">
-                                        <img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/hotline.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
-                                    </aside>
-                                </div>
-                                <div class="col-md-2">
-                                    <aside id="media_image" class="widget_media_image">
-                                        <a href="https://demo.minvoice.com.vn/#!/app/dashboard" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/demo1.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
-                                    </aside>
-                                </div>
-                            </div>'
-                            <div class="ft">
-                                <div class="widget-title"></div>
-                                <aside id="nav_menu-2" class="widget widget_nav_menu">
-                                    <div class="menu-gioi-thieu-footer-container">
+              <div class="hs-footer hs-footer2 col-sm-8">
+                <div class="row lienhe">
+                  <div class="col-md-3 titlee"><h4 style="color:#ffffff; font-weight:800">LIÊN HỆ MUA HÀNG</h4></div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <a href="https://minvoice.vn/dang-ky-su-dung/" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/muangay.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                    </aside>
+                  </div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/hotline.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+                    </aside>
+                  </div>
+                  <div class="col-md-2">
+                    <aside id="media_image" class="widget_media_image">
+                      <a href="https://demo.minvoice.com.vn/#!/app/dashboard" target="_blank"><img width="150" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/demo1.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; border-radius:35px; height: auto;" sizes="(max-width: 300px) 100vw, 300px" /></a>
+                    </aside>
+                  </div>
+                </div>'
+                <div class="ft">
+                  <div class="widget-title"></div>
+                  <aside id="nav_menu-2" class="widget widget_nav_menu">
+                    <div class="menu-gioi-thieu-footer-container">
 
-                                        <h5>VĂN PHÒNG CÔNG TY</h5>
-                                        <p>Tel: 0901 80 6 18</p>
-                                        <p>Email: info@minvoice.vn</p>
-                                    </div>
-                                    <br>
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN ĐÀ NẴNG</h5>
-                                        <p>Tel: 0901 80 6 18</p>
-                                        <p>Email: info@minvoice.vn</p>
-                                    </div>
-
-                                </aside>
-                                <aside id="nav_menu-2" class="widget widget_nav_menu">
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN HÀ NỘI</h5>
-                                        <p>Tel: 0899 90 16 18</p>
-                                        <p>Email: infohn@minvoice.vn</p>
-                                    </div>
-                                    <br>
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN ĐỒNG NAI</h5>
-                                        <p>Tel: 0899 90 16 18</p>
-                                        <p>Email: infodn@minvoice.vn</p>
-                                    </div>
-                                </aside>
-                                <aside id="nav_menu-2" class="widget widget_nav_menu">
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN HỒ CHÍ MINH</h5>
-                                        <p>Tel: 0909 500 126</p>
-                                        <p>Email: infohcm@minvoice.vn</p>
-                                    </div>
-                                    <br>
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN HẢI DƯƠNG</h5>
-                                        <p>Tel: 02203 833 666</p>
-                                        <p>Email: infohd@minvoice.vn</p>
-                                    </div>
-                                </aside>
-                                <aside id="nav_menu-2" class="widget widget_nav_menu">
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN HẢI PHÒNG</h5>
-                                        <p>Tel: 0909 500 126</p>
-                                        <p>Email: infohcm@minvoice.vn</p>
-                                    </div>
-                                    <br>
-                                    <div class="menu-gioi-thieu-footer-container">
-                                        <div class=""></div>
-                                        <h5>CN CAMBODIA</h5>
-                                        <p>Tel: 0901 80 6 18</p>
-                                        <p>Email: info@minvoice.vn</p>
-                                    </div>
-                                </aside>
-                            </div>
-                        </div>
-                        <div class="hs-footer hs-footer6 col-sm-4">
-                            <aside id="nav_menu-12" class="widget_nav_menu">
-                                <div class="row lienhe">
-                                    <div class="col-md-12 titlee"><h4 style="color:#ffffff; font-weight:800">KẾT NỐI</h4></div>
-                                </div>'
-                                <div class="widget-title"></div>
-                                <div class="menu-ket-noi-container">
-
-                                    <ul id="menu-ket-noi" class="menu">
-                                        <li id="menu-item-178" class="facebook-f menu-item menu-item-type-custom menu-item-object-custom menu-item-178"><a href="https://www.facebook.com/hoadondientu.m.invoice/" target="blank">Facebook</a></li>
-                                        <li id="menu-item-179" class="twitter-f menu-item menu-item-type-custom menu-item-object-custom menu-item-179"><a href="#">Twitter</a></li>
-                                        <li id="menu-item-180" class="youtube-f menu-item menu-item-type-custom menu-item-object-custom menu-item-180"><a href="https://www.youtube.com/channel/UCQ-2lUz8TAvGj6sW6XY_RGg" target="blank">Youtube</a></li>
-                                        <li id="menu-item-181" class="google-f menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a href="#">Google</a></li>
-                                    </ul>
-                                </div>
-                            </aside>
-                            <aside id="custom_html-5" class="widget_text widget widget_custom_html">
-                                <div class="textwidget custom-html-widget">
-                                </div>
-                            </aside>
-                        </div>
+                      <h5>VĂN PHÒNG CÔNG TY</h5>
+                      <p>Tel: 0901 80 6 18</p>
+                      <p>Email: info@minvoice.vn</p>
                     </div>
+                    <br>
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN ĐÀ NẴNG</h5>
+                      <p>Tel: 0901 80 6 18</p>
+                      <p>Email: info@minvoice.vn</p>
+                    </div>
+
+                  </aside>
+                  <aside id="nav_menu-2" class="widget widget_nav_menu">
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN HÀ NỘI</h5>
+                      <p>Tel: 0899 90 16 18</p>
+                      <p>Email: infohn@minvoice.vn</p>
+                    </div>
+                    <br>
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN ĐỒNG NAI</h5>
+                      <p>Tel: 0899 90 16 18</p>
+                      <p>Email: infodn@minvoice.vn</p>
+                    </div>
+                  </aside>
+                  <aside id="nav_menu-2" class="widget widget_nav_menu">
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN HỒ CHÍ MINH</h5>
+                      <p>Tel: 0909 500 126</p>
+                      <p>Email: infohcm@minvoice.vn</p>
+                    </div>
+                    <br>
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN HẢI DƯƠNG</h5>
+                      <p>Tel: 02203 833 666</p>
+                      <p>Email: infohd@minvoice.vn</p>
+                    </div>
+                  </aside>
+                  <aside id="nav_menu-2" class="widget widget_nav_menu">
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN HẢI PHÒNG</h5>
+                      <p>Tel: 0909 500 126</p>
+                      <p>Email: infohcm@minvoice.vn</p>
+                    </div>
+                    <br>
+                    <div class="menu-gioi-thieu-footer-container">
+                      <div class=""></div>
+                      <h5>CN CAMBODIA</h5>
+                      <p>Tel: 0901 80 6 18</p>
+                      <p>Email: info@minvoice.vn</p>
+                    </div>
+                  </aside>
                 </div>
+              </div>
+              <div class="hs-footer hs-footer6 col-sm-4">
+                <aside id="nav_menu-12" class="widget_nav_menu">
+                  <div class="row lienhe">
+                    <div class="col-md-12 titlee"><h4 style="color:#ffffff; font-weight:800">KẾT NỐI</h4></div>
+                  </div>'
+                  <div class="widget-title"></div>
+                  <div class="menu-ket-noi-container">
+
+                    <ul id="menu-ket-noi" class="menu">
+                      <li id="menu-item-178" class="facebook-f menu-item menu-item-type-custom menu-item-object-custom menu-item-178"><a href="https://www.facebook.com/hoadondientu.m.invoice/" target="blank">Facebook</a></li>
+                      <li id="menu-item-179" class="twitter-f menu-item menu-item-type-custom menu-item-object-custom menu-item-179"><a href="#">Twitter</a></li>
+                      <li id="menu-item-180" class="youtube-f menu-item menu-item-type-custom menu-item-object-custom menu-item-180"><a href="https://www.youtube.com/channel/UCQ-2lUz8TAvGj6sW6XY_RGg" target="blank">Youtube</a></li>
+                      <li id="menu-item-181" class="google-f menu-item menu-item-type-custom menu-item-object-custom menu-item-181"><a href="#">Google</a></li>
+                    </ul>
+                  </div>
+                </aside>
+                <aside id="custom_html-5" class="widget_text widget widget_custom_html">
+                  <div class="textwidget custom-html-widget">
+                  </div>
+                </aside>
+              </div>
             </div>
-            <div id="hs-bottom-footer">
-                <div class="hs-container">
-                    <div class="hs-copy-right">
-                        Copyrights © 2018 Phần mềm Hóa đơn điện tử M-Invoice. All Rights Reserved.
-                    </div>
-                    <div class="hs-site-info">
-                    </div>
-                    <!-- #site-info -->
-                </div>
+          </div>
+        </div>
+        <div id="hs-bottom-footer">
+          <div class="hs-container">
+            <div class="hs-copy-right">
+              Copyrights © 2018 Phần mềm Hóa đơn điện tử M-Invoice. All Rights Reserved.
             </div>
-        </footer>
+            <div class="hs-site-info">
+            </div>
+            <!-- #site-info -->
+          </div>
+        </div>
+      </footer>
     </div>
   </div>
-    <div id="um_upload_single" style="display:none">
+  <div id="um_upload_single" style="display:none">
+  </div>
+  <div id="um_view_photo" style="display:none">
+    <a href="#" data-action="um_remove_modal" class="um-modal-close"><i class="um-faicon-times"></i></a>
+    <div class="um-modal-body photo">
+      <div class="um-modal-photo">
+      </div>
     </div>
-    <div id="um_view_photo" style="display:none">
-        <a href="#" data-action="um_remove_modal" class="um-modal-close"><i class="um-faicon-times"></i></a>
-        <div class="um-modal-body photo">
-            <div class="um-modal-photo">
-            </div>
-        </div>
-    </div>
+  </div>
   <!-- /.content-wrapper -->
   <!-- Control Sidebar -->
   <script type="text/javascript">
     function abc() {
       bootbox.confirm("<form id='infos' action=''>\
-        Mật khẩu cũ:<input type='text' name='password' /><br/>\
-        Mật khẩu mới:<input type='text' name='newpassword' /><br/>\
-        Nhập lại mật khẩu:<input type='text' name='renewpassword' />\
-        </form>", function (result) {
-          if (result) {
-            var jk = $("#infos").serialize();
-            console.log(jk);
-
-            $.ajax({
-              url: "/Account/ChangePassword_Use",
-              type: "POST",
-              data: jk,
-              success: function (result) {
-
-                result = JSON.parse(result);
-                if (!result.hasOwnProperty("error")) {
-
-                  bootbox.alert("Đổi mật khẩu thành công !");
-                  $.get("/Account/Logoff", function (data) {
-                  });
-                }
-                else {
-                  bootbox.alert(result.error);
-                }
+          Mật khẩu cũ:<input type='text' name='password' /><br/>\
+          Mật khẩu mới:<input type='text' name='newpassword' /><br/>\
+          Nhập lại mật khẩu:<input type='text' name='renewpassword' />\
+          </form>", function (result) {
+        if (result) {
+          var jk = $("#infos").serialize();
+          console.log(jk);
+          $.ajax({
+            url: "/Account/ChangePassword_Use",
+            type: "POST",
+            data: jk,
+            success: function (result) {
+              result = JSON.parse(result);
+              if (!result.hasOwnProperty("error")) {
+                bootbox.alert("Đổi mật khẩu thành công !");
+                $.get("/Account/Logoff", function (data) {
+                });
               }
-            });
-          }
-        });
-
-
+              else {
+                bootbox.alert(result.error);
+              }
+            }
+          });
+        }
+      });
     }
   </script>
   @RenderSection("scripts", required: false)

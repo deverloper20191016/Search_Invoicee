@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
 using System.Web;
+using System.Web.Security;
+using Search_Invoice.DAL;
 
 namespace Search_Invoice.Services
 {
@@ -20,21 +22,33 @@ namespace Search_Invoice.Services
 
         public string GetUser()
         {
-            string authorization = _context.Request.Headers["Authorization"];
-            if (string.IsNullOrEmpty(authorization))
-            {
-                return null;
-            }
-            string[] array = authorization.Replace("Bear", "").Trim().Split(';');
+            //string authorization = _context.Request.Headers["Authorization"];
+            //if (string.IsNullOrEmpty(authorization))
+            //{
+            //    return null;
+            //}
+            //string[] array = authorization.Replace("Bear", "").Trim().Split(';');
 
-            if (array.Length == 0)
+            //if (array.Length == 0)
+            //{
+            //    return null;
+            //}
+            //string token = array[0];
+            //string key = Encoding.UTF8.GetString(Convert.FromBase64String(token));
+            //string[] parts = key.Split(new char[] { ':' });
+            //return parts[1];
+
+            var authCookie = _context.Request.Cookies[CommonConstants.UserCookie];
+            if (authCookie != null)
             {
-                return null;
+                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (authTicket != null && !authTicket.Expired)
+                {
+                    return authTicket.Name;
+                }
             }
-            string token = array[0];
-            string key = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-            string[] parts = key.Split(new char[] { ':' });
-            return parts[1];
+
+            return null;
         }
 
 

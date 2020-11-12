@@ -1,43 +1,30 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+  Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <section>
-    <div class="row bg-title">
-        @RenderSection("ContentHeader", false)
+  <div class="row bg-title">
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <div id="hs-site-branding1">
+        <a href="https://minvoice.vn/" target="blank" class="custom-logo-link" rel="home" itemprop="url"><img width="412" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/lg.png" class="custom-logo" alt="Công ty TNHH Hóa đơn điện tử M-Invoice" itemprop="logo" /></a>
+      </div>
     </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+      <h5 class="page-title" style="text-align:center; font-weight:800; font-style:italic;color:#006ab5">GIÁ ƯU ĐÃI CHO DOANH NGHIỆP ĐĂNG KÍ LẦN ĐẦU</h5>
+    </div>
+    <div class="col-lg-4 col-sm-8 col-md-8 col-xs-12">
+      <a href="https://minvoice.vn" target="_blank">
+        <h5 style="text-align:center; font-weight:700; color:#006ab5;font-size:17px; font-style:italic">TÌM HIỂU THÊM</h5>
+      </a>
+    </div>
+  </div>
 </section>
 
 <section class="content" style="padding-left:0px !important;padding-right:0px !important">
-    <div class="white-box1">
-        <div class="box-title">
-            @RenderSection("BoxTitle", false)
-        </div>
-        <style>
-            .k-grid-content > table > tbody > tr {
-                background: White;
-            }
-
-            .modal-dialog {
-                /*height: 80% !important;*/
-                padding-top: 10%;
-            }
-
-            .modal-content {
-                /*height: 100% !important;*/
-                overflow: visible;
-            }
-
-            .modal-body {
-                /*height: 70%;*/
-                overflow: auto;
-            }
-        </style>
-        @RenderSection("BoxBody", false)
-    </div>
-    @RenderSection("BoxFooter", false)
+  <div class="white-box1">
+    @RenderSection("BoxBody", false)
+  </div>
+  @RenderSection("BoxFooter", false)
 </section>
 
-@RenderSection("Scripts", false)
-
-
+@RenderSection("scripts", false)

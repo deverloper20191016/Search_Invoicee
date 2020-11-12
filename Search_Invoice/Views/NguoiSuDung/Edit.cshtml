@@ -1,0 +1,57 @@
+﻿@model  Search_Invoice.Data.Domain.NguoiSuDung
+
+@{
+  ViewBag.Title = "Edit";
+  Layout = "~/Views/Shared/_Danhmuc.cshtml";
+}
+
+@section BoxBody {
+
+  <h2>Sửa thông tin người sử dụng: @Model.TenTruyCap</h2>
+
+
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1>Thêm mới Người sử dụng</h1>
+    </div>
+
+    @using (Html.BeginForm("Edit", "NguoiSuDung", FormMethod.Post))
+    {
+      @Html.AntiForgeryToken()
+
+      <div class="form-horizontal">
+        <hr/>
+        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+        @Html.HiddenFor(model => model.TenTruyCap)
+
+        <div class="form-group">
+          <label class="control-label col-md-2">Tên người dùng</label>
+          <div class="col-md-10">
+            @Html.TextBoxFor(model => model.TenNguoiDung, new {@class = "form-control", required = "required"})
+            @Html.ValidationMessageFor(model => model.TenNguoiDung, "", new {@class = "text-danger"})
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label col-md-2">Nhóm quyền</label>
+          <div class="col-md-10">
+            @Html.DropDownListFor(model => model.MaQuyen, null, "--- Chọn danh mục ---", new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.MaQuyen, "", new {@class = "text-danger"})
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Cập nhật" class="btn btn-primary  pull-right"/>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div>
+      <a href="@Url.Action("Index", "NguoiSuDung")" class="btn btn-default">Về trang danh sách</a>
+    </div>
+  </div>
+
+}

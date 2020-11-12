@@ -14,6 +14,10 @@ namespace Search_Invoice.Services
         private readonly IWebHelper _webHelper;
         private InvoiceDbContext _invoiceDbContext;
 
+        public void SetConnect()
+        {
+            _invoiceDbContext = new InvoiceDbContext();
+        }
         /// <summary>
         /// đang đợi set connect  mai làm tiếp 
         /// </summary>
@@ -22,7 +26,7 @@ namespace Search_Invoice.Services
         {
             mst = mst.Replace("-", "");
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
-            var invAdmin = tracuu.Inv_admin.FirstOrDefault(c => c.MST.Replace("-","") == mst || c.alias == mst);
+            var invAdmin = tracuu.Inv_admin.FirstOrDefault(c => c.MST.Replace("-", "") == mst || c.alias == mst);
             if (invAdmin == null)
             {
                 throw new Exception("Không tồn tại " + mst + " trên hệ thống của M-Invoice !");

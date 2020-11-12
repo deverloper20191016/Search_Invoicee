@@ -48,9 +48,11 @@
     <Reference Include="AccountSignature">
       <HintPath>..\..\..\..\Downloads\bin\bin\AccountSignature.dll</HintPath>
     </Reference>
-    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Autofac, Version=4.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.0.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Autofac.Integration.WebApi, Version=4.2.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.WebApi2.4.2.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
@@ -285,6 +287,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NguoiSuDungController.cs" />
+    <Compile Include="Controllers\NhomQuyenController.cs" />
     <Compile Include="Controllers\PageHomeController.cs" />
     <Compile Include="Controllers\SearchInvoiceController.cs" />
     <Compile Include="Controllers\Tracuu2Controller.cs" />
@@ -299,6 +303,7 @@
     <Compile Include="Data\Domain\inv_customer_banned.cs" />
     <Compile Include="Data\Domain\Inv_InvoiceAuth.cs" />
     <Compile Include="Data\Domain\inv_user.cs" />
+    <Compile Include="Data\Domain\NguoiSuDung.cs" />
     <Compile Include="Data\Domain\systemsetting.cs" />
     <Compile Include="Data\Domain\wb_ctquyen.cs" />
     <Compile Include="Data\Domain\wb_field.cs" />
@@ -315,18 +320,24 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\LoginResult.cs" />
     <Compile Include="Models\PassModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\KendoData.cs" />
     <Compile Include="Models\KendoFilter.cs" />
     <Compile Include="Models\KendoPostData.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Data\Domain\QuyenHan.cs" />
     <Compile Include="Models\ResultJson.cs" />
     <Compile Include="Models\TracuuModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AccountService.cs" />
+    <Compile Include="Services\IAccountService.cs" />
     <Compile Include="Services\ICacheManager.cs" />
+    <Compile Include="Services\IInvoiceService.cs" />
     <Compile Include="Services\INopDbContext.cs" />
     <Compile Include="Services\INopDbContext2.cs" />
+    <Compile Include="Services\InvoiceService.cs" />
     <Compile Include="Services\ITracuuService.cs" />
     <Compile Include="Services\ITracuuService2.cs" />
     <Compile Include="Services\IWebHelper.cs" />
@@ -339,6 +350,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Util\CachePattern.cs" />
     <Compile Include="Util\CommonConnect.cs" />
+    <Compile Include="Util\CommonUtil.cs" />
     <Compile Include="Util\EncodeXML.cs" />
     <Compile Include="Util\ExceptionUtility.cs" />
     <Compile Include="Util\PassCommand.cs" />
@@ -1338,7 +1350,7 @@
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\TraCuu\Upload.cshtml" />
     <Content Include="Views\TraCuu\UploadView.cshtml" />
-    <Content Include="Views\Shared\Header.cshtml" />
+    <Content Include="Views\Customer\_Header.cshtml" />
     <Content Include="Views\Shared\Sidebar.cshtml" />
     <Content Include="Views\Admin\inv_admin.cshtml" />
     <Content Include="Views\Admin\Create.cshtml" />
@@ -1375,6 +1387,12 @@
     <Content Include="Views\Customer\Search_Invoice.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Admin\CusomerBanned.cshtml" />
+    <Content Include="Views\NguoiSuDung\Create.cshtml" />
+    <Content Include="Views\NguoiSuDung\Edit.cshtml" />
+    <Content Include="Views\NguoiSuDung\Index.cshtml" />
+    <Content Include="Views\NhomQuyen\Create.cshtml" />
+    <Content Include="Views\NhomQuyen\Edit.cshtml" />
+    <Content Include="Views\NhomQuyen\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

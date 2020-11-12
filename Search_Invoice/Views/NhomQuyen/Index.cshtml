@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Search_Invoice.Data.Domain.QuyenHan>
+
+@{
+  ViewBag.Title = "Quản lý quyền hạn";
+  Layout = "~/Views/Shared/_Danhmuc.cshtml";
+}
+
+@section BoxBody {
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1 class="text-center">Danh mục quyền hạn</h1>
+    </div>
+    <div class="row">
+      <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="col-md-6">
+          <a href="@Url.Action("Create", "NhomQuyen")" class="btn btn-primary"><i class="fa fa-plus"></i>Thêm mới</a>
+        </div>
+        <div class="col-md-6">
+          <input id="demo-input-search2" type="text" placeholder="Tìm kiếm ..." class="form-control pull-right" autocomplete="off">
+        </div>
+      </div>
+      <table id="demo-foo-addrow" class="table table-bordered table-hover toggle-circle" data-page-size="7">
+        <thead style="background-color:#268ecd">
+          <tr role="row">
+            <th class="text-center">Mã quyền</th>
+            <th class="text-center">Tên quyền</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @foreach (var data in Model)
+          {
+            <tr role="row" class="odd">
+              <td class="text-center">
+                @data.MaQuyen
+              </td>
+              <td>
+                @data.TenQuyen
+              </td>
+              <td>
+                <a href="@Url.Action("Edit", "NhomQuyen", new {id = data.MaQuyen})" class="btn btn-xs btn-info">
+                  <i class=" fa fa-pencil "></i>
+                </a>
+                <a class="btn btn-xs btn-danger" onclick="deleteItem('@data.MaQuyen');">
+                  <i class=" fa fa-trash-o "></i>
+                </a>
+              </td>
+
+            </tr>
+          }
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td colspan="6">
+              <div class="text-left">
+                <ul class="pagination"></ul>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+
+  </div>
+
+
+}
+
+@section scripts
+{
+  <script type="text/javascript">
+    function deleteItem(id) {
+      debugger;
+      var url = '/NhomQuyen/Delete';
+      bootbox.confirm({
+        message: 'Bạn có chắc chắn muốn xóa bản ghi ngày ?',
+        buttons: {
+          confirm: {
+            label: 'Yes',
+            className: 'btn-success'
+          },
+          cancel: {
+            label: 'No',
+            className: 'btn-danger'
+          }
+        },
+        callback: function (result) {
+          if (result) {
+            $.ajax({
+              type: 'post',
+              url: url,
+              dataType: 'json',
+              data: { id: id },
+              success: function (response) {
+                debugger;
+                if (response.status === "ok") {
+                  debugger;
+                  bootbox.alert(response.message,
+                    function () {
+                      location.reload();
+                    });
+                } else {
+                  bootbox.alert(response.message);
+                }
+              }
+            });
+          }
+        }
+      });
+    }
+  </script>
+}
