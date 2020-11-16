@@ -11,7 +11,6 @@ namespace Search_Invoice.Services
 {
     public class NopDbContext2 : INopDbContext2
     {
-        private readonly IWebHelper _webHelper;
         private InvoiceDbContext _invoiceDbContext;
 
         public void SetConnect()

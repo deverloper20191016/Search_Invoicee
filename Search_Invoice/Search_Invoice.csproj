@@ -1172,7 +1172,7 @@
     <Content Include="Content\plugins\bower_components\footable\css\fonts\footable.ttf" />
     <Content Include="Content\plugins\bower_components\footable\css\fonts\footable.woff" />
     <Content Include="Content\plugins\bower_components\footable\src\js\components\README.md" />
-    <None Include="Properties\PublishProfiles\Search_Invoice.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1303,10 +1303,90 @@
     <Content Include="UI\tracuu.minvoice.vn\wp-content\themes\minvoice\style.css" />
     <Content Include="UI\tracuu.minvoice.vn\wp-content\themes\minvoice\style5152.css" />
     <Content Include="UI\tracuu.minvoice.vn\wp-content\themes\minvoice\theme.css" />
-    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\favicon.ico" />
-    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\giaiphap.jpg" />
-    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\logo.png" />
-    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\vuot_troi.jpg" />
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\24h.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\3tsoft.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\baomat.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\demo1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\footer.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\giaiphap.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\hotline.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\img2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lg1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lg1c.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgdtech.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgipos.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgmelia.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgmoka.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgsivip.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgsse.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgvacom.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\lgvni.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\logo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\logomst.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\muangay.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\tietkiem.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\truongan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\vuot_troi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\z1932856498014_c7e869c7ab38cf59640aeb3ebced090d.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="UI\tracuu.minvoice.vn\wp-includes\css\dashicons.min37cb.css" />
     <Content Include="UI\tracuu.minvoice.vn\wp-includes\js\backbone.min9632.js" />
     <Content Include="UI\tracuu.minvoice.vn\wp-includes\js\bootbox.min.js" />
@@ -1386,13 +1466,13 @@
     <Content Include="Views\Admin\Search.cshtml" />
     <Content Include="Views\Customer\Search_Invoice.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Admin\CusomerBanned.cshtml" />
     <Content Include="Views\NguoiSuDung\Create.cshtml" />
     <Content Include="Views\NguoiSuDung\Edit.cshtml" />
     <Content Include="Views\NguoiSuDung\Index.cshtml" />
     <Content Include="Views\NhomQuyen\Create.cshtml" />
     <Content Include="Views\NhomQuyen\Edit.cshtml" />
     <Content Include="Views\NhomQuyen\Index.cshtml" />
+    <Content Include="UI\tracuu.minvoice.vn\wp-content\uploads\2018\2018.rar" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

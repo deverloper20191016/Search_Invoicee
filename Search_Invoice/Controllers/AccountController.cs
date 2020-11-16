@@ -9,7 +9,6 @@ using Search_Invoice.Models;
 using Search_Invoice.Util;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -63,16 +62,9 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //[HttpPost,HttpGet]
-        //[ValidateAntiForgeryToken]
-        //[AuthorizeFilter(MaChucNang = "CN0002", Action = "Insert")]
         public JObject ChangePassword_Use(string password, string newpassword, string renewpassword)
         {
             JObject json = new JObject();
-            // lay thong tin nguoi su dung qua ten truy cap
-            //var ng = this.DbContext.NguoiSuDungs.Where(c => c.TenTruyCap == User.Identity.Name).FirstOrDefault<NguoiSuDung>();
-            //string s = ng.MatKhau;
-
             if (string.IsNullOrEmpty(password))
             {
                 json.Add("error", "Mật khẩu cũ không được bỏ trống");
@@ -86,11 +78,10 @@ namespace Search_Invoice.Controllers
             }
 
             inv_user us = (inv_user)Session[CommonConstants.UserSession];
-
-            inv_user nguoisd = DbContext.inv_users.Where(c => c.mst == us.mst && c.username == us.username).FirstOrDefault<inv_user>();
+            inv_user nguoisd = DbContext.inv_users.FirstOrDefault(c => c.mst == us.mst && c.username == us.username);
             PassCommand pwcmd = new PassCommand(nguoisd.password);
+
             if (pwcmd.CheckPassword(password))
-            //if (nguoisd.MatKhau == HtmlHelperExtensions.MD5Hash(model.MatKhau))
             {
                 if (newpassword != renewpassword)
                 {
@@ -99,7 +90,6 @@ namespace Search_Invoice.Controllers
                 }
                 else
                 {
-                    //model.MatKhauMoi = HtmlHelperExtensions.MD5Hash(model.MatKhauMoi);
                     nguoisd.password = pwcmd.CreateHashedPassword(newpassword, null);
                 }
             }
@@ -113,7 +103,6 @@ namespace Search_Invoice.Controllers
 
             return json;
         }
-        //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -122,7 +111,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -135,10 +123,7 @@ namespace Search_Invoice.Controllers
             }
 
            var dbContext = new InvoiceDbContext();
-
-           
-           var  nguoiSuDung = dbContext.NguoiSuDungs.FirstOrDefault(x=>x.TenNguoiDung.Equals(model.username));
-
+           var  nguoiSuDung = dbContext.NguoiSuDungs.FirstOrDefault(x=>x.TenTruyCap.Equals(model.username));
             if (nguoiSuDung == null)
             {
                 ModelState.AddModelError("ErrorLogin", "Không tìm thấy tài khoản trong hệ thống ! ");
@@ -154,7 +139,6 @@ namespace Search_Invoice.Controllers
                     {
                         Expires = authTicket.Expiration,
                         HttpOnly = true
-
                     };
                     FormsAuthentication.SetAuthCookie(nguoiSuDung.TenTruyCap, false);
                     HttpContext.Response.Cookies.Add(authCookie);
@@ -169,12 +153,10 @@ namespace Search_Invoice.Controllers
             }
         }
 
-        //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
-            // Require that the user has already logged in via username/password or external login
             if (!await SignInManager.HasBeenVerifiedAsync())
             {
                 return View("Error");
@@ -182,7 +164,6 @@ namespace Search_Invoice.Controllers
             return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
         // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
@@ -201,14 +182,12 @@ namespace Search_Invoice.Controllers
                     return RedirectToLocal(model.ReturnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
         }
 
-        //
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
@@ -216,7 +195,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
@@ -235,11 +213,9 @@ namespace Search_Invoice.Controllers
                 AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-        //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
@@ -252,7 +228,6 @@ namespace Search_Invoice.Controllers
             return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
-        //
         // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
@@ -260,7 +235,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
@@ -278,7 +252,6 @@ namespace Search_Invoice.Controllers
             return View(model);
         }
 
-        //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -286,7 +259,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
@@ -294,7 +266,6 @@ namespace Search_Invoice.Controllers
             return code == null ? View("Error") : View();
         }
 
-        //
         // POST: /Account/ResetPassword
         [HttpPost]
         [AllowAnonymous]
@@ -308,7 +279,6 @@ namespace Search_Invoice.Controllers
             ApplicationUser user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             IdentityResult result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
@@ -320,7 +290,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // GET: /Account/ResetPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
@@ -328,7 +297,6 @@ namespace Search_Invoice.Controllers
             return View();
         }
 
-        //
         // POST: /Account/ExternalLogin
         [HttpPost]
         [AllowAnonymous]
@@ -339,7 +307,6 @@ namespace Search_Invoice.Controllers
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
-        //
         // GET: /Account/SendCode
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
@@ -354,7 +321,6 @@ namespace Search_Invoice.Controllers
             return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
         }
 
-        //
         // POST: /Account/SendCode
         [HttpPost]
         [AllowAnonymous]
@@ -365,8 +331,6 @@ namespace Search_Invoice.Controllers
             {
                 return View();
             }
-
-            // Generate the token and send it
             if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
             {
                 return View("Error");
@@ -374,7 +338,6 @@ namespace Search_Invoice.Controllers
             return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
         }
 
-        //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
@@ -385,7 +348,6 @@ namespace Search_Invoice.Controllers
                 return RedirectToAction("Login");
             }
 
-            // Sign in the user with this external login provider if the user already has a login
             SignInStatus result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -395,16 +357,13 @@ namespace Search_Invoice.Controllers
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
-                case SignInStatus.Failure:
                 default:
-                    // If the user does not have an account, then prompt the user to create an account
                     ViewBag.ReturnUrl = returnUrl;
                     ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
                     return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
             }
         }
 
-        //
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
@@ -442,10 +401,6 @@ namespace Search_Invoice.Controllers
             return View(model);
         }
 
-        //
-        // POST: /Account/LogOff
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
@@ -458,7 +413,6 @@ namespace Search_Invoice.Controllers
             return RedirectToAction("PageHomeIndex", "PageHome");
         }
 
-        //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()

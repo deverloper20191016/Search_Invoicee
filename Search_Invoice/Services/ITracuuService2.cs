@@ -11,5 +11,6 @@ namespace Search_Invoice.Services
         byte[] PrintInvoiceFromSbm(string sobaomat,  string folder, string type, bool inchuyendoi,  out string xml, out string fileName);
         byte[] ExportZipFileXml(string sobaomat, string pathReport, ref string fileName, ref string key);
         byte[] GetInvoiceXml(string soBaoMat);
+        JObject SearchDataByDate(string tuNgay, string denNgay, string maDt);
     }
 }

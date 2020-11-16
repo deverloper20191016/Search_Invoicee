@@ -64,24 +64,22 @@
 
   <!-- Modal -->
   <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="margin-left: 250px; margin-top: 0px; padding-top: 0">
+    <div class="modal-dialog modal-invoice" style="margin-top: 0px; padding-top: 0">
+
       <!-- Modal content-->
-      <div class="modal-content" style="width: 1000px">
-        <div class="modal-header" style="height: 70px">
-          <div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-button">
             <a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
-            <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển ĐỔi</a>
+            <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển Đổi</a>
             <a href="#" type="button" id="btn-dowd-zip" class="btn btn-info" style="display: none; color: white" onclick="ExportZipXML()" title="Tải XML"><i class="fas fa-download"></i> Tải XML</a>
-            </div>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
         </div>
         <div class="modal-body">
-          <div id="mst_html" hidden></div>
-          <div id="sobaomat_html" hidden></div>
-          <div id="invoiceauth" hidden></div>
-          <div id="abcdefg" hidden></div>
-          <div id="ecd" hidden></div>
+          <div id="sobaomat_html" hidden></div>       
+          <div id="fileName" hidden></div>
+          <p id="title-load" style="text-align:center">Đang tải dữ liệu...</p>
           <div id="htm-content" class="text-center">
           </div>
         </div>
@@ -93,6 +91,13 @@
 @section Scripts {
   <script type="text/javascript">
     $(document).ready(function () {
+      var date = new Date();
+      
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      $("#startdate").val(firstDay.toISOString().split('T')[0]);
+      $("#enddate").val(lastDay.toISOString().split('T')[0]);
+
       function getFormData($form) {
         var unindexed_array = $form.serializeArray();
         var indexed_array = {};
@@ -126,7 +131,7 @@
             data: model,
             success: function (result) {
               if (!result.hasOwnProperty("error")) {
-                debugger;
+                
                 $("#demo-foo-addrow tbody").empty();
                 $('#tblfoot').prop('hidden', false);
                 $("#demo-foo-addrow tbody>tr").remove();
@@ -138,7 +143,7 @@
                       '<td>' + moment(result.data[i].inv_invoiceIssuedDate).format("DD/MM/YYYY") + '</td>' +
                       '<td>' + tien + '</td>' +
                       '<td>' +
-                      '<a href="#" onClick = "displayInvoice(\'' + sobaomat + '\',\'' + result.data[i].mst.toString() + '\',\'' + result.data[i].inv_InvoiceAuth_id.toString() + '\',\'' + result.data[i].inv_auth_id.toString() + '\');" data-toggle="modal" data-target="#myModal" data-placement="top" title="Xem hóa đơn"><i class="fas fa-search text-success"></i></a>'
+                      '<a href="#" onClick = "displayInvoice(\'' + sobaomat + '\');" data-toggle="modal" data-target="#myModal" data-placement="top" title="Xem hóa đơn"><i class="fas fa-search text-success"></i></a>'
                       +
                       '</td></tr>');
                 }
@@ -160,11 +165,12 @@
           });
         }, 1000);
       });
+
+
     });
   </script>
   <script>
     function ExportZipXML() {
-      var mst = $("#mst_html").val();
       var sbm = $("#sobaomat_html").val();
       bootbox.dialog({
         title: "Đang Export hóa đơn File .Zip ...",
@@ -181,7 +187,7 @@
         }
       });
       var interVal = setTimeout(function () {
-        var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '" }';
+        var model = '{ "sobaomat": "' + sbm + '" }';
         var kiki = JSON.parse(model);
         console.log(kiki);
         var xhr = new XMLHttpRequest();
@@ -246,7 +252,6 @@
   </script>
   <script>
     function PrintInvoicePDF() {
-      var mst = $("#mst_html").val();
       var sbm = $("#sobaomat_html").val();
       var type = "PDF";
       bootbox.dialog({
@@ -264,7 +269,7 @@
         }
       });
       var interVal = setTimeout(function () {
-        var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '","type":"' + type + '" }';
+        var model = '{ "sobaomat": "' + sbm + '", "type":"' + type + '" }';
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/Tracuu2/PrintInvoice', true);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -325,7 +330,6 @@
       }, 1000);
     }
     function PrintInvoiceChuyenDoiPDF() {
-      var mst = $("#mst_html").val();
       var sbm = $("#sobaomat_html").val();
       var inchuyendoi = 1;
       var type = "PDF";
@@ -344,7 +348,7 @@
         }
       });
       var interVal = setTimeout(function () {
-        var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '","type":"' + type + '", "inchuyendoi":"' + inchuyendoi + '" }';
+        var model = '{ "sobaomat": "' + sbm + '", "type":"' + type + '", "inchuyendoi":"' + inchuyendoi + '" }';
         var xhr = new XMLHttpRequest();
         xhr.open('POST', '/Tracuu2/PrintInvoice', true);
         xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -411,17 +415,15 @@
   <script src="http://localhost:19898/signalr/signalr/hubs"></script>
 
   <script>
-    function displayInvoice(sobaomat, mst, auth, abc) {
-      debugger;
+    function displayInvoice(sobaomat) {
+      
       var data = {
         sobaomat: sobaomat,
-        masothue: mst,
         type: "PDF"
       };
+      $("#title-load").show();
       $("#hs-masthead").hide();
       $("#htm-content").empty();
-      $("#htm-content").html('<div class="spinner-border"></div> <p>Đang tải dữ liệu...</p>');
-      $("#btn-buyer-sign").hide();
       $("#btn-download-html").hide();
       $("#btn-dowd-zip").hide();
       $("#btn-download-pdf").hide();
@@ -439,19 +441,14 @@
             builder += '<iframe class="responsive-iframe" src="' + blobUrl + '" frameborder="0" height="700px" width="100%"></iframe>';
             $("#htm-content").html('');
             $("#htm-content").append(builder);
-            $("#mst_html").val(mst);
             $("#sobaomat_html").val(sobaomat);
-            $("#invoiceauth").val(auth);
-            $("#ecd").val(response.ecd);
-            $("#abcdefg").val(abc);
-            $("#btn-buyer-sign").show();
             $("#btn-download-html").show();
             $("#btn-dowd-zip").show();
             $("#btn-download-pdf").show();
             $("#btn-download-pdf-inchuyendoi").show();
+            $("#title-load").hide();
           } else {
             $("#htm-content").html(response.error);
-            $("#btn-buyer-sign").hide();
             $("#btn-dowdload-html").hide();
             $("#btn-dowd-zip").hide();
             $("#btn-download-pdf").hide();
@@ -460,91 +457,7 @@
         }
       });
     }
-    function buyerSignature() {
-      debugger;
-      var SignalrConnection;
-      $.connection.hub.url = "http://localhost:19898/signalr";
-      SignalrConnection = $.connection.invoiceHub;
-      if (SignalrConnection == null) {
-        bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra và tải lại trang web để thực hiện chức năng");
-        return false;
-      }
-      $.connection.hub.start().done(function () {
-        var mst = $("#mst_html").val();
-        var invInvoiceAuthId = $("#invoiceauth").val();
-        var a = $("#abcdefg").val();
-        bootbox.dialog({
-          title: "Đang ký hóa đơn",
-          message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
-          buttons: {
-            cancel: {
-              label: '<i class="fa fa-times"></i> Hủy',
-              className: 'btn-danger',
-              callback: function () {
-                clearTimeout(interVal);
-                bootbox.hideAll();
-              }
-            }
-          }
-        });
-        var interVal = setTimeout(function () {
-          SignalrConnection.server.SignatureXML(mst, invInvoiceAuthId, atob(a)).done(function (result) {
-            console.log(result);
-            if (result === "") {
-              bootbox.alert({
-                message: "Ký hóa đơn thành công",
-                callback: function () {
-                  $('#myModal').modal('toggle');
-                }
-              });
-            }
-            else {
-              bootbox.hideAll();
-              clearTimeout(interVal);
-              bootbox.alert({
-                size: "small",
-                title: "Error",
-                message: result
-              });
-            }
-          });
-        }, 3000);
-      })
-        .fail(function () {
-          bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
-        });
-    }
-    function readSignature(id) {
-      debugger;
-      var SignalrConnection;
-      $.connection.hub.url = "http://localhost:19898/signalr";
-      SignalrConnection = $.connection.invoiceHub;
-      if (SignalrConnection == null) {
-        bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra và tải lại trang web để thực hiện chức năng");
-        return false;
-      }
-      var xml = $("#ecd").val();
-      if (id === "buyer") {
-        if (xml.indexOf("buyer") === -1) {
-          bootbox.alert("Không có thông tin người mua");
-          return false;
-        }
-      }
-      $.connection.hub.start().done(function () {
-        var arg = {
-          xml: xml,
-          id: id
-        };
-        SignalrConnection.server.execCommand("ShowCert", JSON.stringify(arg)).done(function (result) {
-          console.log(result);
-        }).fail(function (error) {
-          console.log('Invocation of NewContosoChatMessage failed. Error: ' + error);
-        });
-      })
-        .fail(function () {
-          bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
-        });
-    }
+   
     function b64toBlob(b64Data, contentType, sliceSize) {
       contentType = contentType || '';
       sliceSize = sliceSize || 512;

@@ -17,6 +17,7 @@ using System.Security.Cryptography.X509Certificates;
 using ICSharpCode.SharpZipLib.Core;
 using Search_Invoice.Data;
 using System.Security.Cryptography.Xml;
+using DevExpress.XtraReports.Parameters;
 
 namespace Search_Invoice.Util
 {
@@ -141,6 +142,89 @@ namespace Search_Invoice.Util
                 if (columns.Contains("thap_phan"))
                 {
                     thapPhan = tblCtthongbao.Rows[0]["thap_phan"].ToString();
+                }
+
+                string invCurrencyCode = invoice.Inv_currencyCode;
+                DataTable tbldmnt = invoiceContext.ExecuteCmd($"SELECT * FROM dbo.dmnt	WHERE ma_nt = '{invCurrencyCode}'");
+                if (tbldmnt.Rows.Count > 0)
+                {
+                    DataRow rowDmnt = tbldmnt.Rows[0];
+                    string quantityFomart = "n0";
+                    string unitPriceFomart = "n0";
+                    string totalAmountWithoutVatFomart = "n0";
+                    string totalAmountFomart = "n0";
+                    if (tbldmnt.Columns.Contains("inv_quantity"))
+                    {
+                        var quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                            ? rowDmnt["inv_quantity"].ToString()
+                            : "0");
+                        quantityFomart = GetFormatString(quantityDmnt);
+                    }
+
+                    if (tbldmnt.Columns.Contains("inv_unitPrice"))
+                    {
+                        var unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                            ? rowDmnt["inv_unitPrice"].ToString()
+                            : "0");
+                        unitPriceFomart = GetFormatString(unitPriceDmnt);
+                    }
+                    if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
+                    {
+                        var totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                            ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
+                            : "0");
+                        totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
+                    }
+                    if (tbldmnt.Columns.Contains("inv_TotalAmount"))
+                    {
+                        var totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                            ? rowDmnt["inv_TotalAmount"].ToString()
+                            : "0");
+                        totalAmountFomart = GetFormatString(totalAmountDmnt);
+                    }
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = quantityFomart
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = unitPriceFomart
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = totalAmountWithoutVatFomart
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = totalAmountFomart
+                    });
+                }
+                else
+                {
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_quantity",
+                        Value = "n0"
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_unitPrice",
+                        Value = "n0"
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmountWithoutVat",
+                        Value = "n0"
+                    });
+                    report.Parameters.Add(new Parameter
+                    {
+                        Name = "FM_inv_TotalAmount",
+                        Value = "n0"
+                    });
                 }
 
                 var t = Task.Run(() =>
@@ -333,6 +417,21 @@ namespace Search_Invoice.Util
                 }
             }
             return bmap;
+        }
+
+        private static string GetFormatString(int formatDefault)
+        {
+            string format = "#,#0";
+            string format2 = string.Empty;
+            if (formatDefault == 0)
+            {
+                return format;
+            }
+            for (int i = 0; i < formatDefault; i++)
+            {
+                format2 += "#";
+            }
+            return $"{format}.{format2}";
         }
     }
 }

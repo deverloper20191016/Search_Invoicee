@@ -193,8 +193,50 @@ namespace Search_Invoice.Services
             {
                 throw new Exception(ex.Message);
             }
+        }
 
+        public JObject SearchDataByDate(string tuNgay, string denNgay, string maDt)
+        {
+            _nopDbContext2.SetConnect();
+            string sql = $"SELECT * FROM inv_InvoiceAuth WHERE inv_invoiceIssuedDate >= '{tuNgay}' and inv_invoiceIssuedDate <= '{denNgay}' AND ma_dt = @ma_dt AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ORDER BY inv_invoiceNumber ASC";
 
+            Dictionary<string, object> parameters = new Dictionary<string, object>
+            {
+                {"@ma_dt", maDt}
+            };
+
+            DataTable tblSearch = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
+
+            tblSearch.Columns.Add("total_amount_detail", typeof(decimal));
+
+            foreach (DataRow row in tblSearch.Rows)
+            {
+                var id = row["inv_InvoiceAuth_id"].ToString();
+                var tableDetail =
+                    _nopDbContext2.ExecuteCmd($"SELECT SUM(inv_TotalAmount) AS total_amount FROM dbo.inv_InvoiceAuthDetail WHERE inv_InvoiceAuth_id = '{id}'");
+
+                row.BeginEdit();
+                if (tableDetail.Rows.Count > 0)
+                {
+                    if (!string.IsNullOrEmpty(tableDetail.Rows[0]["total_amount"].ToString()))
+                    {
+                        row["total_amount_detail"] = tableDetail.Rows[0]["total_amount"].ToString();
+                    }
+                }
+                row.EndEdit();
+            }
+
+            JObject result = new JObject();
+            if (tblSearch.Rows.Count > 0)
+            {
+                JArray jar = JArray.FromObject(tblSearch);
+                result.Add("data", jar);
+            }
+            else
+            {
+                result.Add("error", "Không tìm thấy dữ liệu.");
+            }
+            return result;
         }
 
         private string GetFormatString(int formatDefault)
