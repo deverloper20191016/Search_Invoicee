@@ -399,6 +399,8 @@ namespace Search_Invoice.Services
                         break;
                     }
                 }
+
+                sql += " ORDER BY inv_invoiceNumber, inv_invoiceSeries ";
                 string connectionString = _nopDbContext2.GetInvoiceDb().Database.Connection.ConnectionString;
                 byte[] byt = Encoding.UTF8.GetBytes(connectionString);
                 string b = Convert.ToBase64String(byt);

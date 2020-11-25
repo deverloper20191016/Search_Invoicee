@@ -1024,6 +1024,10 @@
             });
           }
           else {
+            var mst = result.replace("Mã số thuế người mua không đúng ! ", "");
+            if (result.includes("Mã số thuế người mua không đúng")) {
+              result = "Mã số thuế của chứng thư số không khớp với mã số thuế bên mua trên hóa đơn " + mst;
+            }
             bootbox.hideAll();
             clearTimeout(interVal);
             bootbox.alert({
