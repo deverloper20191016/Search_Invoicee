@@ -1,8 +1,10 @@
 ﻿using Search_Invoice.Data.Domain;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Search_Invoice.Data
 {
@@ -55,6 +57,62 @@ namespace Search_Invoice.Data
             return table;
         }
 
+        public DataSet GetDataSet(string sql, Dictionary<string, string> parameters)
+        {
+            DbConnection connection = null;
+            DataSet ds = new DataSet();
+            ds.DataSetName = "dataSet1";
+            try
+            {
+                connection = Database.Connection;
+                var command = connection.CreateCommand();
+                command.CommandType = CommandType.StoredProcedure;
+                command.CommandText = sql;
+                DataTable tblParameters = ExecuteCmd("SELECT p.*,t.[name] AS [Type] FROM sys.procedures sp " +
+                                    "JOIN sys.parameters p  ON sp.object_id = p.object_id " +
+                                    "JOIN sys.types t  ON p.user_type_id = t.user_type_id " +
+                                    "WHERE sp.name = '" + sql + "' and t.name<>'sysname'");
+                for (int i = 0; i < tblParameters.Rows.Count; i++)
+                {
+                    DataRow row = tblParameters.Rows[i];
+                    var para = parameters.FirstOrDefault(c => c.Key == row["name"].ToString().Substring(1));
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = row["name"].ToString();
+                    if (para.Value == null)
+                    {
+                        parameter.Value = DBNull.Value;
+                    }
+                    else
+                    {
+                        parameter.Value = para.Value;
+                    }
+                    command.Parameters.Add(parameter);
+                }
+                if (connection.State == ConnectionState.Closed)
+                {
+                    connection.Open();
+                }
+                var reader = command.ExecuteReader();
+                DataTable table = new DataTable { TableName = "Table" };
+                do
+                {
+                    table.Load(reader);
+                } while (!reader.IsClosed);
+                ds.Tables.Add(table);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (connection?.State == ConnectionState.Open)
+                {
+                    connection.Close();
+                }
+            }
+            return ds;
+        }
         public DbSet<wb_window> WbWindows { get; set; }
         public DbSet<wb_user> WbUsers { get; set; }
         public DbSet<wb_menu> WbMenus { get; set; }

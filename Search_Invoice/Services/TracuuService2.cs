@@ -813,6 +813,12 @@ namespace Search_Invoice.Services
                 string mauHd = tblInvInvoiceAuth.Rows[0]["mau_hd"].ToString();
                 string soSerial = tblInvInvoiceAuth.Rows[0]["inv_invoiceSeries"].ToString();
                 string soHd = tblInvInvoiceAuth.Rows[0]["inv_invoiceNumber"].ToString();
+                string maDvcs = "VP";
+                if (tblInvInvoiceAuth.Columns.Contains("ma_dvcs"))
+                {
+                    maDvcs = tblInvInvoiceAuth.Rows[0]["ma_dvcs"].ToString();
+                }
+
                 fileNamePrint = $"{masothue}_invoice_{mauHd.Trim().Replace("/", "")}_{soSerial.Trim().Replace("/", "")}_{soHd}";
                 xml = tblInvoiceXmlData.Rows.Count > 0 ? tblInvoiceXmlData.Rows[0]["data"].ToString() : db.Database.SqlQuery<string>($"EXECUTE sproc_export_XmlInvoice '{invInvoiceAuthId}'").FirstOrDefault();
                 string invInvoiceCodeId = tblInvInvoiceAuth.Rows[0]["inv_InvoiceCode_id"].ToString();
@@ -1087,7 +1093,7 @@ namespace Search_Invoice.Services
                     for (int i = idx; i < pageCount; i++)
                     {
                         PageWatermark pmk = new PageWatermark
-                        {
+                        { 
                             ShowBehind = false
                         };
                         report.Pages[i].AssignWatermark(pmk);
@@ -1106,6 +1112,42 @@ namespace Search_Invoice.Services
                         report.Pages[i].AssignWatermark(pmk);
                     }
                 }
+
+                if (trangThaiHd == 19 || trangThaiHd == 21 || trangThaiHd == 5)
+                {
+                    string reportFile = trangThaiHd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
+                    string sqlDieuChinh = trangThaiHd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
+                    string fileName = folder + $@"\{masothue}_{reportFile}";
+
+                    if (!File.Exists(fileName))
+                    {
+                        fileName = folder + $"\\{reportFile}";
+                    }
+
+                    XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
+                    rpBienBan.ScriptReferencesString = "AccountSignature.dll";
+                    rpBienBan.Name = "rpBienBanDieuChinh";
+                    rpBienBan.DisplayName = reportFile;
+                    Dictionary<string, string> pars = new Dictionary<string, string>
+                    {
+                        {"ma_dvcs", maDvcs},
+                        {"document_id", invInvoiceAuthId }
+                    };
+
+                    DataSet dsDieuChinh = _nopDbContext2.GetDataSet(sqlDieuChinh, pars);
+
+                    rpBienBan.DataSource = dsDieuChinh;
+                    rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
+                    rpBienBan.CreateDocument();
+                    rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
+                    report.PrintingSystem.ContinuousPageNumbering = false;
+                    report.Pages.AddRange(rpBienBan.Pages);
+
+                    int pageCount = report.Pages.Count;
+                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
+
+                }
+
                 MemoryStream ms = new MemoryStream();
                 if (type == "Html")
                 {

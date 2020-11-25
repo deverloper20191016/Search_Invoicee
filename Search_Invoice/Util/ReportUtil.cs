@@ -3,6 +3,7 @@ using DevExpress.XtraPrinting.Drawing;
 using DevExpress.XtraReports.UI;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -295,6 +296,42 @@ namespace Search_Invoice.Util
                         PageWatermark pmk = new PageWatermark {ShowBehind = false};
                         report.Pages[i].AssignWatermark(pmk);
                     }
+                }
+
+
+                if (invoice.Trang_thai_hd == 19 || invoice.Trang_thai_hd == 21 || invoice.Trang_thai_hd == 5)
+                {
+                    string reportFile = invoice.Trang_thai_hd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
+                    string sqlDieuChinh = invoice.Trang_thai_hd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
+                    string fileName = folder + $@"\{mst}_{reportFile}";
+
+                    if (!File.Exists(fileName))
+                    {
+                        fileName = folder + $"\\{reportFile}";
+                    }
+
+                    XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
+                    rpBienBan.ScriptReferencesString = "AccountSignature.dll";
+                    rpBienBan.Name = "rpBienBanDieuChinh";
+                    rpBienBan.DisplayName = reportFile;
+                    Dictionary<string, string> pars = new Dictionary<string, string>
+                    {
+                        {"ma_dvcs", invoice.Ma_dvcs},
+                        {"document_id", invInvoiceAuthId.ToString() }
+                    };
+
+                    DataSet dsDieuChinh = invoiceContext.GetDataSet(sqlDieuChinh, pars);
+
+                    rpBienBan.DataSource = dsDieuChinh;
+                    rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
+                    rpBienBan.CreateDocument();
+                    rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
+                    report.PrintingSystem.ContinuousPageNumbering = false;
+                    report.Pages.AddRange(rpBienBan.Pages);
+
+                    int pageCount = report.Pages.Count;
+                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
+
                 }
             }
             stream.Close();
