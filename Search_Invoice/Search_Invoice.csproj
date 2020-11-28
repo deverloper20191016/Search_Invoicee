@@ -1160,6 +1160,8 @@
     <Content Include="Content\plugins\bower_components\footable\css\fonts\footable.ttf" />
     <Content Include="Content\plugins\bower_components\footable\css\fonts\footable.woff" />
     <Content Include="Content\plugins\bower_components\footable\src\js\components\README.md" />
+    <Content Include="Content\report\INCT_BBDC_DD.repx" />
+    <Content Include="Content\report\INCT_BBDC_GT.repx" />
     <None Include="Properties\PublishProfiles\Search_Invoice.pubxml" />
     <None Include="Scripts\jquery-1.10.2-vsdoc.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
