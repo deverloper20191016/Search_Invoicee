@@ -198,7 +198,7 @@ namespace Search_Invoice.Services
         public JObject SearchDataByDate(string tuNgay, string denNgay, string maDt)
         {
             _nopDbContext2.SetConnect();
-            string sql = $"SELECT * FROM inv_InvoiceAuth WHERE inv_invoiceIssuedDate >= '{tuNgay}' and inv_invoiceIssuedDate <= '{denNgay}' AND ma_dt = @ma_dt AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ORDER BY inv_invoiceNumber ASC";
+            string sql = $"SELECT * FROM inv_InvoiceAuth WHERE inv_invoiceIssuedDate >= '{tuNgay}' and inv_invoiceIssuedDate <= '{denNgay}' AND (ma_dt = @ma_dt OR inv_buyerTaxCode  = @ma_dt) AND inv_InvoiceAuth_id IN (SELECT inv_InvoiceAuth_id FROM InvoiceXmlData) ORDER BY inv_invoiceNumber ASC";
 
             Dictionary<string, object> parameters = new Dictionary<string, object>
             {
