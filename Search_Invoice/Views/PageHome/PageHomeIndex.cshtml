@@ -364,12 +364,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <div class="modal-button">
-          <a href="#" class="btn" id="btn-download-pdf" onClick="PrintInvoicePDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+          <a href="#" class="btn" id="btn-download" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+          <div class="dropdown-menu" aria-labelledby="btn-download">
+            <a class="dropdown-item" href="#" id="btn-download-pdf" onclick="PrintInvoicePDF()">In hóa đơn</a>
+            <a class="dropdown-item" href="#" id="btn-print-pdf" onclick="DownloadInvoicePDF()">Tải hóa đơn</a>
+          </div>
+
           <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển Đổi</a>
           <a href="#" type="button" id="btn-dowd-zip" class="btn btn-info" style="display: none; color: white" onclick="ExportZipXML()" title="Tải XML"><i class="fas fa-download"></i> Tải XML</a>
           <a href="#" type="button" id="btn-buyer-sign" class="btn btn-success" style="display: none; color: white" onclick="buyerSignature()" title="Ký hóa đơn"><i class="fas fa-signature"></i> Ký hóa đơn</a>
+
           <a href="#" class="btn" id="btn-download-html" style="display: none; color: #6B6B6B; background-color:#EFEFEF" title="Đọc Chữ Ký Số" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Đọc CKS</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <div class="dropdown-menu" aria-labelledby="btn-download-html">
             <a class="dropdown-item" href="#" id="readSignatureSeller" onclick="readSignature('seller')">Người bán</a>
             <a class="dropdown-item" href="#" id="readSignatureBuyer" onclick="readSignature('buyer')">Người mua</a>
           </div>
@@ -689,6 +695,85 @@
       };
     }, 1000);
   }
+
+  function DownloadInvoicePDF() {
+    var mst = $("#mst_html").val();
+    var sbm = $("#sobaomat_html").val();
+    var type = "PDF";
+    bootbox.dialog({
+      title: "Đang tải hóa đơn...",
+      message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
+      buttons: {
+        cancel: {
+          label: '<i class="fa fa-times"></i> Hủy',
+          className: 'btn-danger',
+          callback: function () {
+            clearTimeout(interVal);
+            bootbox.hideAll();
+          }
+        }
+      }
+    });
+    var interVal = setTimeout(function () {
+      var model = '{ "sobaomat": "' + sbm + '", "masothue": "' + mst + '", "type":"' + type + '" }';
+      var kiki = JSON.parse(model);
+      console.log(kiki);
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/Tracuu2/PrintInvoice', true);
+      xhr.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+      xhr.responseType = 'arraybuffer';
+      xhr.send(model);
+      xhr.onload = function () {
+        debugger;
+        if (this.status === 200) {
+          var filename = $("#fileName").val();
+          var disposition = xhr.getResponseHeader('Content-Disposition');
+          if (disposition && disposition.indexOf('attachment') !== -1) {
+            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+            var matches = filenameRegex.exec(disposition);
+            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+          }
+
+          var type = xhr.getResponseHeader('Content-Type');
+          var blob = typeof File === 'function' ? new File([this.response], filename, {
+            type: type
+          }) : new Blob([this.response], {
+            type: type
+          });
+          if (typeof window.navigator.msSaveBlob !== 'undefined') {
+            window.navigator.msSaveBlob(blob, filename);
+          } else {
+            var URL = window.URL || window.webkitURL;
+            var downloadUrl = URL.createObjectURL(blob);
+
+            if (filename) {
+              var a = document.createElement("a");
+              document.body.appendChild(a);
+              a.href = downloadUrl;
+              a.download = filename;
+              a.click();
+              window.URL.revokeObjectURL(downloadUrl);
+              document.body.removeChild(a);
+              bootbox.hideAll();
+            } else {
+              bootbox.hideAll();
+              clearTimeout(interVal);
+              //var newWindow = window.open('/');
+              //newWindow.onload = () => {
+              //  newWindow.location = downloadUrl;
+              //};
+              window.location = downloadUrl;
+            }
+          }
+        } else {
+          bootbox.hideAll();
+          clearTimeout(interVal);
+          bootbox.alert("Có lỗi xảy ra !");
+        }
+      };
+    }, 1000);
+  }
+
 </script>
 <script>
 
@@ -910,9 +995,11 @@
     $("#htm-content").empty();
     //$("#htm-content").html('<div class="spinner-border"></div> <p style="text-align:center">Đang tải dữ liệu...</p>');
     $("#btn-buyer-sign").hide();
+    $("#btn-print-pdf").hide();
     $("#btn-download-html").hide();
     $("#btn-dowd-zip").hide();
     $("#btn-download-pdf").hide();
+    $("#btn-download").hide();
     $("#btn-plugin").hide();
     $("#btn-download-pdf-inchuyendoi").hide();
 
@@ -958,17 +1045,21 @@
           $("#abcdefg").val(abc);
           $("#btn-buyer-sign").show();
           $("#btn-download-html").show();
+          $("#btn-download").show();
           $("#btn-dowd-zip").show();
           $("#btn-plugin").show();
           $("#btn-download-pdf").show();
+          $("#btn-print-pdf").show();
           $("#btn-download-pdf-inchuyendoi").show();
         } else {
           $("#htm-content").html(response.error);
           $("#btn-buyer-sign").hide();
+          $("#btn-download").hide();
           $("#btn-dowdload-html").hide();
           $("#btn-dowd-zip").hide();
           $("#btn-plugin").hide();
           $("#btn-download-pdf").hide();
+          $("#btn-print-pdf").hide();
           $("#btn-download-pdf-inchuyendoi").hide();
         }
       }

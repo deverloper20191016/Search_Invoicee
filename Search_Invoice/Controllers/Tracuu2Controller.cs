@@ -51,12 +51,13 @@ namespace Search_Invoice.Controllers
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
-                byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, type, inchuyendoi);
+                string fileName;
+                byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, type, inchuyendoi, out fileName);
                 result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
                 if (type == "PDF")
                 {
                     result.Content.Headers.ContentDisposition =
-                        new ContentDispositionHeaderValue("inline") {FileName = "InvoiceTemplate.pdf"};
+                        new ContentDispositionHeaderValue("inline") {FileName = fileName };
                     result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
                 }
                 else if (type == "Html")
@@ -162,7 +163,7 @@ namespace Search_Invoice.Controllers
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
                 string fileName = "";
-                byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, "pdf");
+                byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, "pdf", out fileName);
                 result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
                 result.Content.Headers.ContentDisposition.FileName = fileName + ".pdf";

@@ -124,16 +124,16 @@ namespace Search_Invoice.Services
             }
             return json;
         }
-        public byte[] PrintInvoiceFromSbm(string sobaomat, string masothue, string folder, string type)
+        public byte[] PrintInvoiceFromSbm(string sobaomat, string masothue, string folder, string type, out string fileNamePrint)
         {
-            byte[] results = PrintInvoiceFromSbm(sobaomat, masothue, folder, type, false);
+            byte[] results = PrintInvoiceFromSbm(sobaomat, masothue, folder, type, false, out fileNamePrint);
             return results;
         }
 
-        public byte[] PrintInvoiceFromSbm(string sobaomat, string masothue, string folder, string type, bool inchuyendoi)
+        public byte[] PrintInvoiceFromSbm(string sobaomat, string masothue, string folder, string type, bool inchuyendoi, out string fileNamePrint)
         {
             string xml;
-            string fileNamePrint;
+
             var bytes = PrintInvoice(sobaomat, masothue, folder, type, inchuyendoi, out xml, out fileNamePrint);
             return bytes;
         }
@@ -248,7 +248,8 @@ namespace Search_Invoice.Services
                 string sobaomat = model["sobaomat"].ToString();
                 string masothue = model["masothue"].ToString();
                 string folder = model["folder"].ToString();
-                byte[] result = PrintInvoiceFromSbm(sobaomat, masothue, folder, "Html");
+                string fileName;
+                byte[] result = PrintInvoiceFromSbm(sobaomat, masothue, folder, "Html", out fileName);
                 string html = Encoding.UTF8.GetString(result);
                 json.Add("ok", html);
             }
