@@ -144,7 +144,9 @@ namespace Search_Invoice.Controllers
 
 
                 string xml = "";
+
                 string repx = "";
+
                 string key = "";
 
 

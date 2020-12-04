@@ -151,6 +151,7 @@ namespace Search_Invoice.Services
             {
                 {"@sobaomat", sobaomat}
             };
+            string mahoa = "SELECT COUNT(gia_tri) FROM dbo.wb_setting WHERE ma = 'MA_HOA_XML' AND gia_tri ='C'";
             string sql = "SELECT TOP 1 a.* FROM inv_InvoiceAuth AS a INNER JOIN dbo.InvoiceXmlData AS b ON b.inv_InvoiceAuth_id = a.inv_InvoiceAuth_id WHERE a.sobaomat = @sobaomat";
             DataTable dt = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
             if (dt.Rows.Count <= 0)
@@ -170,8 +171,23 @@ namespace Search_Invoice.Services
             }
             DataTable tblCtthongbao = _nopDbContext2.ExecuteCmd($"SELECT * FROM ctthongbao WHERE ctthongbao_id = '{invInvoiceCodeId}'");
             DataTable tblMauHoaDon = _nopDbContext2.ExecuteCmd($"SELECT dmmauhoadon_id, report FROM dmmauhoadon WHERE dmmauhoadon_id = '{tblCtthongbao.Rows[0]["dmmauhoadon_id"].ToString()}'");
-            string xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
-            xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + xml;
+            string xml1 = "";
+            string xml = "";
+            Guid keyxml = Guid.NewGuid();
+            DataTable mahoaxml = _nopDbContext2.ExecuteCmd(mahoa, CommandType.Text, parameters);
+
+            if (mahoaxml.Rows.Count <= 0)
+            {
+                xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
+                xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + xml;
+            }
+            else
+            {
+                xml1 = tblInvoiceXmlData.Rows[0]["data"].ToString();
+                xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + xml1;
+                xml = EncodeXml.Encrypt(xml1.ToString(), keyxml.ToString());
+            }
+
             MemoryStream outputMemStream = new MemoryStream();
             ZipOutputStream zipStream = new ZipOutputStream(outputMemStream);
             zipStream.SetLevel(3); //0-9, 9 being the highest level of compression
@@ -182,7 +198,9 @@ namespace Search_Invoice.Services
                 IsUnicodeText = true
             };
             zipStream.PutNextEntry(newEntry);
+            byte[] _keyxml = Encoding.UTF8.GetBytes(keyxml.ToString());
             byte[] bytes = Encoding.UTF8.GetBytes(xml);
+
             MemoryStream inStream = new MemoryStream(bytes);
             inStream.WriteTo(zipStream);
             inStream.Close();
@@ -203,6 +221,21 @@ namespace Search_Invoice.Services
                 zipStream.CloseEntry();
                 sw.Close();
             }
+
+
+            newEntry = new ZipEntry("key.txt")
+            {
+                DateTime = DateTime.Now,
+                IsUnicodeText = true
+            };
+            zipStream.PutNextEntry(newEntry);
+
+            inStream = new MemoryStream(_keyxml);
+            inStream.WriteTo(zipStream);
+            inStream.Close();
+            zipStream.CloseEntry();
+
+
             zipStream.IsStreamOwner = false;    // False stops the Close also Closing the underlying stream.
             zipStream.Close();          // Must finish the ZipOutputStream before using outputMemStream.
             outputMemStream.Position = 0;
