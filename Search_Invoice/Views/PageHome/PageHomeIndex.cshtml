@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
 }
 @using Search_Invoice.Models;
 @model Search_Invoice.Models.LoginViewModel
 @{
-    TracuuModels tracuu = @ViewBag.Tracuu;
+  TracuuModels tracuu = @ViewBag.Tracuu;
 }
 <style>
   .k-grid-content > table > tbody > tr {
@@ -284,42 +284,42 @@
     <div class="signup-form">
 
       @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "register-form", @id = "register-form" }))
-            {
-          <div style="color:red">
-            @Html.ValidationMessage("ErrorLogin")
-          </div>
-          @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      {
+        <div style="color:red">
+          @Html.ValidationMessage("ErrorLogin")
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-          @Html.AntiForgeryToken()
-          <div class="form-group">
-            @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
-          </div>
-          <div class="form-group">
-            @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
-          </div>
-          <div class="form-group">
-            @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
-          </div>
-          <div class="form-group">
-            @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
-          </div>
-          <div class="form-group">
-            @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
-          </div>
-          <div class="form-group">
-            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-          </div>
-          <!-- <div class="form-group">
-            <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-            <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-          </div> -->
-          @*<div class="checkboxx">
-              <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-              <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
-            </div>*@
-          <div class="form-group form-button">
-            <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
-          </div>
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+          @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+        </div>
+        <!-- <div class="form-group">
+          <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+          <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+        </div> -->
+        @*<div class="checkboxx">
+            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+            <label for="agree-term" class="label-agree-term"><span><span></span></span>Ghi nhớ tài khoản </label>
+          </div>*@
+        <div class="form-group form-button">
+          <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
+        </div>
       }
       @*<form method="POST" class="register-form" id="register-form">
           <div class="form-group">
@@ -363,22 +363,28 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-button">
-          <a href="#" class="btn" id="btn-download" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
-          <div class="dropdown-menu" aria-labelledby="btn-download">
-            <a class="dropdown-item" href="#" id="btn-download-pdf" onclick="PrintInvoicePDF()">In hóa đơn</a>
-            <a class="dropdown-item" href="#" id="btn-print-pdf" onclick="DownloadInvoicePDF()">Tải hóa đơn</a>
-          </div>
+        <div>
+          <span>
+            <a href="#" class="btn" id="btn-download" style="display: none; color: white; background-color: #DD3E07" title="Xem Hóa Đơn" data-toggle="dropdown"><i class="fa fa-file-pdf-o"></i> In Hóa Đơn</a>
+            <div class="dropdown-menu" role="menu" aria-labelledby="btn-download">
+              <a class="dropdown-item" href="#" id="btn-download-pdf" onclick="PrintInvoicePDF()">In hóa đơn</a>
+              <a class="dropdown-item" href="#" id="btn-print-pdf" onclick="DownloadInvoicePDF()">Tải hóa đơn</a>
+            </div>
+          </span>
 
-          <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color:#DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển Đổi</a>
+
+          <a href="#" class="btn" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" style="display: none; color: white; background-color: #DD3E07" title="Xem Hóa Đơn"><i class="fa fa-file-pdf-o"></i> In Chuyển Đổi</a>
           <a href="#" type="button" id="btn-dowd-zip" class="btn btn-info" style="display: none; color: white" onclick="ExportZipXML()" title="Tải XML"><i class="fas fa-download"></i> Tải XML</a>
           <a href="#" type="button" id="btn-buyer-sign" class="btn btn-success" style="display: none; color: white" onclick="buyerSignature()" title="Ký hóa đơn"><i class="fas fa-signature"></i> Ký hóa đơn</a>
 
-          <a href="#" class="btn" id="btn-download-html" style="display: none; color: #6B6B6B; background-color:#EFEFEF" title="Đọc Chữ Ký Số" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Đọc CKS</a>
-          <div class="dropdown-menu" aria-labelledby="btn-download-html">
-            <a class="dropdown-item" href="#" id="readSignatureSeller" onclick="readSignature('seller')">Người bán</a>
-            <a class="dropdown-item" href="#" id="readSignatureBuyer" onclick="readSignature('buyer')">Người mua</a>
-          </div>
+          <span>
+            <a href="#" class="btn read-cks" id="btn-download-html" style="display: none; color: #6B6B6B; background-color: #EFEFEF" title="Đọc Chữ Ký Số" data-toggle="dropdown"><i class="fas fa-download"></i> Đọc CKS</a>
+            <div class="dropdown-menu" role="menu" aria-labelledby="btn-download-html">
+              <a class="dropdown-item" href="#" id="readSignatureSeller" onclick="readSignature('seller')">Người bán</a>
+              <a class="dropdown-item" href="#" id="readSignatureBuyer" onclick="readSignature('buyer')">Người mua</a>
+            </div>
+          </span>
+
           <a target="_blank" href="http://installupdate.minvoice.vn/MinvoicePlugin/setup.exe" id="btn-plugin" type="button" class="btn btn-success" style="display: none; color: white" title="Tỉa Plugin ký hóa đơn"><i class="fas fa-signature"></i>Tải Plugin</a>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
@@ -724,7 +730,6 @@
       xhr.responseType = 'arraybuffer';
       xhr.send(model);
       xhr.onload = function () {
-        debugger;
         if (this.status === 200) {
           var filename = $("#fileName").val();
           var disposition = xhr.getResponseHeader('Content-Disposition');
@@ -830,7 +835,7 @@
               $('#tableInvoice').prop('hidden', false);
               $("#tableInvoice tbody>tr").remove();
 
-              for (var i = 0 ; i < result.data.length ; i++) {
+              for (var i = 0; i < result.data.length; i++) {
                 var tien = result.data[i].inv_TotalAmount == null ? result.data[i].sum_tien.toLocaleString() : result.data[i].inv_TotalAmount.toLocaleString();
                 $("#tableInvoice").find('tbody')
                   .append('<tr><td>' + result.data[i].mau_hd + '</td><td>' + result.data[i].inv_invoiceSeries + '</td><td>' + result.data[i].inv_invoiceNumber + '</td>' +
