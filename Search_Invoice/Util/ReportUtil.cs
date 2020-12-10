@@ -299,6 +299,43 @@ namespace Search_Invoice.Util
                 }
 
 
+
+                if (invoice.Trang_thai_hd == 3)
+                {
+                    string reportFileThayThe = "INCT_BBTT.repx";
+                    string sqlThayThe = "sproc_inct_hd_thaythe";
+                    string fileName = folder + $@"\{mst}_{reportFileThayThe}";
+
+                    if (!File.Exists(fileName))
+                    {
+                        fileName = folder + $"\\{reportFileThayThe}";
+                    }
+
+                    XtraReport rpBienBanThayThe = XtraReport.FromFile(fileName, true);
+                    rpBienBanThayThe.ScriptReferencesString = "AccountSignature.dll";
+                    rpBienBanThayThe.Name = "rpBienBanThayThe";
+                    rpBienBanThayThe.DisplayName = reportFileThayThe;
+                    Dictionary<string, string> pars = new Dictionary<string, string>
+                    {
+                        {"ma_dvcs", invoice.Ma_dvcs},
+                        {"document_id", invInvoiceAuthId.ToString() }
+                    };
+
+                    DataSet dsThayThe = invoiceContext.GetDataSet(sqlThayThe, pars);
+
+                    rpBienBanThayThe.DataSource = dsThayThe;
+                    rpBienBanThayThe.DataMember = dsThayThe.Tables[0].TableName;
+                    rpBienBanThayThe.CreateDocument();
+                    rpBienBanThayThe.PrintingSystem.ContinuousPageNumbering = false;
+                    report.PrintingSystem.ContinuousPageNumbering = false;
+                    report.Pages.AddRange(rpBienBanThayThe.Pages);
+
+                    int pageCount = report.Pages.Count;
+                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
+
+                }
+
+
                 if (invoice.Trang_thai_hd == 19 || invoice.Trang_thai_hd == 21 || invoice.Trang_thai_hd == 5)
                 {
                     string reportFile = invoice.Trang_thai_hd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
