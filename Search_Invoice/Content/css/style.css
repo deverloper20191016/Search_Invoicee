@@ -143,3 +143,15 @@ th {
 .lienhe .col-md-2 {
     margin-right: 40px;
 }
+
+@media only screen and (min-width: 950px) {
+        #fix-table 
+        {
+            position: inherit;
+            margin: -3%;
+            padding: 6%;
+            left: 0;
+            top: -6%;
+            display: grid;
+        }
+    }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace Search_Invoice.Services
 {
@@ -16,6 +17,7 @@ namespace Search_Invoice.Services
         JObject SearchInvoice(JObject data);
         JObject GetInfoLogin(string userName, string mst);
         JObject GetListInvoice(JObject data);
+        Task<JObject> GetThongBaoPH(JObject model);
         JObject GetListInvoiceType(JObject data);
         JObject Search(JObject data);
         JObject ShowCert(string id, string xml);

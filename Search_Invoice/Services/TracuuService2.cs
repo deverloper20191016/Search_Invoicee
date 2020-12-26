@@ -6,6 +6,7 @@ using DevExpress.XtraReports.UI;
 using HtmlAgilityPack;
 using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using Search_Invoice.DAL;
 using Search_Invoice.Data;
 using Search_Invoice.Data.Domain;
 using Search_Invoice.Util;
@@ -18,6 +19,8 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.Text;
@@ -1422,6 +1425,52 @@ namespace Search_Invoice.Services
                 throw new Exception(ex.Message);
             }
             return bytes;
+        }
+
+        public async Task<JObject> GetThongBaoPH(JObject model)
+        {
+
+            var rs = new JObject();
+            var urlGet = $@"http://admin.minvoice.vn/api/dmkh/getthongbaophathanhthue?model=";
+
+            var mst = model.ContainsKey("mst") ? model["mst"].ToString() : null;
+            var token = EncodeXml.Encrypt($"{mst}{DateTime.Now:yyyy-MM-dd}", CommonConstants.KeyMaHoa);
+            var UriGet = urlGet + mst;
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bear", token);
+            HttpResponseMessage result = await client.GetAsync(UriGet);
+            string response = await result.Content.ReadAsStringAsync();
+
+
+            var responseJObject = JObject.Parse(response);
+            if (responseJObject.ContainsKey("ok"))
+            {
+                var data = JArray.Parse(responseJObject["data"].ToString());
+                if (data.Any())
+                {
+                    var mauSo = model.ContainsKey("mau_so") ? model["mau_so"].ToString().Trim() : "";
+                    var kyHieu = model.ContainsKey("ky_hieu") ? model["ky_hieu"].ToString().Trim() : "";
+                    var filter = data.Where(x => x["formNo"].ToString().Equals(mauSo) && x["symbol"].ToString().Contains(kyHieu)).ToList();
+                    if (filter.Any())
+                    {
+                        rs.Add("ok", JArray.FromObject(filter));
+                        return rs;
+                    }
+                    rs.Add("error", "Không tìm thấy");
+                }
+                rs.Add("error", "Không tìm thấy");
+
+            }
+            else
+            {
+                rs.Add("error", responseJObject["error"].ToString());
+            }
+            return rs;
+
+          
+
+            throw new NotImplementedException();
         }
     }
 }

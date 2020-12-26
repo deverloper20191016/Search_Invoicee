@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Web.Http;
 using Search_Invoice.Authorization;
 using Search_Invoice.Data;
+using System.Threading.Tasks;
 
 namespace Search_Invoice.Controllers
 {
@@ -26,6 +27,15 @@ namespace Search_Invoice.Controllers
         public JObject GetInfoInvoice(JObject model)
         {
             JObject json = _tracuuService2.GetInfoInvoice(model);
+            return json;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Tracuu2/TraCuTBPH")]
+        public async Task<JObject> GetThongBaoPH(JObject model)
+        {
+            JObject json =await _tracuuService2.GetThongBaoPH(model);
             return json;
         }
 
