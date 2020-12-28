@@ -220,6 +220,13 @@ namespace Search_Invoice.Controllers
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 string masothue = model["masothue"].ToString();
+
+                var invoiceInfo = _tracuuService2.GetInfoInvoice(model);
+                if (invoiceInfo.ContainsKey("error"))
+                {
+                    return invoiceInfo;
+                }
+
                 TracuuHDDTContext tracuu = new TracuuHDDTContext();
                 var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
                     x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
@@ -235,6 +242,9 @@ namespace Search_Invoice.Controllers
                 string fileName;
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, type, false, out xml, out fileName);
                 string a = Convert.ToBase64String(bytes);
+
+               
+                result.Add("data", invoiceInfo);
                 result.Add("ok", a);
                 result.Add("ecd", xml);
                 result.Add("fileName", fileName);

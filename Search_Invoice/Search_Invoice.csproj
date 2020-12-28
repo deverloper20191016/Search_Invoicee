@@ -388,6 +388,7 @@
     <Content Include="Content\css\colors\purple.css" />
     <Content Include="Content\css\custom.css" />
     <Content Include="Content\css\icons\linea-icons\linea.css" />
+    <Content Include="Content\css\pagehomeindex.css" />
     <Content Include="Content\css\spinners.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\js\cbpFWTabs.js" />
@@ -1178,6 +1179,7 @@
     <Content Include="Scripts\knockout-3.4.0.js" />
     <Content Include="Scripts\knockout-kendo.min.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\minvoice.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

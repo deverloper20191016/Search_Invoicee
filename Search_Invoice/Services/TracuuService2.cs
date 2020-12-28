@@ -180,6 +180,8 @@ namespace Search_Invoice.Services
             string  xml = tblInvoiceXmlData.Rows[0]["data"].ToString();
             xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + xml;
 
+            bool checkMaHoaXml = false;
+
             DataTable CheckTable = _nopDbContext2.ExecuteCmd(checkTable, CommandType.Text, parameters);
    
             if (CheckTable.Rows.Count > 0)
@@ -188,6 +190,7 @@ namespace Search_Invoice.Services
                 if(mahoaxml.Rows.Count > 0)
                 {
                     xml = EncodeXml.Encrypt(xml.ToString(), keyxml.ToString());
+                    checkMaHoaXml = true;
                 }
 
             }
@@ -225,7 +228,7 @@ namespace Search_Invoice.Services
                 sw.Close();
             }
 
-            if (CheckTable.Rows.Count > 0)
+            if (CheckTable.Rows.Count > 0 && checkMaHoaXml)
             {
                 newEntry = new ZipEntry("key.txt")
                 {

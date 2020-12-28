@@ -12,6 +12,16 @@
     #nav_menu-2, .menu-gioi-thieu-footer-container > p {
         text-align: center
     }
+
+    .modal-content-invoice {
+        height: 500px;
+        margin-top: 18%;
+    }
+
+    .modal-body-invoice {
+        overflow: scroll;
+        height: 100%;
+    }
 }
 
 
