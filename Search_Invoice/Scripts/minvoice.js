@@ -22,6 +22,7 @@
         xhr.send(model);
         xhr.onload = function () {
             if (this.status === 200) {
+                debugger;
                 var filename = "";
                 var disposition = xhr.getResponseHeader('Content-Disposition');
                 if (disposition && disposition.indexOf('attachment') !== -1) {
@@ -68,6 +69,13 @@
                                     newWindow.location = downloadUrl;
                                 };
                             }
+                            bootbox.hideAll();
+                            clearTimeout(interVal);
+                            var newWindow = window.open('/');
+                            newWindow.onload = () => {
+                                newWindow.location = downloadUrl;
+                            };
+                        } else {
                             bootbox.hideAll();
                             clearTimeout(interVal);
                             var newWindow = window.open('/');
