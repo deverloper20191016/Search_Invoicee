@@ -371,7 +371,21 @@ function CreateTable() {
                             html += '<tr>';
                             $.each(value,
                                 function (index2, value2) {
-                                    html += '<td class = "fix-td">' + value2 + '</td>';
+                                    switch (index2) {
+                                        case 'dataUsingConvert':
+                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            break;
+                                        case 'dataUsing':
+                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            break;
+                                        case 'dateConvert':
+                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            break;
+                                        default:
+                                            html += '<td class = "fix-td">' + value2 + '</td>';
+                                            break;
+                                    }
+                                    //html += '<td class = "fix-td">' + value2 + '</td>';
                                 });
                             html += '<tr>';
                         });
@@ -652,7 +666,7 @@ function GetInfoByMaSoThue() {
                     var html = '<div class="fix-1">';
                     html += '<table class="table table-hover">';
                     html +=
-                        '<h1 style="text-align: center !important;"> Hoá đơn đã được Thông báo phát hành chi tiết như sau:</h1>';
+                        '<h1 style="text-align: center !important;"> Thông tin tra cứu khách hàng như sau:</h1>';
 
                     html += '<thead><tr>';
                     html += '<th>Tên khách hàng</th>';
