@@ -176,9 +176,7 @@ function buyerSignature() {
                     bootbox.alert({
                         message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
                         callback: function () {
-                            $("#myModal").removeClass("in");
-                            $(".modal-backdrop").remove();
-                            $("#myModal").hide();
+                            $('#myModal').modal('toggle');
                             bootbox.hideAll();
                         }
                     });
@@ -196,6 +194,8 @@ function buyerSignature() {
                         message: result
                     });
                 }
+
+               
             });
         }, 3000);
     }).fail(function () {
@@ -511,6 +511,7 @@ function setData(result) {
 }
 
 function displayInvoiceVer2(e) {
+    debugger;
     e.preventDefault();
     bootbox.dialog({
         title: "Đang tra cứu hóa đơn",
@@ -541,7 +542,7 @@ function displayInvoiceVer2(e) {
             success: function (result) {
                 if (!result.hasOwnProperty("error")) {
                     bootbox.hideAll();
-                    $("#myModal").modal();
+                    $("#myModal").modal('show');
                     var builder = '';
                     var blob = b64toBlob(result.ok, 'application/pdf');
                     var blobUrl = URL.createObjectURL(blob);
