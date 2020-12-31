@@ -667,7 +667,7 @@ function GetInfoByMaSoThue() {
                     var html = '<div class="fix-1">';
                     html += '<table class="table table-hover">';
                     html +=
-                        '<h1 style="text-align: center !important;"> Thông tin tra cứu khách hàng như sau:</h1>';
+                        '<h1 style="text-align: center !important;"> Thông tin tra cứu khách hàng</h1>';
 
                     html += '<thead><tr>';
                     html += '<th>Tên khách hàng</th>';
