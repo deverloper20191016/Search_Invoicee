@@ -731,13 +731,13 @@ a:active {
 	height:auto;
 }
 #single_primary {
-	width: 71%;
+	width: 100%;
 	float: left;
 }
 #secondary{
 	width: 25%;
 	float: right;
-   margin-right:29px;
+   /*margin-right:29px;*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;

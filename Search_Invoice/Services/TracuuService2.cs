@@ -113,7 +113,7 @@ namespace Search_Invoice.Services
                 foreach (DataRow row in dt.Rows)
                 {
                     row.BeginEdit();
-                    row["mst"] = mst;
+                    row["mst"] = model["masothue"].ToString();
                     row["inv_auth_id"] = b;
                     row["sum_tien"] = sumTien.Rows[0]["sum_total_amount"];
                     row.EndEdit();
@@ -1437,6 +1437,7 @@ namespace Search_Invoice.Services
             var urlGet = $@"http://admin.minvoice.vn/api/dmkh/getthongbaophathanhthue?model=";
 
             var mst = model.ContainsKey("mst") ? model["mst"].ToString() : null;
+            
             var token = EncodeXml.Encrypt($"{mst}{DateTime.Now:yyyy-MM-dd}", CommonConstants.KeyMaHoa);
             var UriGet = urlGet + mst;
             var client = new HttpClient();

@@ -147,7 +147,7 @@ function buyerSignature() {
     SignalrConnection = $.connection.invoiceHub;
 
     if (SignalrConnection == null) {
-        bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
+       alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
         return false;
     }
     $.connection.hub.start().done(function () {
@@ -156,7 +156,7 @@ function buyerSignature() {
         var a = $("#abcdefg").val();
         bootbox.dialog({
             title: "Đang ký hóa đơn",
-            message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
+            message: "<p class='text-center'><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Hủy',
@@ -173,12 +173,14 @@ function buyerSignature() {
             SignalrConnection.server.SignatureXML(mst, invInvoiceAuthId, atob(a)).done(function (result) {
                 console.log(result);
                 if (result === "") {
-                    bootbox.alert({
+                    alert({
                         message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
+                        className: "alertCss",
                         callback: function () {
                             $('#myModal').modal('toggle');
                             bootbox.hideAll();
                         }
+                       
                     });
                 }
                 else {
@@ -188,10 +190,11 @@ function buyerSignature() {
                     }
                     bootbox.hideAll();
                     clearTimeout(interVal);
-                    bootbox.alert({
+                    alert({
                         size: "small",
                         title: "Error",
-                        message: result
+                        message: result,
+                        className: "alertCss"
                     });
                 }
 
@@ -199,7 +202,7 @@ function buyerSignature() {
             });
         }, 3000);
     }).fail(function () {
-        bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
+        alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
     });
 };
 
@@ -394,15 +397,17 @@ function CreateTable() {
                     $('.content-notification').html('');
                     $('.content-notification').html(html);
                 } else {
-                    bootbox.alert(response.error);
+                    alert(response.error);
                 }
                 $('.fix-th').css({ 'text-align': 'center !important' });
                 $('.table-hover').css({ 'textbackground-color': 'antiquewhite !important' });
+                $('#exampleModal').css({ 'z-index': '1000000' });
 
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 bootbox.hideAll();
-                bootbox.alert("Không tìm thấy thông tin thông báo phát hành");
+                alert("Không tìm thấy thông tin thông báo phát hành");
+                
             }
         });
     }, 1000);
@@ -511,7 +516,7 @@ function setData(result) {
 }
 
 function displayInvoiceVer2(e) {
-    debugger;
+    $("#hs-masthead").hide();
     e.preventDefault();
     bootbox.dialog({
         title: "Đang tra cứu hóa đơn",
@@ -555,6 +560,10 @@ function displayInvoiceVer2(e) {
                     $("#sobaomat_html").val(model.sobaomat);
                     setData(result);
                     $("#fix-table").show();
+                    $('#hs-masthead').css({ 'display': 'none' });
+                    //$('html, body').css('overflow', 'scroll'); 
+                    
+                    
                 }
                 else {
                     bootbox.hideAll();
@@ -684,8 +693,11 @@ function GetInfoByMaSoThue() {
                     html += ' </table></div>';
                     $('.content-notification').html('');
                     $('.content-notification').html(html);
+                    $('#exampleModal').css({ 'z-index': '1000000' });
+
                 } else {
                     bootbox.alert(response.error);
+                    $('#exampleModal').css({ 'z-index': '1000000' });
                 }
             },
             error: function (jqXhr, textStatus, errorThrown) {
