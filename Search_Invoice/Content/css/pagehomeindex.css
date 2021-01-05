@@ -52,7 +52,7 @@
 }
 
 .show {
-    display: contents;
+    display: block;
 }
 
 #sohoadon_view {

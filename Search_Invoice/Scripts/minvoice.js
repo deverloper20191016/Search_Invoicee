@@ -175,10 +175,8 @@ function buyerSignature() {
                     bootbox.alert({
                         message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
                         callback: function () {
-                            $("#myModal").removeClass("in");
-                            $(".modal-backdrop").remove();
-                            $("#myModal").hide();
                             bootbox.hideAll();
+                            $("#myModal").modal("toggle");
                         }
                     });
                 }
