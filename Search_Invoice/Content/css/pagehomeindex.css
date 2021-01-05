@@ -79,7 +79,6 @@
     text-align: center;
     font-weight: bold;
     font-size: 17px;
-    z-index:10000000000;
 }
 
 .action-other a {
@@ -91,8 +90,9 @@
     font-size: 17px;
     font-family: 'Roboto',serif;
 }
-.fix-table{
-    border:hidden !important;
+
+.fix-table {
+    border: hidden !important;
 }
 
 .buyer-sign-invoice {
@@ -101,8 +101,16 @@
 }
 
 .modal-dialog {
-    /*padding-top: 6%*/
+    padding-top: 6%
 }
+
+    .modal-dialog .modal-invoice {
+        padding-top: 0%
+    }
+
 #fix-table {
-   
+}
+
+.text-loading p {
+    text-align: center;
 }

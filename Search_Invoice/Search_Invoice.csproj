@@ -899,6 +899,7 @@
     <Content Include="Scripts\app.js" />
     <Content Include="Scripts\autoNumeric-min.js" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-modal.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config" />

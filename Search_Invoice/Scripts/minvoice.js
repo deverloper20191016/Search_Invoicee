@@ -22,7 +22,6 @@
         xhr.send(model);
         xhr.onload = function () {
             if (this.status === 200) {
-                debugger;
                 var filename = "";
                 var disposition = xhr.getResponseHeader('Content-Disposition');
                 if (disposition && disposition.indexOf('attachment') !== -1) {
@@ -401,7 +400,6 @@ function CreateTable() {
                 }
                 $('.fix-th').css({ 'text-align': 'center !important' });
                 $('.table-hover').css({ 'textbackground-color': 'antiquewhite !important' });
-                $('#exampleModal').css({ 'z-index': '1000000' });
 
             },
             error: function (jqXhr, textStatus, errorThrown) {
@@ -516,7 +514,6 @@ function setData(result) {
 }
 
 function displayInvoiceVer2(e) {
-    $("#hs-masthead").hide();
     e.preventDefault();
     bootbox.dialog({
         title: "Đang tra cứu hóa đơn",
@@ -546,6 +543,7 @@ function displayInvoiceVer2(e) {
             data: dataObject,
             success: function (result) {
                 if (!result.hasOwnProperty("error")) {
+                    $("#hs-masthead").hide();
                     bootbox.hideAll();
                     $("#myModal").modal('show');
                     var builder = '';
@@ -554,16 +552,9 @@ function displayInvoiceVer2(e) {
                     builder += '<iframe class="responsive-iframe" src="' + blobUrl + '" frameborder="0" height="700px" width="100%"></iframe>';
                     $("#htm-content").html('');
                     $("#htm-content").append(builder);
-                    $("#htm-content").show();
-                    $("#title-load").hide();
                     $("#mst_html").val(model.masothue);
                     $("#sobaomat_html").val(model.sobaomat);
                     setData(result);
-                    $("#fix-table").show();
-                    $('#hs-masthead').css({ 'display': 'none' });
-                    //$('html, body').css('overflow', 'scroll'); 
-                    
-                    
                 }
                 else {
                     bootbox.hideAll();
@@ -693,11 +684,9 @@ function GetInfoByMaSoThue() {
                     html += ' </table></div>';
                     $('.content-notification').html('');
                     $('.content-notification').html(html);
-                    $('#exampleModal').css({ 'z-index': '1000000' });
 
                 } else {
                     bootbox.alert(response.error);
-                    $('#exampleModal').css({ 'z-index': '1000000' });
                 }
             },
             error: function (jqXhr, textStatus, errorThrown) {
