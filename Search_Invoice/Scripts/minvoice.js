@@ -146,7 +146,7 @@ function buyerSignature() {
     SignalrConnection = $.connection.invoiceHub;
 
     if (SignalrConnection == null) {
-       alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
+        bootbox.alert("Chưa bật plugin ký. Vui lòng kiểm tra (hoặc nhấn nút Tải Plugin). Tải lại trang web để thực hiện chức năng");
         return false;
     }
     $.connection.hub.start().done(function () {
@@ -155,7 +155,7 @@ function buyerSignature() {
         var a = $("#abcdefg").val();
         bootbox.dialog({
             title: "Đang ký hóa đơn",
-            message: "<p class='text-center'><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
+            message: "<p class='text-center' ><i style='font-size:350%;' class='fa fa-spin fa-spinner'></i></p>",
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Hủy',
@@ -172,14 +172,14 @@ function buyerSignature() {
             SignalrConnection.server.SignatureXML(mst, invInvoiceAuthId, atob(a)).done(function (result) {
                 console.log(result);
                 if (result === "") {
-                    alert({
+                    bootbox.alert({
                         message: "Ký hóa đơn thành công. Vui lòng nhấn xem lại hóa đơn",
-                        className: "alertCss",
                         callback: function () {
-                            $('#myModal').modal('toggle');
+                            $("#myModal").removeClass("in");
+                            $(".modal-backdrop").remove();
+                            $("#myModal").hide();
                             bootbox.hideAll();
                         }
-                       
                     });
                 }
                 else {
@@ -189,19 +189,16 @@ function buyerSignature() {
                     }
                     bootbox.hideAll();
                     clearTimeout(interVal);
-                    alert({
+                    bootbox.alert({
                         size: "small",
                         title: "Error",
-                        message: result,
-                        className: "alertCss"
+                        message: result
                     });
                 }
-
-               
             });
         }, 3000);
     }).fail(function () {
-        alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
+        bootbox.alert("Kết nối Plugin ký thất bại. Vui lòng kiểm tra lại");
     });
 };
 
@@ -375,13 +372,13 @@ function CreateTable() {
                                 function (index2, value2) {
                                     switch (index2) {
                                         case 'dataUsingConvert':
-                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            html += '<td class = "fix-td">' + moment(value2).format('DD/MM/YYYY') + '</td>';
                                             break;
                                         case 'dataUsing':
-                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            html += '<td class = "fix-td">' + moment(value2).format('DD/MM/YYYY') + '</td>';
                                             break;
                                         case 'dateConvert':
-                                            html += '<td class = "fix-td">' + moment(value2).format('L') + '</td>';
+                                            html += '<td class = "fix-td">' + moment(value2).format('DD/MM/YYYY') + '</td>';
                                             break;
                                         default:
                                             html += '<td class = "fix-td">' + value2 + '</td>';

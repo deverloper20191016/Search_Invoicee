@@ -100,7 +100,7 @@ namespace Search_Invoice.Services
                 }
                 if (dt.Rows.Count == 0)
                 {
-                    json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat}");
+                    json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat} tại mã số thuế: {mst}");
                     return json;
                 }
                 dt.Columns.Add("mst", typeof(string));
@@ -452,7 +452,7 @@ namespace Search_Invoice.Services
                 if (string.IsNullOrEmpty(mst))
                 {
                     result.Add("status_code", 400);
-                    result.Add("error", "Vui lòng nhập mã số thuế");
+                    result.Add("error", "Vui lòng nhập Mã số thuế đơn vị bán");
                     return result;
                 }
                 string userName = data.ContainsKey("user_name") ? data["user_name"].ToString() : "";
