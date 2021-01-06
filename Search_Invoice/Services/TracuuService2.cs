@@ -100,8 +100,25 @@ namespace Search_Invoice.Services
                 }
                 if (dt.Rows.Count == 0)
                 {
-                    json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat} tại mã số thuế: {mst}");
-                    return json;
+                    if (string.IsNullOrEmpty(mst))
+                    {
+                        json.Add("error", "Vui lòng nhập Mã số thuế đơn vị bán");
+                        return json;
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(sobaomat))
+                        {
+                            json.Add("error", "Vui lòng nhập Số bảo mật");
+                            return json;
+                        }
+                        else
+                        {
+                            json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat} tại mã số thuế: {mst}");
+                            return json;
+                        }
+                    }
+                    
                 }
                 dt.Columns.Add("mst", typeof(string));
                 dt.Columns.Add("inv_auth_id", typeof(string));
@@ -1436,7 +1453,24 @@ namespace Search_Invoice.Services
             var rs = new JObject();
             var urlGet = $@"http://admin.minvoice.vn/api/dmkh/getthongbaophathanhthue?model=";
 
-            var mst = model.ContainsKey("mst") ? model["mst"].ToString() : null;
+            var getmst = model.ContainsKey("mst") ? model["mst"].ToString() : null;
+            var mst = "";
+            if(getmst.Length > 10)
+            {
+                if (getmst.Contains("-"))
+                {
+                    mst = getmst;
+                }
+                else
+                {
+                    mst = getmst.Substring(0, 10) + '-' + getmst.Substring(getmst.Length - 3, 3);
+                }
+            } 
+            else
+            {
+                mst = getmst;
+            }
+            
             
             var token = EncodeXml.Encrypt($"{mst}{DateTime.Now:yyyy-MM-dd}", CommonConstants.KeyMaHoa);
             var UriGet = urlGet + mst;
@@ -1471,8 +1505,6 @@ namespace Search_Invoice.Services
                 rs.Add("error", responseJObject["error"].ToString());
             }
             return rs;
-
-          
 
             throw new NotImplementedException();
         }
