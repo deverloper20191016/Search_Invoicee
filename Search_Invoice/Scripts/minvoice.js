@@ -477,6 +477,7 @@ function displayInvoice(sobaomat, mst, auth, abc) {
                 $("#MaSoThue_view").html($("#MaSoThue").val());
                 $("#KyHieu_view").html($("#KyHieu").val());
                 $("#MauSo_view").html($("#MauSo").val());
+                $("#ngayhd_view").html($("#ngayhd").val());
             } else {
                 $("#htm-content").html(response.error);
                 $("#btn-buyer-sign").hide();
@@ -493,6 +494,8 @@ function displayInvoice(sobaomat, mst, auth, abc) {
 };
 
 function setData(result) {
+    $("#KyHieu_view").html(result.data["data"][0].inv_invoiceSeries.trim());
+    $("#MauSo_view").html(result.data["data"][0].mau_hd);
     $("#sohoadon_view").html(result.data["data"][0].inv_invoiceNumber);
     $("#tientrcthue_view").html(result.data["data"][0].inv_TotalAmountWithoutVat.toLocaleString());
     $("#tienthue_view").html(result.data["data"][0].inv_vatAmount.toLocaleString());
@@ -501,7 +504,8 @@ function setData(result) {
     $("#KyHieu").val(result.data["data"][0].inv_invoiceSeries.trim());
     $("#MauSo").val(result.data["data"][0].mau_hd);
     $("#MaSoThueNguoiMua").val(result.data["data"][0].inv_buyerTaxCode);
-
+    $("#ngayhd_view").html(moment(result.data["data"][0].inv_invoiceIssuedDate).format('DD/MM/YYYY'));
+    //$("#ngayhd").val(result.data["data"][0].inv_invoiceIssuedDate);
     $("#invoiceauth").val(result.data["data"][0].inv_InvoiceAuth_id.trim());
     $("#ecd").val(result.ecd);
     $("#fileName").val(result.fileName);
@@ -559,6 +563,7 @@ function displayInvoiceVer2(e) {
             }
         });
     }, 1000);
+
 };
 
 function loadData() {
@@ -599,6 +604,7 @@ function loadData() {
                         $("#MaSoThue").val(result.data[i].mst);
                         $("#KyHieu").val(result.data[i].inv_invoiceSeries);
                         $("#MauSo").val(result.data[i].mau_hd);
+                        $("#ngayhd").val(result.data[i].inv_invoiceIssuedDate);
 
                         var tien = result.data[i].inv_TotalAmount == null ? result.data[i].sum_tien.toLocaleString() : result.data[i].inv_TotalAmount.toLocaleString();
                         $("#tableInvoice").find('tbody')
@@ -798,7 +804,7 @@ $(document).ready(function () {
                         bootbox.hideAll();
                     }
                 }
-            };
+            }; 
         }, 1000);
     });
 
