@@ -247,7 +247,7 @@ namespace Search_Invoice.Controllers
                 result.Add("data", invoiceInfo);
                 result.Add("ok", a);
                 result.Add("ecd", xml);
-                result.Add("fileName", fileName);
+                result.Add("fileName", fileName.Replace("-", ""));
             }
             catch (Exception ex)
             {

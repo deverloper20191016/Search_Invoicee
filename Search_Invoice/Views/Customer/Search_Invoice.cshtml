@@ -105,6 +105,7 @@
           <div id="sobaomat_html" hidden></div>
           <div id="invoiceauth" hidden></div>
           <div id="abcdefg" hidden></div>
+          <div id="fileName" hidden></div>
           <div id="ecd" hidden></div>
           <div id="htm-content" class="text-center">
 
@@ -261,31 +262,16 @@
               var URL = window.URL || window.webkitURL;
               var downloadUrl = URL.createObjectURL(blob);
 
-              if (filename) {
-                var a = document.createElement("a");
-                if (typeof a.download === 'undefined') {
-                  bootbox.hideAll();
-                  clearTimeout(interVal);
-                  var newWindow = window.open('/');
-                  newWindow.onload = () => {
-                    newWindow.location = downloadUrl;
-                  };
-                } else {
-                  bootbox.hideAll();
-                  clearTimeout(interVal);
-                  var newWindow = window.open('/');
-                  newWindow.onload = () => {
-                    newWindow.location = downloadUrl;
-                  };
-                }
-              } else {
-                bootbox.hideAll();
-                clearTimeout(interVal);
-                var newWindow = window.open('/');
-                newWindow.onload = () => {
-                  newWindow.location = downloadUrl;
-                };
-              }
+              var a = document.createElement("a");
+              filename = $("#fileName").val();
+              document.body.appendChild(a);
+              a.href = downloadUrl;
+              a.download = filename;
+              a.click();
+              window.URL.revokeObjectURL(downloadUrl);
+              document.body.removeChild(a);
+              bootbox.hideAll();
+           
             }
           } else {
             bootbox.hideAll();
@@ -538,6 +524,7 @@
             $("#sobaomat_html").val(sobaomat);
             $("#invoiceauth").val(auth);
             $("#ecd").val(response.ecd);
+            $("#fileName").val(response.fileName);
             $("#abcdefg").val(abc);
             $("#btn-buyer-sign").show();
             $("#btn-download-html").show();
