@@ -497,9 +497,29 @@ function setData(result) {
     $("#KyHieu_view").html(result.data["data"][0].inv_invoiceSeries.trim());
     $("#MauSo_view").html(result.data["data"][0].mau_hd);
     $("#sohoadon_view").html(result.data["data"][0].inv_invoiceNumber);
-    $("#tientrcthue_view").html(result.data["data"][0].inv_TotalAmountWithoutVat.toLocaleString());
-    $("#tienthue_view").html(result.data["data"][0].inv_vatAmount.toLocaleString());
-    $("#tongtien_view").html(result.data["data"][0].inv_TotalAmount.toLocaleString());
+
+    if (result.data["data"][0].inv_TotalAmountWithoutVat > 0) {
+        $("#tientrcthue_view").html(result.data["data"][0].inv_TotalAmountWithoutVat.toLocaleString());
+    } else {
+        $("#tientrcthue_view").html(result.data["data"][0].inv_TotalAmountWithoutVat);
+    }
+
+    if (result.data["data"][0].inv_vatAmount > 0) {
+        $("#tienthue_view").html(result.data["data"][0].inv_vatAmount.toLocaleString());
+    } else {
+        $("#tienthue_view").html(result.data["data"][0].inv_vatAmount);
+    }
+
+    if (result.data["data"][0].inv_TotalAmount > 0) {
+        $("#tongtien_view").html(result.data["data"][0].inv_TotalAmount.toLocaleString());
+    } else {
+        if (result.data["data"][0].sum_tien > 0) {
+            $("#tongtien_view").html(result.data["data"][0].sum_tien.toLocaleString());
+        } else {
+            $("#tongtien_view").html(result.data["data"][0].sum_tien);
+        } 
+    }
+
     $("#MaSoThue").val(result.data["data"][0].mst);
     $("#KyHieu").val(result.data["data"][0].inv_invoiceSeries.trim());
     $("#MauSo").val(result.data["data"][0].mau_hd);

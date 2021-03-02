@@ -45,13 +45,13 @@
                                     <div class="control-group">
                                         <label class="control-label" for="basicinput"><b>Mã số thuế đơn vị bán</b><b style="color: red"> (*)</b></label>
                                         <div class="controls">
-                                            <input id="txtMST" name="masothue" value="@tracuu.mst" type="text" class="form-control input-lg" placeholder="Nhập mã số thuế ..." value="01060264958888">
+                                            <input id="txtMST" name="masothue" value="@tracuu.mst" type="text" class="form-control input-lg" placeholder="Nhập mã số thuế ...">
                                         </div>
                                     </div>
                                     <div class="control-group">
                                         <label class="control-label" for="basicinput"><b>Số bảo mật</b><b style="color: red"> (*)</b></label>
                                         <div class="controls">
-                                            <input id="txtSobaomat" name="sobaomat" value="@tracuu.sobaomat" type="text" class="form-control input-lg" placeholder="Nhập số bảo mật ..." value="08A3D5EBA26ADE0C">
+                                            <input id="txtSobaomat" name="sobaomat" value="@tracuu.sobaomat" type="text" class="form-control input-lg" placeholder="Nhập số bảo mật ...">
                                         </div>
                                     </div>
                                 </form>
@@ -351,7 +351,9 @@
         var code = e.keyCode || e.which;
         if (code == 27) {
             bootbox.hideAll();
-            $("#myModal").modal("toggle");
+            //$("#myModal").modal("toggle");
+            $('#myModal').modal("hide");
+            $('#myModal').removeData('bs.modal');
         }
     });
 </script>
