@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using Search_Invoice.Services;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -36,7 +35,7 @@ namespace Search_Invoice.Controllers
         [Route("Tracuu2/TraCuTBPH")]
         public async Task<JObject> GetThongBaoPH(JObject model)
         {
-            JObject json =await _tracuuService2.GetThongBaoPH(model);
+            JObject json = await _tracuuService2.GetThongBaoPH(model);
             return json;
         }
 
@@ -50,18 +49,25 @@ namespace Search_Invoice.Controllers
             {
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
                 bool inchuyendoi = model.ContainsKey("inchuyendoi");
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                }
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
                 string fileName;
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, type, inchuyendoi, out fileName);
-                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
                 if (type == "PDF")
                 {
                     result.Content.Headers.ContentDisposition =
-                        new ContentDispositionHeaderValue("inline") {FileName = fileName };
+                        new ContentDispositionHeaderValue("inline") { FileName = fileName };
                     result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
                 }
                 else if (type == "Html")
@@ -90,15 +96,22 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
-                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";               
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                }
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
                 string fileName = "";
                 string key = "";
                 byte[] bytes = _tracuuService2.ExportZipFileXml(sobaomat, masothue, folder, ref fileName, ref key);
-                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
                 result.Content.Headers.ContentDisposition.FileName = fileName + ".zip";
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/zip");
@@ -106,7 +119,7 @@ namespace Search_Invoice.Controllers
             }
             catch (Exception ex)
             {
-                result = new HttpResponseMessage(HttpStatusCode.BadRequest) {Content = new StringContent(ex.Message)};
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message) };
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
                 result.Content.Headers.ContentLength = ex.Message.Length;
             }
@@ -122,7 +135,7 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
@@ -130,7 +143,7 @@ namespace Search_Invoice.Controllers
                 string fileName = "";
                 string key = "";
                 byte[] bytes = _tracuuService2.ExportZipFileXml(sobaomat, masothue, folder, ref fileName, ref key);
-                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
                 result.Content.Headers.ContentDisposition.FileName = fileName + ".zip";
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -138,7 +151,7 @@ namespace Search_Invoice.Controllers
             }
             catch (Exception ex)
             {
-                result = new HttpResponseMessage(HttpStatusCode.BadRequest) {Content = new StringContent(ex.Message)};
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message) };
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
                 result.Content.Headers.ContentLength = ex.Message.Length;
             }
@@ -154,14 +167,14 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
                 string fileName = "";
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, "pdf", out fileName);
-                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach");
                 result.Content.Headers.ContentDisposition.FileName = fileName + ".pdf";
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
@@ -169,7 +182,7 @@ namespace Search_Invoice.Controllers
             }
             catch (Exception ex)
             {
-                result = new HttpResponseMessage(HttpStatusCode.BadRequest) {Content = new StringContent(ex.Message)};
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message) };
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
                 result.Content.Headers.ContentLength = ex.Message.Length;
             }
@@ -206,7 +219,7 @@ namespace Search_Invoice.Controllers
             {
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
 
                 var invoiceInfo = _tracuuService2.GetInfoInvoice(model);
                 if (invoiceInfo.ContainsKey("error"))
@@ -214,7 +227,14 @@ namespace Search_Invoice.Controllers
                     return invoiceInfo;
                 }
 
-               
+                TracuuHDDTContext tracuu = new TracuuHDDTContext();
+                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
+                    x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
+                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
+                {
+                    result.Add("error", $"Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
+                    return result;
+                }
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
@@ -223,7 +243,7 @@ namespace Search_Invoice.Controllers
                 byte[] bytes = _tracuuService2.PrintInvoiceFromSbm(sobaomat, masothue, folder, type, false, out xml, out fileName);
                 string a = Convert.ToBase64String(bytes);
 
-               
+
                 result.Add("data", invoiceInfo);
                 result.Add("ok", a);
                 result.Add("ecd", xml);
@@ -245,10 +265,10 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
+                string masothue = model["masothue"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
                 byte[] bytes = _tracuuService2.GetInvoiceXml(sobaomat, masothue);
-                result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};
+                result = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attach")
                 {
                     FileName = "invoice.xml"
@@ -258,7 +278,7 @@ namespace Search_Invoice.Controllers
             }
             catch (Exception ex)
             {
-                result = new HttpResponseMessage(HttpStatusCode.BadRequest) {Content = new StringContent(ex.Message)};
+                result = new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent(ex.Message) };
                 result.Content.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
                 result.Content.Headers.ContentLength = ex.Message.Length;
             }
@@ -275,7 +295,7 @@ namespace Search_Invoice.Controllers
             string mst;
             string maDt;
             var claimsIdentity = RequestContext.Principal.Identity as ClaimsIdentity;
-            if (claimsIdentity != null) 
+            if (claimsIdentity != null)
             {
                 var listClaim = claimsIdentity.Claims.ToList();
                 userName = listClaim.FirstOrDefault(x => x.Type == "username")?.Value;
@@ -332,7 +352,7 @@ namespace Search_Invoice.Controllers
                 mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
                 if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
                 {
-                    var json = new JObject {{"error", "Vui lòng đăng nhập để tiếp tục"}};
+                    var json = new JObject { { "error", "Vui lòng đăng nhập để tiếp tục" } };
                     return json;
                 }
                 model.Add("user_name", userName);
@@ -357,7 +377,7 @@ namespace Search_Invoice.Controllers
                 mst = listClaim.FirstOrDefault(x => x.Type == "mst")?.Value;
                 if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(mst))
                 {
-                    var json = new JObject {{"error", "Vui lòng đăng nhập để tiếp tục"}};
+                    var json = new JObject { { "error", "Vui lòng đăng nhập để tiếp tục" } };
                     return json;
                 }
                 model.Add("user_name", userName);

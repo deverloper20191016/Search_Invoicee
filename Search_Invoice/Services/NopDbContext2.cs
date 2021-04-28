@@ -21,7 +21,17 @@ namespace Search_Invoice.Services
         /// <param name="mst"></param>
         public void SetConnect(string mst)
         {
-            _invoiceDbContext = new InvoiceDbContext(ConfigurationManager.ConnectionStrings["InvoiceConnectionString"].ConnectionString);
+            mst = mst.Replace("-", "");
+            TracuuHDDTContext tracuu = new TracuuHDDTContext();
+            var invAdmin = tracuu.Inv_admin.FirstOrDefault(c => c.MST.Replace("-", "") == mst || c.alias == mst);
+            if (invAdmin == null)
+            {
+                throw new Exception("Không tồn tại " + mst + " trên hệ thống của M-Invoice !");
+            }
+            else
+            {
+                _invoiceDbContext = invAdmin.ConnectString.StartsWith("Data Source") ? new InvoiceDbContext(invAdmin.ConnectString) : new InvoiceDbContext(EncodeXml.Decrypt(invAdmin.ConnectString, "NAMPV18081202"));
+            }
         }
         public DataTable GetAllColumnsOfTable(string tableName)
         {

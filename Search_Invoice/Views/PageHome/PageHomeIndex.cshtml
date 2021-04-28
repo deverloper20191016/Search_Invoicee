@@ -1,168 +1,218 @@
 ﻿@{
-    ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
+  ViewBag.Title = "Index";
+  Layout = "~/Views/Shared/_PageHomeLayout.cshtml";
 }
 @using Search_Invoice.Models;
 @model LoginViewModel
 @{
-    TracuuModels tracuu = new TracuuModels();
+  TracuuModels tracuu = new TracuuModels();
 
-    if (ViewBag.Tracuu != null)
-    {
-        tracuu = @ViewBag.Tracuu;
-    }
+  if (ViewBag.Tracuu != null)
+  {
+    tracuu = @ViewBag.Tracuu;
+  }
 
 
 }
 
 @section stylecustome
 {
-    <link href="~/Content/css/pagehomeindex.css" rel="stylesheet" />
+  <link href="~/Content/css/pagehomeindex.css" rel="stylesheet" />
 }
 
-<main id="main" class="site-main" role="main">
-    <article id="post-2076" class="post-detail post-2076 post type-post status-publish format-standard has-post-thumbnail hentry category-khao-sat-y-kien">
-        <h1 class="hs-post-detail-title">TRA CỨU HÓA ĐƠN ĐIỆN TỬ M-INVOICE</h1>
-        <div class="check">
-            <label class="abc">
-                Theo mã tra cứu hóa đơn
-                <input type="radio" checked="checked" name="radio" value="ckd1">
-                <span class="checkmark"></span>
-            </label>
-            <label class="abc">
-                Từ file hóa đơn
-                <input type="radio" name="radio" value="ckd2">
-                <span class="checkmark"></span>
-            </label>
+<main id="main" class="site-main col-lg-8" role="main">
+  <article id="post-2076" class="post-detail post-2076 post type-post status-publish format-standard has-post-thumbnail hentry category-khao-sat-y-kien">
+    <h1 class="hs-post-detail-title">TRA CỨU HÓA ĐƠN ĐIỆN TỬ M-INVOICE</h1>
+    <div class="check">
+      <label class="abc">
+        Theo mã tra cứu hóa đơn
+        <input type="radio" checked="checked" name="radio" value="ckd1">
+        <span class="checkmark"></span>
+      </label>
+      <label class="abc">
+        Từ file hóa đơn
+        <input type="radio" name="radio" value="ckd2">
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="entry-content">
+      <div class="module form-group">
+        <div id="divSearchMain">
+          <div class="col-md-9">
+            <div class="module-body" align="left">
+              <div class="form-horizontal row-fluid">
+                <form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
+                  <div class="control-group">
+                    <label class="control-label" for="basicinput"><b>Mã số thuế đơn vị bán</b><b style="color: red"> (*)</b></label>
+                    <div class="controls">
+                      <input id="txtMST" name="masothue" value="@tracuu.mst" type="text" class="form-control input-lg" placeholder="Nhập mã số thuế ...">
+                    </div>
+                  </div>
+                  <div class="control-group">
+                    <label class="control-label" for="basicinput"><b>Số bảo mật</b><b style="color: red"> (*)</b></label>
+                    <div class="controls">
+                      <input id="txtSobaomat" name="sobaomat" value="@tracuu.sobaomat" type="text" class="form-control input-lg" placeholder="Nhập số bảo mật ...">
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row no-line">
+            <div class="col-sm-12">
+              <button class="btn btn-success tracuu1" id="btnInvoice">
+                <span class="glyphicon glyphicon-search"></span><i class="fas fa-search"></i> Tra
+                cứu hóa đơn
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="entry-content">
-            <div class="module form-group">
-                <div id="divSearchMain">
-                    <div class="col-md-6">
-                        <div class="module-body" align="left">
-                            <div class="form-horizontal row-fluid">
-                                <form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
-                                    <div class="control-group">
-                                        <label class="control-label" for="basicinput"><b>Số bảo mật</b><b style="color: red"> (*)</b></label>
-                                        <div class="controls">
-                                            <input id="txtSobaomat" name="sobaomat" value="@tracuu.sobaomat" type="text" class="form-control input-lg" placeholder="Nhập số bảo mật ...">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
+        <!-- form theo file-->
+        <div id="divSearchByFile" style="display: none">
+          <div class="col-md-8">
+            <div class="module-body" align="left">
+              <div class="form-horizontal row-fluid">
+                <form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
+                  <div class="control-group">
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="input-file-now" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" id="file-input-name">Choose file *.ZIP</label>
+                      </div>
                     </div>
-                    <div class="form-group row no-line">
-                        <div class="col-sm-12">
-                            <button class="btn btn-success tracuu1" id="btnInvoice">
-                                <span class="glyphicon glyphicon-search"></span><i class="fas fa-search"></i> Tra
-                                cứu hóa đơn
-                            </button>
-                        </div>
-                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row no-line">
+            <div class="col-md-6 tracuuxml">
+              <div class="col-md-3">
+                <button class="btn btn-success tracuu1" id="btnUpFile">
+                  <span class="glyphicon glyphicon-search"></span><i class="fas fa-search"></i>
+                  Xem hóa đơn
+                </button>
+              </div>
+              <div class="col-md-3">
+                <button class="btn btn-primary" id="btnVeryXml" onclick="veryfyXml()">
+                  <span class="glyphicon glyphicon-search"></span>Kiểm tra file Hóa đơn
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section id="home-services">
+        <div class="wrapper">
+          <div class="inner">
+            <div class="grid-uniform md-mg-left-10">
+              <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
+                   data-wow-delay="0.2s"
+                   data-wow-duration="0.75s">
+                <div class="hservice-item text-center">
+                  <div class="hservice-img">
+                    <img width="80" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/24h.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+                  </div>
+                  <div class="hservice-title">
+                    <a href="#">TƯ VẤN - HỖ TRỢ</a>
+                  </div>
+                  <div class="hservice-desc">
+                    <p><i class="fas fa-check"></i>Hỗ trợ thông báo phát hành hóa đơn</p>
+                    <p><i class="fas fa-check"></i>Tư vấn nghiệp vụ hóa đơn trong quá trình sử dụng</p>
+                    <p><i class="fas fa-check"></i>Giải quyết vướng mắc của khách hàng trong vòng 02 giờ</p>
+                  </div>
                 </div>
+              </div>
 
-                <!-- form theo file-->
-                <div id="divSearchByFile" style="display: none">
-                    <div class="col-md-8">
-                        <div class="module-body" align="left">
-                            <div class="form-horizontal row-fluid">
-                                <form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
-                                    <div class="control-group">
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="input-file-now" aria-describedby="inputGroupFileAddon01">
-                                                <label class="custom-file-label" id="file-input-name">Choose file *.ZIP</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row no-line">
-                        <div class="col-md-6 tracuuxml">
-                            <div class="col-md-3">
-                                <button class="btn btn-success tracuu1" id="btnUpFile">
-                                    <span class="glyphicon glyphicon-search"></span><i class="fas fa-search"></i>
-                                    Xem hóa đơn
-                                </button>
-                            </div>
-                            <div class="col-md-3">
-                                <button class="btn btn-primary" id="btnVeryXml" onclick="veryfyXml()">
-                                    <span class="glyphicon glyphicon-search"></span>Kiểm tra file Hóa đơn
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+              <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
+                   data-wow-delay="0.4s"
+                   data-wow-duration="0.75s">
+                <div class="hservice-item text-center">
+                  <div class="hservice-img">
+                    <img width="88" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/tietkiem.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+                  </div>
+                  <div class="hservice-title">
+                    <a href="#">TIẾT KIỆM - HIỆU QUẢ</a>
+                  </div>
+                  <div class="hservice-desc">
+                    <p><i class="fas fa-check"></i>Chi phí hợp lý nhiều tính năng vượt trội</p>
+                    <p><i class="fas fa-check"></i>Hệ thống chat trực tiếp với kỹ thuật <i class=""></i>không qua tổng đài</p>
+                    <p><i class="fas fa-check"></i>Hỗ trợ tra cứu hóa đơn theo Website riêng của doanh nghiệp</p>
+                  </div>
+
                 </div>
-             </div>
-            <section id="home-services">
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="grid-uniform md-mg-left-10">
-                            <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
-                                 data-wow-delay="0.2s"
-                                 data-wow-duration="0.75s">
-                                <div class="hservice-item text-center">
-                                    <div class="hservice-img">
-                                        <img width="80" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/24h.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
-                                    </div>
-                                    <div class="hservice-title">
-                                        <a href="#">TƯ VẤN - HỖ TRỢ</a>
-                                    </div>
-                                    <div class="hservice-desc">
-                                        <p><i class="fas fa-check"></i>Hỗ trợ thông báo phát hành hóa đơn</p>
-                                        <p><i class="fas fa-check"></i>Tư vấn nghiệp vụ hóa đơn trong quá trình sử dụng</p>
-                                        <p><i class="fas fa-check"></i>Giải quyết vướng mắc của khách hàng trong vòng 02 giờ</p>
-                                    </div>
-                                </div>
-                            </div>
+              </div>
 
-                            <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
-                                 data-wow-delay="0.4s"
-                                 data-wow-duration="0.75s">
-                                <div class="hservice-item text-center">
-                                    <div class="hservice-img">
-                                        <img width="88" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/tietkiem.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
-                                    </div>
-                                    <div class="hservice-title">
-                                        <a href="#">TIẾT KIỆM - HIỆU QUẢ</a>
-                                    </div>
-                                    <div class="hservice-desc">
-                                        <p><i class="fas fa-check"></i>Chi phí hợp lý nhiều tính năng vượt trội</p>
-                                        <p><i class="fas fa-check"></i>Hệ thống chat trực tiếp với kỹ thuật <i class=""></i>không qua tổng đài</p>
-                                        <p><i class="fas fa-check"></i>Hỗ trợ tra cứu hóa đơn theo Website riêng của doanh nghiệp</p>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
-                                 data-wow-delay="0.6s"
-                                 data-wow-duration="0.75s">
-                                <div class="hservice-item text-center">
-                                    <div class="hservice-img">
-                                        <img width="80" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/baomat.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
-                                    </div>
-                                    <div class="hservice-title">
-                                        <a href="#">AN TOÀN - BẢO MẬT</a>
-                                    </div>
-                                    <div class="hservice-desc">
-                                        <p><i class="fas fa-check"></i>Áp dụng mã hóa bảo mật thông tin hóa đơn</p>
-                                        <p><i class="fas fa-check"></i>Hệ thống Server Backup Realtime, Chống tấn công DDOS</p>
-                                        <p><i class="fas fa-check"></i>Áp dụng Quy trình ISO 27001:2013</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div class="grid__item wow fadeInUp md-pd-left10 large--one-third medium--one-half small--one-whole"
+                   data-wow-delay="0.6s"
+                   data-wow-duration="0.75s">
+                <div class="hservice-item text-center">
+                  <div class="hservice-img">
+                    <img width="80" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/baomat.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+                  </div>
+                  <div class="hservice-title">
+                    <a href="#">AN TOÀN - BẢO MẬT</a>
+                  </div>
+                  <div class="hservice-desc">
+                    <p><i class="fas fa-check"></i>Áp dụng mã hóa bảo mật thông tin hóa đơn</p>
+                    <p><i class="fas fa-check"></i>Hệ thống Server Backup Realtime, Chống tấn công DDOS</p>
+                    <p><i class="fas fa-check"></i>Áp dụng Quy trình ISO 27001:2013</p>
+                  </div>
                 </div>
-            </section>
-    </article>
-    <!-- #post-## -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  </article>
+  <!-- #post-## -->
 </main>
 <!-- #main -->
+<!-- #primary -->
+<div id="secondary" class="widget-area col-lg-4">
+  <aside id="media_image-6" class="widget widget_media_image">
+    <div id="branding">
+      <a href="https://minvoice.vn/" target="blank" class="custom-logo-link" rel="home" itemprop="url"><img width="150" height="90" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/lg1.jpg" class="custom-logo" alt="Công ty TNHH Hóa đơn điện tử M-Invoice" itemprop="logo" /></a>
+    </div>
+    <div class="signup-form">
+      @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "register-form", @id = "register-form" }))
+      {
+        <div style="color:red">
+          @Html.ValidationMessage("ErrorLogin")
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+          @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+          @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
+        </div>
+        <div class="form-group">
+          @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group form-button">
+          <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
+        </div>
+      }
+    </div>
+  </aside>
+  <aside id="media_image" class="widget widget_media_image">
+    <img width="300" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/img2.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
+  </aside>
+</div>
+
 <div id="display-pdf" style="height: 50px; clear: both">
 
 </div>
@@ -170,179 +220,177 @@
 <!-- Data ẩn -->
 
 <div class="data-hidden">
-    <div id="mst_html" hidden></div>
-    <div id="sobaomat_html" hidden></div>
-    <div id="invoiceauth" hidden></div>
-    <div id="abcdefg" hidden></div>
-    <div id="ecd" hidden></div>
-    <div id="fileName" hidden></div>
-    <p id="MaSoThue" hidden></p>
-    <p id="KyHieu" hidden></p>
-    <p id="MauSo" hidden></p>
-    <p id="MaSoThueNguoiMua" hidden></p>
+  <div id="mst_html" hidden></div>
+  <div id="sobaomat_html" hidden></div>
+  <div id="invoiceauth" hidden></div>
+  <div id="abcdefg" hidden></div>
+  <div id="ecd" hidden></div>
+  <div id="fileName" hidden></div>
+  <p id="MaSoThue" hidden></p>
+  <p id="KyHieu" hidden></p>
+  <p id="MauSo" hidden></p>
+  <p id="MaSoThueNguoiMua" hidden></p>
 </div>
 
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-invoice" style="padding-top: 0">
-        <!-- Modal content-->
-        <div class="modal-content modal-content-invoice  col-md-8" style="border-radius:10px !important">
-            <div class="modal-body modal-body-invoice " style="max-width: 100%;">
-                <div class="exitform" style="position: relative;top: -8px; left: 98%; " data-dismiss="modal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
-                </div>
-                <div class="row">
-                    <div class="col-md-3 col-sm-4 col-xs-12" id="fix-table" style="font-size: 17px">
-                        <div class="table-invocie-info">
-                            <table class="table fix-table" id="tableInvoiceInfo">
-                                <thead>
-                                    <h2 style="text-align: center !important; color: #ED2429; font-weight: bold;"> THÔNG TIN HOÁ ĐƠN</h2>
-                                    <tr>
-                                        <th scope="row" style="font-size: 17px; border: hidden">Mẫu số</th>
-                                        <td class="fix-color" id="MauSo_view" style="color: #298FCD !important;"></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" style="font-size: 17px; border: hidden">Ký hiệu</th>
-                                        <td class="fix-color" id="KyHieu_view" style="color: #298FCD !important;"></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" style="font-size: 17px; border: hidden">Ngày hóa đơn</th>
-                                        <td class="fix-color" id="ngayhd_view"></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" style="font-size: 17px; border: hidden">Số hóa đơn</th>
-                                        <td class="fix-color" id="sohoadon_view"></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" style="font-size: 17px; border: hidden">Tổng tiền</th>
-                                        <td class="fix-color" id="tongtien_view"></td>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-
-                        <div class="buyer-sign-invoice" style="padding-bottom: 25px">
-                            <button type="button" class="fa btn btn-primary fix-btn btn-block col text-center" id="btn-buyer-sign" onclick="buyerSignature()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908l-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z" />
-                                    <path fill-rule="evenodd" d="M2.832 13.228L8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z" />
-                                </svg>
-                                &nbsp; Người mua ký hoá đơn &nbsp;
-                            </button>
-                        </div>
-
-                        <div class="action-other">
-                            <a href="#" class="fa fix-style" id="btn-dowd-zip" onclick="ExportZipXML()" title="Tải XML">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                </svg>
-                                &nbsp;Tải hoá đơn gốc XML (*.Zip)
-                            </a>
-                            <a href="#" class="fa fix-style" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" title="In Chuyển đổi hoá đơn ra giấy">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-break" viewBox="0 0 16 16">
-                                    <path d="M14 4.5V9h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v7H2V2a2 2 0 0 1 2-2h5.5L14 4.5zM13 12h1v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2h1v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2zM.5 10a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H.5z" />
-                                </svg>
-                                &nbsp;In Chuyển đổi hoá đơn ra giấy
-                            </a>
-                            <a class="fa fix-style" href="#" id="readSignatureSeller" onclick="readSignature('seller')">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
-                                </svg>
-                                &nbsp;Đọc chữ ký số người bán
-                            </a>
-                            <a href="#" onclick="GetInfoByMaSoThue()" class="fa fix-style">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                                &nbsp;Tra cứu thông tin người mua
-                            </a>
-                            <a href="#" class="fa fix-btn fix-style" type="button" id="btn-show" data-toggle="modal" onclick="CreateTable()">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                                &nbsp;Tra cứu Thông báo Phát hành
-                            </a>
-                            <a href="http://tracuuhoadon.gdt.gov.vn/tc1hd.html" target="_blank" class="fa fix-style" id="btn-dowd-zip" onclick="" title="Tải XML">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                </svg>
-                                &nbsp;Tra cứu hoá đơn kê khai
-                            </a>
-                            <a href="https://plugin.minvoice.com.vn/MinvoicePlugin/setup.exe" target="_blank" class="fa fix-style" id="btn-dowd-zip" onclick="" title="Tải plugin">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z" />
-                                    <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                </svg>
-                                &nbsp;Tải plugin ký hóa đơn
-                            </a>
-                        </div>
-                    </div>
-                    <div id="htm-content" class="text-center col-md-9 col-sm-8 col-xs-12">
-                    </div>
-                </div>
-            </div>
+  <div class="modal-dialog modal-invoice" style="padding-top: 0">
+    <!-- Modal content-->
+    <div class="modal-content modal-content-invoice  col-md-8" style="border-radius:10px !important">
+      <div class="modal-body modal-body-invoice " style="max-width: 100%;">
+        <div class="exitform" style="position: relative;top: -8px; left: 98%; " data-dismiss="modal">
+          <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+          </svg>
         </div>
+        <div class="row">
+          <div class="col-md-3 col-sm-4 col-xs-12" id="fix-table" style="font-size: 17px">
+            <div class="table-invocie-info">
+              <table class="table fix-table" id="tableInvoiceInfo">
+                <thead>
+                  <h2 style="text-align: center !important; color: #ED2429; font-weight: bold;"> THÔNG TIN HOÁ ĐƠN</h2>
+                  <tr>
+                    <th scope="row" style="font-size: 17px; border: hidden">Mẫu số</th>
+                    <td class="fix-color" id="MauSo_view" style="color: #298FCD !important;"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="font-size: 17px; border: hidden">Ký hiệu</th>
+                    <td class="fix-color" id="KyHieu_view" style="color: #298FCD !important;"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="font-size: 17px; border: hidden">Ngày hóa đơn</th>
+                    <td class="fix-color" id="ngayhd_view"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="font-size: 17px; border: hidden">Số hóa đơn</th>
+                    <td class="fix-color" id="sohoadon_view"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" style="font-size: 17px; border: hidden">Tổng tiền</th>
+                    <td class="fix-color" id="tongtien_view"></td>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+
+            <div class="buyer-sign-invoice" style="padding-bottom: 25px">
+              <button type="button" class="fa btn btn-primary fix-btn btn-block col text-center" id="btn-buyer-sign" onclick="buyerSignature()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908l-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z" />
+                  <path fill-rule="evenodd" d="M2.832 13.228L8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z" />
+                </svg>
+                &nbsp; Người mua ký hoá đơn &nbsp;
+              </button>
+            </div>
+
+            <div class="action-other">
+              <a href="#" class="fa fix-style" id="btn-dowd-zip" onclick="ExportZipXML()" title="Tải XML">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                </svg>
+                &nbsp;Tải hoá đơn gốc XML (*.Zip)
+              </a>
+              <a href="#" class="fa fix-style" id="btn-download-pdf-inchuyendoi" onClick="PrintInvoiceChuyenDoiPDF();" title="In Chuyển đổi hoá đơn ra giấy">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-break" viewBox="0 0 16 16">
+                  <path d="M14 4.5V9h-1V4.5h-2A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v7H2V2a2 2 0 0 1 2-2h5.5L14 4.5zM13 12h1v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2h1v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2zM.5 10a.5.5 0 0 0 0 1h15a.5.5 0 0 0 0-1H.5z" />
+                </svg>
+                &nbsp;In Chuyển đổi hoá đơn ra giấy
+              </a>
+              <a class="fa fix-style" href="#" id="readSignatureSeller" onclick="readSignature('seller')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z" />
+                </svg>
+                &nbsp;Đọc chữ ký số người bán
+              </a>
+              <a href="#" onclick="GetInfoByMaSoThue()" class="fa fix-style">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+                &nbsp;Tra cứu thông tin người mua
+              </a>
+              <a href="#" class="fa fix-btn fix-style" type="button" id="btn-show" data-toggle="modal" onclick="CreateTable()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+                &nbsp;Tra cứu Thông báo Phát hành
+              </a>
+              <a href="http://tracuuhoadon.gdt.gov.vn/tc1hd.html" target="_blank" class="fa fix-style" id="btn-dowd-zip" onclick="" title="Tải XML">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+                &nbsp;Tra cứu hoá đơn kê khai
+              </a>
+              <a href="https://plugin.minvoice.com.vn/MinvoicePlugin/setup.exe" target="_blank" class="fa fix-style" id="btn-dowd-zip" onclick="" title="Tải plugin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-in-down" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1h-2z" />
+                  <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                </svg>
+                &nbsp;Tải plugin ký hóa đơn
+              </a>
+            </div>
+          </div>
+          <div id="htm-content" class="text-center col-md-9 col-sm-8 col-xs-12">
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!--Thông báo phát hành -->
 <div class="modal fade" id="exampleModal" role="dialog">
-    <div class="modal-dialog show-notification" style="padding-top: 0">
-        <div class="modal notification"></div>
-        <div class="modal-body content-notification"></div>
-    </div>
+  <div class="modal-dialog show-notification" style="padding-top: 0">
+    <div class="modal notification"></div>
+    <div class="modal-body content-notification"></div>
+  </div>
 </div>
 <script>
-    $(document).keydown(function (e) {
-        var code = e.keyCode || e.which;
-        if (code == 27) {
-            bootbox.hideAll();
-            //$("#myModal").modal("toggle");
-            $('#myModal').modal("hide");
-            $('#myModal').removeData('bs.modal');
-        }
-    });
+  $(document).keydown(function (e) {
+    var code = e.keyCode || e.which;
+    if (code == 27) {
+      bootbox.hideAll();
+      //$("#myModal").modal("toggle");
+      $('#myModal').modal("hide");
+      $('#myModal').removeData('bs.modal');
+    }
+  });
 </script>
 <script>
-
-
-    function tableCreate() {
-        var body = document.getElementsByTagName('body')[0];
-        var tbl = document.createElement('table');
-        tbl.style.width = '100%';
-        tbl.setAttribute('border', '1');
-        var tbdy = document.createElement('tbody');
-        for (var i = 0; i < 3; i++) {
-            var tr = document.createElement('tr');
-            for (var j = 0; j < 2; j++) {
-                if (i === 2 && j === 1) {
-                    break;
-                } else {
-                    var td = document.createElement('td');
-                    td.appendChild(document.createTextNode('\u0020'));
-                    i === 1 && j === 1 ? td.setAttribute('rowSpan', '2') : null;
-                    tr.appendChild(td);
-                }
-            }
-            tbdy.appendChild(tr);
+  function tableCreate() {
+    var body = document.getElementsByTagName('body')[0];
+    var tbl = document.createElement('table');
+    tbl.style.width = '100%';
+    tbl.setAttribute('border', '1');
+    var tbdy = document.createElement('tbody');
+    for (var i = 0; i < 3; i++) {
+      var tr = document.createElement('tr');
+      for (var j = 0; j < 2; j++) {
+        if (i === 2 && j === 1) {
+          break;
+        } else {
+          var td = document.createElement('td');
+          td.appendChild(document.createTextNode('\u0020'));
+          i === 1 && j === 1 ? td.setAttribute('rowSpan', '2') : null;
+          tr.appendChild(td);
         }
-        tbl.appendChild(tbdy);
-        body.appendChild(tbl);
+      }
+      tbdy.appendChild(tr);
     }
-    tableCreate();
+    tbl.appendChild(tbdy);
+    body.appendChild(tbl);
+  }
+  tableCreate();
 </script>
 
 @section scripts
 {
-    <script src="~/Content/Scripts/jquery.signalR-2.2.3.min.js"></script>
-    <script src="http://localhost:19898/signalr/signalr/hubs"></script>
-    <script src="~/Scripts/minvoice.js"></script>
-    <script>
-        document.getElementById('input-file-now').addEventListener('change', handleFileSelect, false);
-    </script>
+  <script src="~/Content/Scripts/jquery.signalR-2.2.3.min.js"></script>
+  <script src="http://localhost:19898/signalr/signalr/hubs"></script>
+  <script src="~/Scripts/minvoice.js"></script>
+  <script>
+    document.getElementById('input-file-now').addEventListener('change', handleFileSelect, false);
+  </script>
 
 }
