@@ -13,6 +13,7 @@ using Search_Invoice.Util;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -81,7 +82,7 @@ namespace Search_Invoice.Services
             JObject json = new JObject();
             try
             {
-                string mst = model["masothue"].ToString().Replace("-", "");
+                string mst = ConfigurationManager.AppSettings["MaSoThue"].Replace("-", "");
                 string sobaomat = model["sobaomat"].ToString();
                 _nopDbContext2.SetConnect(mst);
                 Dictionary<string, object> parameters = new Dictionary<string, object>
@@ -90,14 +91,7 @@ namespace Search_Invoice.Services
                 };
                 string sql = "SELECT TOP 1 a.* FROM inv_InvoiceAuth AS a INNER JOIN dbo.InvoiceXmlData AS b ON b.inv_InvoiceAuth_id = a.inv_InvoiceAuth_id WHERE a.sobaomat = @sobaomat";
                 DataTable dt = _nopDbContext2.ExecuteCmd(sql, CommandType.Text, parameters);
-                TracuuHDDTContext tracuu = new TracuuHDDTContext();
-                inv_customer_banned checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(mst.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
-                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
-                {
-                    json.Add("error", $"Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
-                    return json;
-                }
+               
                 if (dt.Rows.Count == 0)
                 {
                     if (string.IsNullOrEmpty(mst))
@@ -114,7 +108,7 @@ namespace Search_Invoice.Services
                         }
                         else
                         {
-                            json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat} tại mã số thuế: {mst}");
+                            json.Add("error", $"Không tồn tại hóa đơn có số bảo mật: {sobaomat}");
                             return json;
                         }
                     }
@@ -130,7 +124,7 @@ namespace Search_Invoice.Services
                 foreach (DataRow row in dt.Rows)
                 {
                     row.BeginEdit();
-                    row["mst"] = model["masothue"].ToString();
+                    row["mst"] = mst;
                     row["inv_auth_id"] = b;
                     row["sum_tien"] = sumTien.Rows[0]["sum_total_amount"];
                     row.EndEdit();
