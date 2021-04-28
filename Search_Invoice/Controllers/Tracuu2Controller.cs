@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using Search_Invoice.Services;
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -49,15 +50,8 @@ namespace Search_Invoice.Controllers
             {
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
                 bool inchuyendoi = model.ContainsKey("inchuyendoi");
-                TracuuHDDTContext tracuu = new TracuuHDDTContext();
-                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
-                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
-                {
-                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
-                }
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
@@ -96,17 +90,10 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
-                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
-                TracuuHDDTContext tracuu = new TracuuHDDTContext();
-                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue.Replace("-", "")) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
-                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
-                {
-                    throw new Exception("Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
-                }
+                string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";               
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
                 string fileName = "";
                 string key = "";
@@ -135,7 +122,7 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
@@ -167,7 +154,7 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
                 string sobaomat = model["sobaomat"].ToString();
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
@@ -219,7 +206,7 @@ namespace Search_Invoice.Controllers
             {
                 string type = model["type"].ToString();
                 string sobaomat = model["sobaomat"].ToString();
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
 
                 var invoiceInfo = _tracuuService2.GetInfoInvoice(model);
                 if (invoiceInfo.ContainsKey("error"))
@@ -227,14 +214,7 @@ namespace Search_Invoice.Controllers
                     return invoiceInfo;
                 }
 
-                TracuuHDDTContext tracuu = new TracuuHDDTContext();
-                var checkTraCuu = tracuu.inv_customer_banneds.FirstOrDefault(x =>
-                    x.mst.Replace("-", "").Equals(masothue) && x.type.Equals("KHOATRACUU") && x.is_unblock == false);
-                if (checkTraCuu != null && !string.IsNullOrEmpty(checkTraCuu.mst))
-                {
-                    result.Add("error", $"Quý khách đang bị khóa tra cứu. Vui lòng liên hệ admin để giải quyết");
-                    return result;
-                }
+               
                 string originalString = ActionContext.Request.RequestUri.OriginalString;
                 string path = originalString.StartsWith("/api") ? "~/api/Content/report/" : "~/Content/report/";
                 var folder = System.Web.HttpContext.Current.Server.MapPath(path);
@@ -265,7 +245,7 @@ namespace Search_Invoice.Controllers
             HttpResponseMessage result;
             try
             {
-                string masothue = model["masothue"].ToString();
+                string masothue = ConfigurationManager.AppSettings["MaSoThue"];
                 string sobaomat = model["sobaomat"].ToString();
                 byte[] bytes = _tracuuService2.GetInvoiceXml(sobaomat, masothue);
                 result = new HttpResponseMessage(HttpStatusCode.OK) {Content = new ByteArrayContent(bytes)};

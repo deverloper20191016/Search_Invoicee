@@ -20,7 +20,7 @@
     <link href="~/Content/css/pagehomeindex.css" rel="stylesheet" />
 }
 
-<main id="main" class="site-main col-lg-8" role="main">
+<main id="main" class="site-main" role="main">
     <article id="post-2076" class="post-detail post-2076 post type-post status-publish format-standard has-post-thumbnail hentry category-khao-sat-y-kien">
         <h1 class="hs-post-detail-title">TRA CỨU HÓA ĐƠN ĐIỆN TỬ M-INVOICE</h1>
         <div class="check">
@@ -38,16 +38,10 @@
         <div class="entry-content">
             <div class="module form-group">
                 <div id="divSearchMain">
-                    <div class="col-md-9">
+                    <div class="col-md-6">
                         <div class="module-body" align="left">
                             <div class="form-horizontal row-fluid">
                                 <form action="/" class="form-horizontal" id="frmIndex" method="post" target="_blank">
-                                    <div class="control-group">
-                                        <label class="control-label" for="basicinput"><b>Mã số thuế đơn vị bán</b><b style="color: red"> (*)</b></label>
-                                        <div class="controls">
-                                            <input id="txtMST" name="masothue" value="@tracuu.mst" type="text" class="form-control input-lg" placeholder="Nhập mã số thuế ...">
-                                        </div>
-                                    </div>
                                     <div class="control-group">
                                         <label class="control-label" for="basicinput"><b>Số bảo mật</b><b style="color: red"> (*)</b></label>
                                         <div class="controls">
@@ -169,50 +163,6 @@
     <!-- #post-## -->
 </main>
 <!-- #main -->
-<!-- #primary -->
-<div id="secondary" class="widget-area col-lg-4">
-    <aside id="media_image-6" class="widget widget_media_image">
-        <div id="branding">
-            <a href="https://minvoice.vn/" target="blank" class="custom-logo-link" rel="home" itemprop="url"><img width="150" height="90" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/lg1.jpg" class="custom-logo" alt="Công ty TNHH Hóa đơn điện tử M-Invoice" itemprop="logo" /></a>
-        </div>
-        <div class="signup-form">
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "register-form", @id = "register-form" }))
-            {
-                <div style="color:red">
-                    @Html.ValidationMessage("ErrorLogin")
-                </div>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                @Html.AntiForgeryToken()
-                <div class="form-group">
-                    @Html.TextBoxFor(model => model.mst, new { placeholder = "Mã số thuế người bán" })
-                </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(model => model.mst, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.TextBoxFor(model => model.username, new { placeholder = "Tên đăng nhập" })
-                </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group">
-                    @Html.PasswordFor(model => model.password, new { placeholder = "Mật khẩu" })
-                </div>
-                <div class="form-group">
-                    @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
-                </div>
-                <div class="form-group form-button">
-                    <input type="submit" name="signup" id="signup" class="form-submit" value="ĐĂNG NHẬP" style="text-align: center; font-weight: 600" />
-                </div>
-            }
-        </div>
-    </aside>
-    <aside id="media_image" class="widget widget_media_image">
-        <img width="300" height="180" src="~/UI/tracuu.minvoice.vn/wp-content/uploads/2018/img2.jpg" class="image wp-image-1402  attachment-medium size-medium" alt="" style="max-width: 100%; height: auto;" sizes="(max-width: 300px) 100vw, 300px" />
-    </aside>
-</div>
-
 <div id="display-pdf" style="height: 50px; clear: both">
 
 </div>
