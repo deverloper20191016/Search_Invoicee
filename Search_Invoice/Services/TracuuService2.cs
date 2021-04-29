@@ -1294,74 +1294,90 @@ namespace Search_Invoice.Services
                     }
                 }
 
+                DataTable checkOtpBienBan = _nopDbContext2.ExecuteCmd($"SELECT TOP 1 gia_tri FROM dbo.wb_setting WHERE ma = 'OTP_BIENBAN'");
+                var otpBienBan = "C";
+                if (checkOtpBienBan.Rows.Count > 0)
+                {
+                    var checkOtpBienBanTable = checkOtpBienBan.Rows[0]["gia_tri"].ToString();
+                    if (!string.IsNullOrEmpty(checkOtpBienBanTable))
+                    {
+                        otpBienBan = checkOtpBienBanTable;
+                    }
+                }
+
                 if (trangThaiHd == 19 || trangThaiHd == 21 || trangThaiHd == 5)
                 {
-                    string reportFile = trangThaiHd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
-                    string sqlDieuChinh = trangThaiHd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
-                    string fileName = folder + $@"\{masothue}_{reportFile}";
-
-                    if (!File.Exists(fileName))
+                    if (otpBienBan.Equals("C"))
                     {
-                        fileName = folder + $"\\{reportFile}";
+                        string reportFile = trangThaiHd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
+                        string sqlDieuChinh = trangThaiHd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
+                        string fileName = folder + $@"\{masothue}_{reportFile}";
+
+                        if (!File.Exists(fileName))
+                        {
+                            fileName = folder + $"\\{reportFile}";
+                        }
+
+                        XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
+                        rpBienBan.ScriptReferencesString = "AccountSignature.dll";
+                        rpBienBan.Name = "rpBienBanDieuChinh";
+                        rpBienBan.DisplayName = reportFile;
+                        Dictionary<string, string> pars = new Dictionary<string, string>
+                        {
+                            {"ma_dvcs", maDvcs},
+                            {"document_id", invInvoiceAuthId }
+                        };
+
+                        DataSet dsDieuChinh = _nopDbContext2.GetDataSet(sqlDieuChinh, pars);
+
+                        rpBienBan.DataSource = dsDieuChinh;
+                        rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
+                        rpBienBan.CreateDocument();
+                        rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
+                        report.PrintingSystem.ContinuousPageNumbering = false;
+                        report.Pages.AddRange(rpBienBan.Pages);
+
+                        int pageCount = report.Pages.Count;
+                        report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
                     }
-
-                    XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
-                    rpBienBan.ScriptReferencesString = "AccountSignature.dll";
-                    rpBienBan.Name = "rpBienBanDieuChinh";
-                    rpBienBan.DisplayName = reportFile;
-                    Dictionary<string, string> pars = new Dictionary<string, string>
-                    {
-                        {"ma_dvcs", maDvcs},
-                        {"document_id", invInvoiceAuthId }
-                    };
-
-                    DataSet dsDieuChinh = _nopDbContext2.GetDataSet(sqlDieuChinh, pars);
-
-                    rpBienBan.DataSource = dsDieuChinh;
-                    rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
-                    rpBienBan.CreateDocument();
-                    rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
-                    report.PrintingSystem.ContinuousPageNumbering = false;
-                    report.Pages.AddRange(rpBienBan.Pages);
-
-                    int pageCount = report.Pages.Count;
-                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
 
                 }
 
                 if (trangThaiHd == 3)
                 {
-                    string reportFileThayThe = "INCT_BBTT.repx";
-                    string sqlThayThe = "sproc_inct_hd_thaythe";
-                    string fileName = folder + $@"\{masothue}_{reportFileThayThe}";
-
-                    if (!File.Exists(fileName))
+                    if (otpBienBan.Equals("C"))
                     {
-                        fileName = folder + $"\\{reportFileThayThe}";
+                        string reportFileThayThe = "INCT_BBTT.repx";
+                        string sqlThayThe = "sproc_inct_hd_thaythe";
+                        string fileName = folder + $@"\{masothue}_{reportFileThayThe}";
+
+                        if (!File.Exists(fileName))
+                        {
+                            fileName = folder + $"\\{reportFileThayThe}";
+                        }
+
+                        XtraReport rpBienBanThayThe = XtraReport.FromFile(fileName, true);
+                        rpBienBanThayThe.ScriptReferencesString = "AccountSignature.dll";
+                        rpBienBanThayThe.Name = "rpBienBanThayThe";
+                        rpBienBanThayThe.DisplayName = reportFileThayThe;
+                        Dictionary<string, string> pars = new Dictionary<string, string>
+                        {
+                            {"ma_dvcs", maDvcs},
+                            {"document_id", invInvoiceAuthId }
+                        };
+
+                        DataSet dsThayThe = _nopDbContext2.GetDataSet(sqlThayThe, pars);
+
+                        rpBienBanThayThe.DataSource = dsThayThe;
+                        rpBienBanThayThe.DataMember = dsThayThe.Tables[0].TableName;
+                        rpBienBanThayThe.CreateDocument();
+                        rpBienBanThayThe.PrintingSystem.ContinuousPageNumbering = false;
+                        report.PrintingSystem.ContinuousPageNumbering = false;
+                        report.Pages.AddRange(rpBienBanThayThe.Pages);
+
+                        int pageCount = report.Pages.Count;
+                        report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
                     }
-
-                    XtraReport rpBienBanThayThe = XtraReport.FromFile(fileName, true);
-                    rpBienBanThayThe.ScriptReferencesString = "AccountSignature.dll";
-                    rpBienBanThayThe.Name = "rpBienBanThayThe";
-                    rpBienBanThayThe.DisplayName = reportFileThayThe;
-                    Dictionary<string, string> pars = new Dictionary<string, string>
-                    {
-                        {"ma_dvcs", maDvcs},
-                        {"document_id", invInvoiceAuthId }
-                    };
-
-                    DataSet dsThayThe = _nopDbContext2.GetDataSet(sqlThayThe, pars);
-
-                    rpBienBanThayThe.DataSource = dsThayThe;
-                    rpBienBanThayThe.DataMember = dsThayThe.Tables[0].TableName;
-                    rpBienBanThayThe.CreateDocument();
-                    rpBienBanThayThe.PrintingSystem.ContinuousPageNumbering = false;
-                    report.PrintingSystem.ContinuousPageNumbering = false;
-                    report.Pages.AddRange(rpBienBanThayThe.Pages);
-
-                    int pageCount = report.Pages.Count;
-                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
-
                 }
 
                 MemoryStream ms = new MemoryStream();
