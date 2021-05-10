@@ -1,25 +1,25 @@
 ﻿
 using DevExpress.XtraPrinting;
 using DevExpress.XtraPrinting.Drawing;
+using DevExpress.XtraReports.Parameters;
 using DevExpress.XtraReports.UI;
+using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
 using Newtonsoft.Json.Linq;
+using Search_Invoice.Data;
+using Search_Invoice.Data.Domain;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Xml;
-using Search_Invoice.Data.Domain;
-using ICSharpCode.SharpZipLib.Zip;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
-using System.Globalization;
-using System.Security.Cryptography.X509Certificates;
-using ICSharpCode.SharpZipLib.Core;
-using Search_Invoice.Data;
-using System.Security.Cryptography.Xml;
-using DevExpress.XtraReports.Parameters;
+using System.Xml;
 
 namespace Search_Invoice.Util
 {
@@ -87,7 +87,7 @@ namespace Search_Invoice.Util
             string mst = set.Tables["ThongTinHoaDon"].Rows[0]["MaSoThueNguoiBan"].ToString().Replace("-", "").Replace(" ", "");
             string input = set.Tables["ThongTinHoaDon"].Rows[0]["SellerAppRecordId"].ToString();
             TracuuHDDTContext tracuu = new TracuuHDDTContext();
-            var invAdmin = tracuu.Inv_admin.FirstOrDefault(c => c.MST == mst || c.alias == mst);
+            inv_admin invAdmin = tracuu.Inv_admin.FirstOrDefault(c => c.MST == mst || c.alias == mst);
             if (invAdmin != null)
             {
                 InvoiceDbContext invoiceContext = new InvoiceDbContext(EncodeXml.Decrypt(invAdmin.ConnectString, "NAMPV18081202"));
@@ -101,7 +101,7 @@ namespace Search_Invoice.Util
                 }
                 if (invoice.Trang_thai_hd != null)
                 {
-                    Int32 trangThaiHd = (Int32)invoice.Trang_thai_hd;
+                    int trangThaiHd = (int)invoice.Trang_thai_hd;
                     string invOriginalId = invoice.Inv_originalId.ToString();
                     string invInvoiceCodeId = invoice.Inv_InvoiceCode_id.ToString();
                     if (trangThaiHd == 11 || trangThaiHd == 13 || trangThaiHd == 17)
@@ -160,7 +160,7 @@ namespace Search_Invoice.Util
                         string totalAmountFomart = "n0";
                         if (tbldmnt.Columns.Contains("inv_quantity"))
                         {
-                            var quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
+                            int quantityDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_quantity"].ToString())
                                 ? rowDmnt["inv_quantity"].ToString()
                                 : "0");
                             quantityFomart = GetFormatString(quantityDmnt);
@@ -168,21 +168,21 @@ namespace Search_Invoice.Util
 
                         if (tbldmnt.Columns.Contains("inv_unitPrice"))
                         {
-                            var unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
+                            int unitPriceDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_unitPrice"].ToString())
                                 ? rowDmnt["inv_unitPrice"].ToString()
                                 : "0");
                             unitPriceFomart = GetFormatString(unitPriceDmnt);
                         }
                         if (tbldmnt.Columns.Contains("inv_TotalAmountWithoutVat"))
                         {
-                            var totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
+                            int totalAmountWithoutVatDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmountWithoutVat"].ToString())
                                 ? rowDmnt["inv_TotalAmountWithoutVat"].ToString()
                                 : "0");
                             totalAmountWithoutVatFomart = GetFormatString(totalAmountWithoutVatDmnt);
                         }
                         if (tbldmnt.Columns.Contains("inv_TotalAmount"))
                         {
-                            var totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
+                            int totalAmountDmnt = int.Parse(!string.IsNullOrEmpty(rowDmnt["inv_TotalAmount"].ToString())
                                 ? rowDmnt["inv_TotalAmount"].ToString()
                                 : "0");
                             totalAmountFomart = GetFormatString(totalAmountDmnt);
@@ -232,9 +232,9 @@ namespace Search_Invoice.Util
                         });
                     }
 
-                    var t = Task.Run(() =>
+                    Task t = Task.Run(() =>
                     {
-                        var newCulture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+                        CultureInfo newCulture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
                         newCulture.NumberFormat.NumberDecimalSeparator = thapPhan;
                         newCulture.NumberFormat.NumberGroupSeparator = hangNghin;
                         System.Threading.Thread.CurrentThread.CurrentCulture = newCulture;
@@ -300,76 +300,97 @@ namespace Search_Invoice.Util
                 }
 
 
+                string sqlCheck =
+                    $@"IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'wb_setting') SELECT TOP 1 gia_tri FROM dbo.wb_setting WHERE ma = 'OTP_BIENBAN'";
+
+                DataTable checkOtpBienBan = invoiceContext.ExecuteCmd(sqlCheck);
+
+                string otpBienBan = "C";
+                if (checkOtpBienBan.Rows.Count > 0)
+                {
+                    string checkOtpBienBanTable = checkOtpBienBan.Rows[0]["gia_tri"].ToString();
+                    if (!string.IsNullOrEmpty(checkOtpBienBanTable))
+                    {
+                        otpBienBan = checkOtpBienBanTable;
+                    }
+                }
+
 
                 if (invoice.Trang_thai_hd == 3)
                 {
-                    string reportFileThayThe = "INCT_BBTT.repx";
-                    string sqlThayThe = "sproc_inct_hd_thaythe";
-                    string fileName = folder + $@"\{mst}_{reportFileThayThe}";
-
-                    if (!File.Exists(fileName))
+                    if (otpBienBan.Equals("C"))
                     {
-                        fileName = folder + $"\\{reportFileThayThe}";
+                        string reportFileThayThe = "INCT_BBTT.repx";
+                        string sqlThayThe = "sproc_inct_hd_thaythe";
+                        string fileName = folder + $@"\{mst}_{reportFileThayThe}";
+
+                        if (!File.Exists(fileName))
+                        {
+                            fileName = folder + $"\\{reportFileThayThe}";
+                        }
+
+                        XtraReport rpBienBanThayThe = XtraReport.FromFile(fileName, true);
+                        rpBienBanThayThe.ScriptReferencesString = "AccountSignature.dll";
+                        rpBienBanThayThe.Name = "rpBienBanThayThe";
+                        rpBienBanThayThe.DisplayName = reportFileThayThe;
+                        Dictionary<string, string> pars = new Dictionary<string, string>
+                        {
+                            {"ma_dvcs", invoice.Ma_dvcs},
+                            {"document_id", invInvoiceAuthId.ToString() }
+                        };
+
+                        DataSet dsThayThe = invoiceContext.GetDataSet(sqlThayThe, pars);
+
+                        rpBienBanThayThe.DataSource = dsThayThe;
+                        rpBienBanThayThe.DataMember = dsThayThe.Tables[0].TableName;
+                        rpBienBanThayThe.CreateDocument();
+                        rpBienBanThayThe.PrintingSystem.ContinuousPageNumbering = false;
+                        report.PrintingSystem.ContinuousPageNumbering = false;
+                        report.Pages.AddRange(rpBienBanThayThe.Pages);
+
+                        int pageCount = report.Pages.Count;
+                        report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
                     }
 
-                    XtraReport rpBienBanThayThe = XtraReport.FromFile(fileName, true);
-                    rpBienBanThayThe.ScriptReferencesString = "AccountSignature.dll";
-                    rpBienBanThayThe.Name = "rpBienBanThayThe";
-                    rpBienBanThayThe.DisplayName = reportFileThayThe;
-                    Dictionary<string, string> pars = new Dictionary<string, string>
-                    {
-                        {"ma_dvcs", invoice.Ma_dvcs},
-                        {"document_id", invInvoiceAuthId.ToString() }
-                    };
-
-                    DataSet dsThayThe = invoiceContext.GetDataSet(sqlThayThe, pars);
-
-                    rpBienBanThayThe.DataSource = dsThayThe;
-                    rpBienBanThayThe.DataMember = dsThayThe.Tables[0].TableName;
-                    rpBienBanThayThe.CreateDocument();
-                    rpBienBanThayThe.PrintingSystem.ContinuousPageNumbering = false;
-                    report.PrintingSystem.ContinuousPageNumbering = false;
-                    report.Pages.AddRange(rpBienBanThayThe.Pages);
-
-                    int pageCount = report.Pages.Count;
-                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
 
                 }
 
 
                 if (invoice.Trang_thai_hd == 19 || invoice.Trang_thai_hd == 21 || invoice.Trang_thai_hd == 5)
                 {
-                    string reportFile = invoice.Trang_thai_hd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
-                    string sqlDieuChinh = invoice.Trang_thai_hd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
-                    string fileName = folder + $@"\{mst}_{reportFile}";
-
-                    if (!File.Exists(fileName))
+                    if (otpBienBan.Equals("C"))
                     {
-                        fileName = folder + $"\\{reportFile}";
+                        string reportFile = invoice.Trang_thai_hd == 5 ? "INCT_BBDC_DD.repx" : "INCT_BBDC_GT.repx";
+                        string sqlDieuChinh = invoice.Trang_thai_hd == 5 ? "sproc_inct_hd_dieuchinhdg" : "sproc_inct_hd_dieuchinhgt";
+                        string fileName = folder + $@"\{mst}_{reportFile}";
+
+                        if (!File.Exists(fileName))
+                        {
+                            fileName = folder + $"\\{reportFile}";
+                        }
+
+                        XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
+                        rpBienBan.ScriptReferencesString = "AccountSignature.dll";
+                        rpBienBan.Name = "rpBienBanDieuChinh";
+                        rpBienBan.DisplayName = reportFile;
+                        Dictionary<string, string> pars = new Dictionary<string, string>
+                        {
+                            {"ma_dvcs", invoice.Ma_dvcs},
+                            {"document_id", invInvoiceAuthId.ToString() }
+                        };
+
+                        DataSet dsDieuChinh = invoiceContext.GetDataSet(sqlDieuChinh, pars);
+
+                        rpBienBan.DataSource = dsDieuChinh;
+                        rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
+                        rpBienBan.CreateDocument();
+                        rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
+                        report.PrintingSystem.ContinuousPageNumbering = false;
+                        report.Pages.AddRange(rpBienBan.Pages);
+
+                        int pageCount = report.Pages.Count;
+                        report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
                     }
-
-                    XtraReport rpBienBan = XtraReport.FromFile(fileName, true);
-                    rpBienBan.ScriptReferencesString = "AccountSignature.dll";
-                    rpBienBan.Name = "rpBienBanDieuChinh";
-                    rpBienBan.DisplayName = reportFile;
-                    Dictionary<string, string> pars = new Dictionary<string, string>
-                    {
-                        {"ma_dvcs", invoice.Ma_dvcs},
-                        {"document_id", invInvoiceAuthId.ToString() }
-                    };
-
-                    DataSet dsDieuChinh = invoiceContext.GetDataSet(sqlDieuChinh, pars);
-
-                    rpBienBan.DataSource = dsDieuChinh;
-                    rpBienBan.DataMember = dsDieuChinh.Tables[0].TableName;
-                    rpBienBan.CreateDocument();
-                    rpBienBan.PrintingSystem.ContinuousPageNumbering = false;
-                    report.PrintingSystem.ContinuousPageNumbering = false;
-                    report.Pages.AddRange(rpBienBan.Pages);
-
-                    int pageCount = report.Pages.Count;
-                    report.Pages[pageCount - 1].AssignWatermark(new PageWatermark());
-
                 }
             }
             stream.Close();
@@ -399,7 +420,7 @@ namespace Search_Invoice.Util
                 X509Certificate2 dcert2 = new X509Certificate2(Convert.FromBase64String(certificates[0].InnerText));
                 foreach (XmlElement element in nodeList)
                 {
-                    var id = element.Attributes["Id"]?.InnerText;
+                    string id = element.Attributes["Id"]?.InnerText;
                     if (id.Equals("seller"))
                     {
                         signedXml.LoadXml(element);
@@ -445,7 +466,7 @@ namespace Search_Invoice.Util
             {
                 report.ExportToPdf(ms);
             }
-            var bytes = ms.ToArray();
+            byte[] bytes = ms.ToArray();
             return bytes;
         }
 
@@ -466,7 +487,7 @@ namespace Search_Invoice.Util
             int pageWidth = report.PageWidth;
             int pageHeight = report.PageHeight;
             Bitmap bmp = new Bitmap(pageWidth, pageHeight);
-            using (var graphics = Graphics.FromImage(bmp))
+            using (Graphics graphics = Graphics.FromImage(bmp))
             {
                 Pen blackPen = new Pen(Color.Red, 3);
                 Point p1 = new Point(0, 0);
@@ -494,8 +515,16 @@ namespace Search_Invoice.Util
         private static Bitmap SetBrightness(Bitmap currentBitmap, int brightness)
         {
             Bitmap bmap = currentBitmap;
-            if (brightness < -255) brightness = -255;
-            if (brightness > 255) brightness = 255;
+            if (brightness < -255)
+            {
+                brightness = -255;
+            }
+
+            if (brightness > 255)
+            {
+                brightness = 255;
+            }
+
             Color c;
             for (int i = 0; i < bmap.Width; i++)
             {
@@ -505,12 +534,36 @@ namespace Search_Invoice.Util
                     int cR = c.R + brightness;
                     int cG = c.G + brightness;
                     int cB = c.B + brightness;
-                    if (cR < 0) cR = 1;
-                    if (cR > 255) cR = 255;
-                    if (cG < 0) cG = 1;
-                    if (cG > 255) cG = 255;
-                    if (cB < 0) cB = 1;
-                    if (cB > 255) cB = 255;
+                    if (cR < 0)
+                    {
+                        cR = 1;
+                    }
+
+                    if (cR > 255)
+                    {
+                        cR = 255;
+                    }
+
+                    if (cG < 0)
+                    {
+                        cG = 1;
+                    }
+
+                    if (cG > 255)
+                    {
+                        cG = 255;
+                    }
+
+                    if (cB < 0)
+                    {
+                        cB = 1;
+                    }
+
+                    if (cB > 255)
+                    {
+                        cB = 255;
+                    }
+
                     bmap.SetPixel(i, j,
                     Color.FromArgb(c.A, (byte)cR, (byte)cG, (byte)cB));
                 }

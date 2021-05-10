@@ -1294,7 +1294,11 @@ namespace Search_Invoice.Services
                     }
                 }
 
-                DataTable checkOtpBienBan = _nopDbContext2.ExecuteCmd($"SELECT TOP 1 gia_tri FROM dbo.wb_setting WHERE ma = 'OTP_BIENBAN'");
+                string sqlCheck =
+                    $@"IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'wb_setting') SELECT TOP 1 gia_tri FROM dbo.wb_setting WHERE ma = 'OTP_BIENBAN'";
+
+                DataTable checkOtpBienBan = _nopDbContext2.ExecuteCmd(sqlCheck);
+
                 var otpBienBan = "C";
                 if (checkOtpBienBan.Rows.Count > 0)
                 {
